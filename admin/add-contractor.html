@@ -1,0 +1,991 @@
+undefined<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Contractor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config={theme:{extend:{colors:{primary:'#4f46e5',secondary:'#6366f1'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+    <style>
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+        .form-step {
+            display: none;
+        }
+        .form-step.active {
+            display: block;
+        }
+        .custom-file-upload {
+            position: relative;
+            overflow: hidden;
+        }
+        .custom-file-upload input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        .progress-bar {
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <header class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center">
+                <a href="https://readdy.ai/home/a4cb12ef-b4e2-415e-889e-29c37723d4f1/e9663dc3-c840-4604-bd24-9b6f3bafed00" data-readdy="true" class="flex items-center text-gray-600 hover:text-primary transition-colors">
+                    <div class="w-8 h-8 flex items-center justify-center mr-1">
+                        <i class="ri-arrow-left-line text-lg"></i>
+                    </div>
+                    <span>Back to Contractors</span>
+                </a>
+            </div>
+            <div class="font-['Pacifico'] text-xl text-primary">logo</div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 max-w-4xl">
+        <div class="mb-8">
+            <h1 class="text-2xl font-semibold text-gray-800 mb-2">Add New Contractor</h1>
+            <p class="text-gray-600">Complete the form below to add a new contractor to your system.</p>
+        </div>
+
+        <!-- Progress Indicator -->
+        <div class="mb-10">
+            <div class="flex justify-between items-center relative">
+                <div class="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-0.5 bg-gray-200 z-0"></div>
+                
+                <div class="step-indicator relative z-10 flex flex-col items-center" data-step="1">
+                    <div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-medium">1</div>
+                    <div class="text-xs mt-2 font-medium text-primary">Basic Info</div>
+                </div>
+                
+                <div class="step-indicator relative z-10 flex flex-col items-center" data-step="2">
+                    <div class="w-10 h-10 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center font-medium">2</div>
+                    <div class="text-xs mt-2 font-medium text-gray-500">Business Details</div>
+                </div>
+                
+                <div class="step-indicator relative z-10 flex flex-col items-center" data-step="3">
+                    <div class="w-10 h-10 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center font-medium">3</div>
+                    <div class="text-xs mt-2 font-medium text-gray-500">Contract Info</div>
+                </div>
+                
+                <div class="step-indicator relative z-10 flex flex-col items-center" data-step="4">
+                    <div class="w-10 h-10 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center font-medium">4</div>
+                    <div class="text-xs mt-2 font-medium text-gray-500">Documents</div>
+                </div>
+                
+                <div class="step-indicator relative z-10 flex flex-col items-center" data-step="5">
+                    <div class="w-10 h-10 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center font-medium">5</div>
+                    <div class="text-xs mt-2 font-medium text-gray-500">Review</div>
+                </div>
+            </div>
+        </div>
+        <!-- Form Container -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <form id="contractor-form" class="space-y-6">
+                <!-- Step 1: Basic Information -->
+                <div class="form-step active" data-step="1">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-6">Basic Information</h2>
+                    
+                    <div class="grid grid-cols-1 gap-6">
+                        <div>
+                            <label for="company-name" class="block text-sm font-medium text-gray-700 mb-1">Company Name <span class="text-red-500">*</span></label>
+                            <input type="text" id="company-name" name="company-name" required class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition">
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="first-name" class="block text-sm font-medium text-gray-700 mb-1">First Name <span class="text-red-500">*</span></label>
+                                <input type="text" id="first-name" name="first-name" required class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition">
+                            </div>
+                            <div>
+                                <label for="last-name" class="block text-sm font-medium text-gray-700 mb-1">Last Name <span class="text-red-500">*</span></label>
+                                <input type="text" id="last-name" name="last-name" required class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address <span class="text-red-500">*</span></label>
+                            <input type="email" id="email" name="email" required class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition">
+                        </div>
+                        
+                        <div>
+                            <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number <span class="text-red-500">*</span></label>
+                            <input type="tel" id="phone" name="phone" required class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition">
+                        </div>
+                        
+                        <div>
+                            <label for="address" class="block text-sm font-medium text-gray-700 mb-1">Address <span class="text-red-500">*</span></label>
+                            <input type="text" id="address" name="address" required class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition">
+                        </div>
+                        
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            <div>
+                                <label for="city" class="block text-sm font-medium text-gray-700 mb-1">City <span class="text-red-500">*</span></label>
+                                <input type="text" id="city" name="city" required class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition">
+                            </div>
+                            <div>
+                                <label for="state" class="block text-sm font-medium text-gray-700 mb-1">State <span class="text-red-500">*</span></label>
+                                <div class="relative">
+                                    <select id="state" name="state" required class="w-full appearance-none px-4 py-2 pr-8 border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition">
+                                        <option value="">Select State</option>
+                                        <option value="AL">Alabama</option>
+                                        <option value="AK">Alaska</option>
+                                        <option value="AZ">Arizona</option>
+                                        <option value="CA">California</option>
+                                        <option value="CO">Colorado</option>
+                                        <option value="FL">Florida</option>
+                                        <option value="GA">Georgia</option>
+                                        <option value="NY">New York</option>
+                                        <option value="TX">Texas</option>
+                                        <option value="WA">Washington</option>
+                                    </select>
+                                    <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none w-4 h-4 flex items-center justify-center">
+                                        <i class="ri-arrow-down-s-line text-gray-500"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="zip" class="block text-sm font-medium text-gray-700 mb-1">ZIP Code <span class="text-red-500">*</span></label>
+                                <input type="text" id="zip" name="zip" required class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Business Details -->
+                <div class="form-step" data-step="2">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-6">Business Details</h2>
+                    
+                    <div class="grid grid-cols-1 gap-6">
+                        <div>
+                            <label for="business-type" class="block text-sm font-medium text-gray-700 mb-1">Business Type <span class="text-red-500">*</span></label>
+                            <div class="relative">
+                                <select id="business-type" name="business-type" required class="w-full appearance-none px-4 py-2 pr-8 border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition">
+                                    <option value="">Select Business Type</option>
+                                    <option value="sole-proprietorship">Sole Proprietorship</option>
+                                    <option value="partnership">Partnership</option>
+                                    <option value="llc">Limited Liability Company (LLC)</option>
+                                    <option value="corporation">Corporation</option>
+                                    <option value="s-corporation">S Corporation</option>
+                                    <option value="non-profit">Non-Profit Organization</option>
+                                </select>
+                                <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none w-4 h-4 flex items-center justify-center">
+                                    <i class="ri-arrow-down-s-line text-gray-500"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label for="tax-id" class="block text-sm font-medium text-gray-700 mb-1">Tax ID / EIN <span class="text-red-500">*</span></label>
+                            <input type="text" id="tax-id" name="tax-id" required class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition">
+                        </div>
+                        
+                        <div>
+                            <label for="year-established" class="block text-sm font-medium text-gray-700 mb-1">Year Established</label>
+                            <input type="number" id="year-established" name="year-established" min="1900" max="2025" class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition">
+                        </div>
+                        
+                        <div>
+                            <label for="website" class="block text-sm font-medium text-gray-700 mb-1">Website</label>
+                            <input type="url" id="website" name="website" placeholder="https://" class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition">
+                        </div>
+                        
+                        <div>
+                            <label for="business-description" class="block text-sm font-medium text-gray-700 mb-1">Business Description</label>
+                            <textarea id="business-description" name="business-description" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Contract Information -->
+                <div class="form-step" data-step="3">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-6">Contract Information</h2>
+                    
+                    <div class="grid grid-cols-1 gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="contract-start" class="block text-sm font-medium text-gray-700 mb-1">Contract Start Date <span class="text-red-500">*</span></label>
+                                <input type="date" id="contract-start" name="contract-start" required class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition">
+                            </div>
+                            <div>
+                                <label for="contract-end" class="block text-sm font-medium text-gray-700 mb-1">Contract End Date</label>
+                                <input type="date" id="contract-end" name="contract-end" class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label for="payment-terms" class="block text-sm font-medium text-gray-700 mb-1">Payment Terms <span class="text-red-500">*</span></label>
+                            <div class="relative">
+                                <select id="payment-terms" name="payment-terms" required class="w-full appearance-none px-4 py-2 pr-8 border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition">
+                                    <option value="">Select Payment Terms</option>
+                                    <option value="net-15">Net 15</option>
+                                    <option value="net-30">Net 30</option>
+                                    <option value="net-45">Net 45</option>
+                                    <option value="net-60">Net 60</option>
+                                    <option value="immediate">Due on Receipt</option>
+                                    <option value="custom">Custom</option>
+                                </select>
+                                <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none w-4 h-4 flex items-center justify-center">
+                                    <i class="ri-arrow-down-s-line text-gray-500"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="custom-payment-terms" class="hidden">
+                            <label for="custom-terms" class="block text-sm font-medium text-gray-700 mb-1">Custom Payment Terms</label>
+                            <textarea id="custom-terms" name="custom-terms" rows="2" class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition"></textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Service Areas <span class="text-red-500">*</span></label>
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                <div class="flex items-center">
+                                    <div class="w-5 h-5 flex items-center justify-center mr-2 relative">
+                                        <input type="checkbox" id="area-northeast" name="service-areas[]" value="northeast" class="sr-only peer">
+                                        <div class="w-5 h-5 border border-gray-300 rounded peer-checked:bg-primary peer-checked:border-primary transition-colors"></div>
+                                        <i class="ri-check-line absolute text-white text-sm opacity-0 peer-checked:opacity-100 transition-opacity"></i>
+                                    </div>
+                                    <label for="area-northeast" class="text-sm text-gray-700 cursor-pointer">Northeast</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-5 h-5 flex items-center justify-center mr-2 relative">
+                                        <input type="checkbox" id="area-southeast" name="service-areas[]" value="southeast" class="sr-only peer">
+                                        <div class="w-5 h-5 border border-gray-300 rounded peer-checked:bg-primary peer-checked:border-primary transition-colors"></div>
+                                        <i class="ri-check-line absolute text-white text-sm opacity-0 peer-checked:opacity-100 transition-opacity"></i>
+                                    </div>
+                                    <label for="area-southeast" class="text-sm text-gray-700 cursor-pointer">Southeast</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-5 h-5 flex items-center justify-center mr-2 relative">
+                                        <input type="checkbox" id="area-midwest" name="service-areas[]" value="midwest" class="sr-only peer">
+                                        <div class="w-5 h-5 border border-gray-300 rounded peer-checked:bg-primary peer-checked:border-primary transition-colors"></div>
+                                        <i class="ri-check-line absolute text-white text-sm opacity-0 peer-checked:opacity-100 transition-opacity"></i>
+                                    </div>
+                                    <label for="area-midwest" class="text-sm text-gray-700 cursor-pointer">Midwest</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-5 h-5 flex items-center justify-center mr-2 relative">
+                                        <input type="checkbox" id="area-southwest" name="service-areas[]" value="southwest" class="sr-only peer">
+                                        <div class="w-5 h-5 border border-gray-300 rounded peer-checked:bg-primary peer-checked:border-primary transition-colors"></div>
+                                        <i class="ri-check-line absolute text-white text-sm opacity-0 peer-checked:opacity-100 transition-opacity"></i>
+                                    </div>
+                                    <label for="area-southwest" class="text-sm text-gray-700 cursor-pointer">Southwest</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-5 h-5 flex items-center justify-center mr-2 relative">
+                                        <input type="checkbox" id="area-west" name="service-areas[]" value="west" class="sr-only peer">
+                                        <div class="w-5 h-5 border border-gray-300 rounded peer-checked:bg-primary peer-checked:border-primary transition-colors"></div>
+                                        <i class="ri-check-line absolute text-white text-sm opacity-0 peer-checked:opacity-100 transition-opacity"></i>
+                                    </div>
+                                    <label for="area-west" class="text-sm text-gray-700 cursor-pointer">West</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-5 h-5 flex items-center justify-center mr-2 relative">
+                                        <input type="checkbox" id="area-national" name="service-areas[]" value="national" class="sr-only peer">
+                                        <div class="w-5 h-5 border border-gray-300 rounded peer-checked:bg-primary peer-checked:border-primary transition-colors"></div>
+                                        <i class="ri-check-line absolute text-white text-sm opacity-0 peer-checked:opacity-100 transition-opacity"></i>
+                                    </div>
+                                    <label for="area-national" class="text-sm text-gray-700 cursor-pointer">National</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="hourly-rate" class="block text-sm font-medium text-gray-700 mb-1">Hourly Rate ($)</label>
+                                <input type="number" id="hourly-rate" name="hourly-rate" min="0" step="0.01" class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition">
+                            </div>
+                            <div>
+                                <label for="retainer-fee" class="block text-sm font-medium text-gray-700 mb-1">Monthly Retainer Fee ($)</label>
+                                <input type="number" id="retainer-fee" name="retainer-fee" min="0" step="0.01" class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Document Upload -->
+                <div class="form-step" data-step="4">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-6">Document Upload</h2>
+                    
+                    <div class="grid grid-cols-1 gap-6">
+                        <div class="bg-gray-50 p-5 rounded-lg border border-dashed border-gray-300">
+                            <div class="mb-4">
+                                <h3 class="text-base font-medium text-gray-800 mb-1">Liability Insurance <span class="text-red-500">*</span></h3>
+                                <p class="text-sm text-gray-600 mb-3">Upload proof of liability insurance (PDF, JPG, PNG, max 10MB)</p>
+                                
+                                <div class="custom-file-upload flex items-center justify-center w-full h-32 bg-white border border-gray-300 rounded cursor-pointer hover:bg-gray-50 transition-colors relative">
+                                    <input type="file" id="insurance-doc" name="insurance-doc" accept=".pdf,.jpg,.jpeg,.png" required class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                                    <div class="text-center" id="insurance-upload-text">
+                                        <div class="w-10 h-10 mx-auto mb-2 flex items-center justify-center rounded-full bg-gray-100">
+                                            <i class="ri-upload-2-line text-gray-500 text-xl"></i>
+                                        </div>
+                                        <span class="text-sm text-gray-600">Click to upload or drag and drop</span>
+                                    </div>
+                                    <div class="hidden w-full" id="insurance-upload-preview">
+                                        <div class="flex items-center p-3">
+                                            <div class="w-8 h-8 flex items-center justify-center mr-3">
+                                                <i class="ri-file-text-line text-primary text-xl"></i>
+                                            </div>
+                                            <div class="flex-1 min-w-0">
+                                                <p class="text-sm font-medium text-gray-900 truncate" id="insurance-filename"></p>
+                                                <div class="w-full h-1.5 bg-gray-200 rounded-full mt-1.5">
+                                                    <div class="bg-primary h-1.5 rounded-full progress-bar" id="insurance-progress" style="width: 0%"></div>
+                                                </div>
+                                            </div>
+                                            <button type="button" class="ml-2 text-gray-400 hover:text-gray-500" id="insurance-remove">
+                                                <div class="w-6 h-6 flex items-center justify-center">
+                                                    <i class="ri-close-line"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-base font-medium text-gray-800 mb-1">Business License <span class="text-red-500">*</span></h3>
+                                <p class="text-sm text-gray-600 mb-3">Upload business license or certification (PDF, JPG, PNG, max 10MB)</p>
+                                
+                                <div class="custom-file-upload flex items-center justify-center w-full h-32 bg-white border border-gray-300 rounded cursor-pointer hover:bg-gray-50 transition-colors relative">
+                                    <input type="file" id="license-doc" name="license-doc" accept=".pdf,.jpg,.jpeg,.png" required class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                                    <div class="text-center" id="license-upload-text">
+                                        <div class="w-10 h-10 mx-auto mb-2 flex items-center justify-center rounded-full bg-gray-100">
+                                            <i class="ri-upload-2-line text-gray-500 text-xl"></i>
+                                        </div>
+                                        <span class="text-sm text-gray-600">Click to upload or drag and drop</span>
+                                    </div>
+                                    <div class="hidden w-full" id="license-upload-preview">
+                                        <div class="flex items-center p-3">
+                                            <div class="w-8 h-8 flex items-center justify-center mr-3">
+                                                <i class="ri-file-text-line text-primary text-xl"></i>
+                                            </div>
+                                            <div class="flex-1 min-w-0">
+                                                <p class="text-sm font-medium text-gray-900 truncate" id="license-filename"></p>
+                                                <div class="w-full h-1.5 bg-gray-200 rounded-full mt-1.5">
+                                                    <div class="bg-primary h-1.5 rounded-full progress-bar" id="license-progress" style="width: 0%"></div>
+                                                </div>
+                                            </div>
+                                            <button type="button" class="ml-2 text-gray-400 hover:text-gray-500" id="license-remove">
+                                                <div class="w-6 h-6 flex items-center justify-center">
+                                                    <i class="ri-close-line"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-base font-medium text-gray-800 mb-1">Additional Documents</h3>
+                            <p class="text-sm text-gray-600 mb-3">Upload any other relevant documents (PDF, DOC, DOCX, max 10MB each)</p>
+                            
+                            <div class="custom-file-upload flex items-center justify-center w-full h-32 bg-white border border-gray-300 rounded cursor-pointer hover:bg-gray-50 transition-colors relative">
+                                <input type="file" id="additional-docs" name="additional-docs" accept=".pdf,.doc,.docx" multiple class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                                <div class="text-center" id="additional-upload-text">
+                                    <div class="w-10 h-10 mx-auto mb-2 flex items-center justify-center rounded-full bg-gray-100">
+                                        <i class="ri-upload-2-line text-gray-500 text-xl"></i>
+                                    </div>
+                                    <span class="text-sm text-gray-600">Click to upload or drag and drop</span>
+                                    <p class="text-xs text-gray-500 mt-1">You can upload multiple files</p>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-3 space-y-2" id="additional-files-list"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 5: Review & Submit -->
+                <div class="form-step" data-step="5">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-6">Review & Submit</h2>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <h3 class="text-base font-medium text-gray-800">Basic Information</h3>
+                                <button type="button" class="text-primary hover:text-primary-dark text-sm font-medium" data-edit-step="1">
+                                    <div class="flex items-center">
+                                        <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                            <i class="ri-edit-line"></i>
+                                        </div>
+                                        Edit
+                                    </div>
+                                </button>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2">
+                                <div>
+                                    <p class="text-sm text-gray-500">Company Name</p>
+                                    <p class="text-sm font-medium text-gray-800" id="review-company-name">Acme Construction Services</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Contact Person</p>
+                                    <p class="text-sm font-medium text-gray-800" id="review-contact-name">Michael Johnson</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Email</p>
+                                    <p class="text-sm font-medium text-gray-800" id="review-email">michael@acmeconstruction.com</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Phone</p>
+                                    <p class="text-sm font-medium text-gray-800" id="review-phone">(555) 123-4567</p>
+                                </div>
+                                <div class="md:col-span-2">
+                                    <p class="text-sm text-gray-500">Address</p>
+                                    <p class="text-sm font-medium text-gray-800" id="review-address">123 Construction Ave, Portland, OR 97201</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <h3 class="text-base font-medium text-gray-800">Business Details</h3>
+                                <button type="button" class="text-primary hover:text-primary-dark text-sm font-medium" data-edit-step="2">
+                                    <div class="flex items-center">
+                                        <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                            <i class="ri-edit-line"></i>
+                                        </div>
+                                        Edit
+                                    </div>
+                                </button>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2">
+                                <div>
+                                    <p class="text-sm text-gray-500">Business Type</p>
+                                    <p class="text-sm font-medium text-gray-800" id="review-business-type">Limited Liability Company (LLC)</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Tax ID / EIN</p>
+                                    <p class="text-sm font-medium text-gray-800" id="review-tax-id">XX-XXXXXXX</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Year Established</p>
+                                    <p class="text-sm font-medium text-gray-800" id="review-year">2010</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Website</p>
+                                    <p class="text-sm font-medium text-gray-800" id="review-website">www.acmeconstruction.com</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <h3 class="text-base font-medium text-gray-800">Contract Information</h3>
+                                <button type="button" class="text-primary hover:text-primary-dark text-sm font-medium" data-edit-step="3">
+                                    <div class="flex items-center">
+                                        <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                            <i class="ri-edit-line"></i>
+                                        </div>
+                                        Edit
+                                    </div>
+                                </button>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2">
+                                <div>
+                                    <p class="text-sm text-gray-500">Contract Period</p>
+                                    <p class="text-sm font-medium text-gray-800" id="review-contract-period">May 30, 2025 - May 29, 2026</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Payment Terms</p>
+                                    <p class="text-sm font-medium text-gray-800" id="review-payment-terms">Net 30</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Service Areas</p>
+                                    <p class="text-sm font-medium text-gray-800" id="review-service-areas">Northeast, Southeast, Midwest</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Rates</p>
+                                    <p class="text-sm font-medium text-gray-800" id="review-rates">$85.00/hr, $2,500.00 monthly retainer</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <h3 class="text-base font-medium text-gray-800">Documents</h3>
+                                <button type="button" class="text-primary hover:text-primary-dark text-sm font-medium" data-edit-step="4">
+                                    <div class="flex items-center">
+                                        <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                            <i class="ri-edit-line"></i>
+                                        </div>
+                                        Edit
+                                    </div>
+                                </button>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="flex items-center">
+                                    <div class="w-6 h-6 flex items-center justify-center mr-2">
+                                        <i class="ri-file-text-line text-primary"></i>
+                                    </div>
+                                    <span class="text-sm font-medium text-gray-800" id="review-insurance-doc">liability_insurance.pdf</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-6 h-6 flex items-center justify-center mr-2">
+                                        <i class="ri-file-text-line text-primary"></i>
+                                    </div>
+                                    <span class="text-sm font-medium text-gray-800" id="review-license-doc">business_license.pdf</span>
+                                </div>
+                                <div id="review-additional-docs"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="pt-4">
+                            <div class="flex items-start mb-6">
+                                <div class="w-5 h-5 flex items-center justify-center mr-2 relative mt-0.5">
+                                    <input type="checkbox" id="terms-agreement" name="terms-agreement" required class="sr-only peer">
+                                    <div class="w-5 h-5 border border-gray-300 rounded peer-checked:bg-primary peer-checked:border-primary transition-colors"></div>
+                                    <i class="ri-check-line absolute text-white text-sm opacity-0 peer-checked:opacity-100 transition-opacity"></i>
+                                </div>
+                                <label for="terms-agreement" class="text-sm text-gray-700">
+                                    I confirm that all information provided is accurate and complete. I agree to the <a href="#" class="text-primary hover:underline">Terms and Conditions</a> and <a href="#" class="text-primary hover:underline">Privacy Policy</a>.
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Form Navigation Buttons -->
+        <div class="flex justify-between items-center">
+            <button type="button" id="prev-btn" class="hidden px-6 py-2.5 border border-gray-300 rounded-button text-gray-700 font-medium hover:bg-gray-50 transition-colors whitespace-nowrap">
+                <div class="flex items-center">
+                    <div class="w-4 h-4 flex items-center justify-center mr-1">
+                        <i class="ri-arrow-left-line"></i>
+                    </div>
+                    Previous
+                </div>
+            </button>
+            
+            <div class="ml-auto flex space-x-3">
+                <button type="button" id="save-draft-btn" class="px-6 py-2.5 border border-gray-300 rounded-button text-gray-700 font-medium hover:bg-gray-50 transition-colors whitespace-nowrap">Save as Draft</button>
+                
+                <button type="button" id="next-btn" class="px-6 py-2.5 bg-primary border border-primary rounded-button text-white font-medium hover:bg-primary/90 transition-colors whitespace-nowrap">
+                    <div class="flex items-center">
+                        Next
+                        <div class="w-4 h-4 flex items-center justify-center ml-1">
+                            <i class="ri-arrow-right-line"></i>
+                        </div>
+                    </div>
+                </button>
+                
+                <button type="submit" id="submit-btn" class="hidden px-6 py-2.5 bg-primary border border-primary rounded-button text-white font-medium hover:bg-primary/90 transition-colors whitespace-nowrap">
+                    <div class="flex items-center">
+                        Submit
+                        <div class="w-4 h-4 flex items-center justify-center ml-1">
+                            <i class="ri-check-line"></i>
+                        </div>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script id="form-navigation-script">
+        document.addEventListener('DOMContentLoaded', function() {
+            const formSteps = document.querySelectorAll('.form-step');
+            const stepIndicators = document.querySelectorAll('.step-indicator');
+            const nextBtn = document.getElementById('next-btn');
+            const prevBtn = document.getElementById('prev-btn');
+            const submitBtn = document.getElementById('submit-btn');
+            const saveDraftBtn = document.getElementById('save-draft-btn');
+            
+            let currentStep = 1;
+            
+            // Initialize form
+            updateFormState();
+            
+            // Next button click handler
+            nextBtn.addEventListener('click', function() {
+                if (validateCurrentStep()) {
+                    currentStep++;
+                    updateFormState();
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            // Previous button click handler
+            prevBtn.addEventListener('click', function() {
+                currentStep--;
+                updateFormState();
+                window.scrollTo(0, 0);
+            });
+            
+            // Edit buttons in review step
+            const editButtons = document.querySelectorAll('[data-edit-step]');
+            editButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    currentStep = parseInt(this.getAttribute('data-edit-step'));
+                    updateFormState();
+                    window.scrollTo(0, 0);
+                });
+            });
+            
+            // Save draft button
+            saveDraftBtn.addEventListener('click', function() {
+                // Simulate saving draft
+                const saveBtn = this;
+                saveBtn.disabled = true;
+                saveBtn.innerHTML = '<div class="flex items-center"><div class="w-4 h-4 flex items-center justify-center mr-1"><i class="ri-loader-4-line animate-spin"></i></div>Saving...</div>';
+                
+                setTimeout(() => {
+                    saveBtn.innerHTML = '<div class="flex items-center"><div class="w-4 h-4 flex items-center justify-center mr-1"><i class="ri-check-line"></i></div>Saved</div>';
+                    
+                    setTimeout(() => {
+                        saveBtn.disabled = false;
+                        saveBtn.innerHTML = 'Save as Draft';
+                    }, 1500);
+                }, 1500);
+            });
+            
+            // Submit form
+            submitBtn.addEventListener('click', function() {
+                if (validateCurrentStep()) {
+                    const form = document.getElementById('contractor-form');
+                    
+                    // Simulate form submission
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<div class="flex items-center">Submitting<div class="w-4 h-4 flex items-center justify-center ml-1"><i class="ri-loader-4-line animate-spin"></i></div></div>';
+                    
+                    setTimeout(() => {
+                        // Redirect to original page after successful submission
+                        window.location.href = 'https://readdy.ai/home/a4cb12ef-b4e2-415e-889e-29c37723d4f1/e9663dc3-c840-4604-bd24-9b6f3bafed00';
+                    }, 2000);
+                }
+            });
+            
+            // Update form state based on current step
+            function updateFormState() {
+                // Update form steps visibility
+                formSteps.forEach(step => {
+                    const stepNumber = parseInt(step.getAttribute('data-step'));
+                    step.classList.toggle('active', stepNumber === currentStep);
+                });
+                
+                // Update step indicators
+                stepIndicators.forEach(indicator => {
+                    const stepNumber = parseInt(indicator.getAttribute('data-step'));
+                    const circle = indicator.querySelector('div:first-child');
+                    const label = indicator.querySelector('div:last-child');
+                    
+                    if (stepNumber < currentStep) {
+                        // Completed step
+                        circle.className = 'w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-medium';
+                        circle.innerHTML = '<i class="ri-check-line"></i>';
+                        label.className = 'text-xs mt-2 font-medium text-primary';
+                    } else if (stepNumber === currentStep) {
+                        // Current step
+                        circle.className = 'w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-medium';
+                        circle.textContent = stepNumber;
+                        label.className = 'text-xs mt-2 font-medium text-primary';
+                    } else {
+                        // Future step
+                        circle.className = 'w-10 h-10 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center font-medium';
+                        circle.textContent = stepNumber;
+                        label.className = 'text-xs mt-2 font-medium text-gray-500';
+                    }
+                });
+                
+                // Update navigation buttons
+                prevBtn.classList.toggle('hidden', currentStep === 1);
+                nextBtn.classList.toggle('hidden', currentStep === 5);
+                submitBtn.classList.toggle('hidden', currentStep !== 5);
+                
+                // If on review step, populate review data
+                if (currentStep === 5) {
+                    populateReviewData();
+                }
+            }
+            
+            // Validate current step
+            function validateCurrentStep() {
+                const currentFormStep = document.querySelector(`.form-step[data-step="${currentStep}"]`);
+                const requiredFields = currentFormStep.querySelectorAll('[required]');
+                let isValid = true;
+                
+                requiredFields.forEach(field => {
+                    if (!field.value) {
+                        isValid = false;
+                        field.classList.add('border-red-500');
+                        
+                        // Add error message if not exists
+                        const errorId = `${field.id}-error`;
+                        if (!document.getElementById(errorId)) {
+                            const errorMsg = document.createElement('p');
+                            errorMsg.id = errorId;
+                            errorMsg.className = 'text-red-500 text-xs mt-1';
+                            errorMsg.textContent = 'This field is required';
+                            field.parentNode.appendChild(errorMsg);
+                        }
+                    } else {
+                        field.classList.remove('border-red-500');
+                        const errorMsg = document.getElementById(`${field.id}-error`);
+                        if (errorMsg) errorMsg.remove();
+                    }
+                });
+                
+                return isValid;
+            }
+            
+            // Populate review data
+            function populateReviewData() {
+                // Basic Information
+                document.getElementById('review-company-name').textContent = document.getElementById('company-name').value || 'Acme Construction Services';
+                document.getElementById('review-contact-name').textContent = 
+                    (document.getElementById('first-name').value || 'Michael') + ' ' + 
+                    (document.getElementById('last-name').value || 'Johnson');
+                document.getElementById('review-email').textContent = document.getElementById('email').value || 'michael@acmeconstruction.com';
+                document.getElementById('review-phone').textContent = document.getElementById('phone').value || '(555) 123-4567';
+                
+                const address = [
+                    document.getElementById('address').value || '123 Construction Ave',
+                    document.getElementById('city').value || 'Portland',
+                    document.getElementById('state').value || 'OR',
+                    document.getElementById('zip').value || '97201'
+                ].filter(Boolean).join(', ');
+                document.getElementById('review-address').textContent = address;
+                
+                // Business Details
+                const businessTypeSelect = document.getElementById('business-type');
+                const businessTypeText = businessTypeSelect.value ? 
+                    businessTypeSelect.options[businessTypeSelect.selectedIndex].text : 
+                    'Limited Liability Company (LLC)';
+                document.getElementById('review-business-type').textContent = businessTypeText;
+                
+                document.getElementById('review-tax-id').textContent = document.getElementById('tax-id').value || 'XX-XXXXXXX';
+                document.getElementById('review-year').textContent = document.getElementById('year-established').value || '2010';
+                document.getElementById('review-website').textContent = document.getElementById('website').value || 'www.acmeconstruction.com';
+                
+                // Contract Information
+                const startDate = document.getElementById('contract-start').value ? 
+                    new Date(document.getElementById('contract-start').value).toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'}) : 
+                    'May 30, 2025';
+                
+                const endDate = document.getElementById('contract-end').value ? 
+                    new Date(document.getElementById('contract-end').value).toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'}) : 
+                    'May 29, 2026';
+                
+                document.getElementById('review-contract-period').textContent = `${startDate} - ${endDate}`;
+                
+                const paymentTermsSelect = document.getElementById('payment-terms');
+                const paymentTermsText = paymentTermsSelect.value ? 
+                    paymentTermsSelect.options[paymentTermsSelect.selectedIndex].text : 
+                    'Net 30';
+                document.getElementById('review-payment-terms').textContent = paymentTermsText;
+                
+                // Service Areas
+                const selectedAreas = [];
+                document.querySelectorAll('input[name="service-areas[]"]:checked').forEach(checkbox => {
+                    const label = document.querySelector(`label[for="${checkbox.id}"]`);
+                    if (label) selectedAreas.push(label.textContent);
+                });
+                document.getElementById('review-service-areas').textContent = selectedAreas.length > 0 ? 
+                    selectedAreas.join(', ') : 
+                    'Northeast, Southeast, Midwest';
+                
+                // Rates
+                const hourlyRate = document.getElementById('hourly-rate').value || '85.00';
+                const retainerFee = document.getElementById('retainer-fee').value || '2,500.00';
+                document.getElementById('review-rates').textContent = `$${hourlyRate}/hr, $${retainerFee} monthly retainer`;
+                
+                // Documents
+                document.getElementById('review-insurance-doc').textContent = insuranceFileName || 'liability_insurance.pdf';
+                document.getElementById('review-license-doc').textContent = licenseFileName || 'business_license.pdf';
+                
+                // Additional documents
+                const additionalDocsContainer = document.getElementById('review-additional-docs');
+                additionalDocsContainer.innerHTML = '';
+                
+                if (additionalFiles.length > 0) {
+                    additionalFiles.forEach(file => {
+                        const fileElement = document.createElement('div');
+                        fileElement.className = 'flex items-center';
+                        fileElement.innerHTML = `
+                            <div class="w-6 h-6 flex items-center justify-center mr-2">
+                                <i class="ri-file-text-line text-primary"></i>
+                            </div>
+                            <span class="text-sm font-medium text-gray-800">${file.name}</span>
+                        `;
+                        additionalDocsContainer.appendChild(fileElement);
+                    });
+                }
+            }
+        });
+    </script>
+
+    <script id="file-upload-script">
+        document.addEventListener('DOMContentLoaded', function() {
+            // Insurance document upload
+            const insuranceInput = document.getElementById('insurance-doc');
+            const insuranceText = document.getElementById('insurance-upload-text');
+            const insurancePreview = document.getElementById('insurance-upload-preview');
+            const insuranceFilename = document.getElementById('insurance-filename');
+            const insuranceProgress = document.getElementById('insurance-progress');
+            const insuranceRemove = document.getElementById('insurance-remove');
+            
+            let insuranceFileName = '';
+            
+            insuranceInput.addEventListener('change', function(e) {
+                if (this.files.length > 0) {
+                    const file = this.files[0];
+                    insuranceFileName = file.name;
+                    insuranceFilename.textContent = file.name;
+                    
+                    insuranceText.classList.add('hidden');
+                    insurancePreview.classList.remove('hidden');
+                    
+                    // Simulate upload progress
+                    let progress = 0;
+                    const interval = setInterval(() => {
+                        progress += 10;
+                        insuranceProgress.style.width = `${progress}%`;
+                        
+                        if (progress >= 100) {
+                            clearInterval(interval);
+                        }
+                    }, 200);
+                }
+            });
+            
+            insuranceRemove.addEventListener('click', function() {
+                insuranceInput.value = '';
+                insuranceFileName = '';
+                insuranceText.classList.remove('hidden');
+                insurancePreview.classList.add('hidden');
+                insuranceProgress.style.width = '0%';
+            });
+            
+            // License document upload
+            const licenseInput = document.getElementById('license-doc');
+            const licenseText = document.getElementById('license-upload-text');
+            const licensePreview = document.getElementById('license-upload-preview');
+            const licenseFilename = document.getElementById('license-filename');
+            const licenseProgress = document.getElementById('license-progress');
+            const licenseRemove = document.getElementById('license-remove');
+            
+            let licenseFileName = '';
+            
+            licenseInput.addEventListener('change', function(e) {
+                if (this.files.length > 0) {
+                    const file = this.files[0];
+                    licenseFileName = file.name;
+                    licenseFilename.textContent = file.name;
+                    
+                    licenseText.classList.add('hidden');
+                    licensePreview.classList.remove('hidden');
+                    
+                    // Simulate upload progress
+                    let progress = 0;
+                    const interval = setInterval(() => {
+                        progress += 10;
+                        licenseProgress.style.width = `${progress}%`;
+                        
+                        if (progress >= 100) {
+                            clearInterval(interval);
+                        }
+                    }, 200);
+                }
+            });
+            
+            licenseRemove.addEventListener('click', function() {
+                licenseInput.value = '';
+                licenseFileName = '';
+                licenseText.classList.remove('hidden');
+                licensePreview.classList.add('hidden');
+                licenseProgress.style.width = '0%';
+            });
+            
+            // Additional documents upload
+            const additionalInput = document.getElementById('additional-docs');
+            const additionalFilesList = document.getElementById('additional-files-list');
+            let additionalFiles = [];
+            
+            additionalInput.addEventListener('change', function(e) {
+                if (this.files.length > 0) {
+                    Array.from(this.files).forEach(file => {
+                        additionalFiles.push(file);
+                        
+                        // Create file item
+                        const fileItem = document.createElement('div');
+                        fileItem.className = 'flex items-center bg-white p-3 rounded border border-gray-200';
+                        fileItem.innerHTML = `
+                            <div class="w-8 h-8 flex items-center justify-center mr-3">
+                                <i class="ri-file-text-line text-primary text-xl"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-medium text-gray-900 truncate">${file.name}</p>
+                                <div class="w-full h-1.5 bg-gray-200 rounded-full mt-1.5">
+                                    <div class="bg-primary h-1.5 rounded-full progress-bar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <button type="button" class="ml-2 text-gray-400 hover:text-gray-500 remove-file" data-filename="${file.name}">
+                                <div class="w-6 h-6 flex items-center justify-center">
+                                    <i class="ri-close-line"></i>
+                                </div>
+                            </button>
+                        `;
+                        
+                        additionalFilesList.appendChild(fileItem);
+                        
+                        // Simulate upload progress
+                        const progressBar = fileItem.querySelector('.progress-bar');
+                        let progress = 0;
+                        const interval = setInterval(() => {
+                            progress += 10;
+                            progressBar.style.width = `${progress}%`;
+                            
+                            if (progress >= 100) {
+                                clearInterval(interval);
+                            }
+                        }, 200);
+                    });
+                    
+                    // Add event listeners to remove buttons
+                    document.querySelectorAll('.remove-file').forEach(button => {
+                        button.addEventListener('click', function() {
+                            const filename = this.getAttribute('data-filename');
+                            additionalFiles = additionalFiles.filter(file => file.name !== filename);
+                            this.closest('div.flex').remove();
+                        });
+                    });
+                }
+            });
+            
+            // Payment terms custom field toggle
+            const paymentTerms = document.getElementById('payment-terms');
+            const customTermsContainer = document.getElementById('custom-payment-terms');
+            
+            paymentTerms.addEventListener('change', function() {
+                if (this.value === 'custom') {
+                    customTermsContainer.classList.remove('hidden');
+                } else {
+                    customTermsContainer.classList.add('hidden');
+                }
+            });
+            
+            // Make variables available globally
+            window.insuranceFileName = insuranceFileName;
+            window.licenseFileName = licenseFileName;
+            window.additionalFiles = additionalFiles;
+        });
+    </script>
+</body>
+</html>
