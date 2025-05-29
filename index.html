@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ParcelPilot - Smart Contractor-Based Parcel Management</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>tailwind.config={theme:{extend:{colors:{primary:'#4f46e5',secondary:'#10b981'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+body {
+font-family: 'Inter', sans-serif;
+}
+.hero-section {
+background-position: center;
+background-size: cover;
+background-repeat: no-repeat;
+}
+.gradient-overlay {
+background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.9) 50%, rgba(255,255,255,0) 100%);
+}
+</style>
+</head>
+<body class="bg-gray-50">
+<!-- Header -->
+<header class="bg-white shadow-sm sticky top-0 z-50">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center py-4">
+<div class="flex items-center">
+<a href="#" class="text-2xl font-['Pacifico'] text-primary">ParcelPilot</a>
+</div>
+<nav class="hidden md:flex space-x-8">
+<a href="#features" class="text-gray-600 hover:text-primary font-medium">Features</a>
+<a href="#how-it-works" class="text-gray-600 hover:text-primary font-medium">How It Works</a>
+<a href="#pricing" class="text-gray-600 hover:text-primary font-medium">Pricing</a>
+<a href="#testimonials" class="text-gray-600 hover:text-primary font-medium">Testimonials</a>
+</nav>
+<div class="flex items-center space-x-4">
+<a href="login.html" class="text-gray-600 hover:text-primary font-medium whitespace-nowrap">Log in</a>
+<a href="signup.html" data-readdy="true" class="bg-primary text-white px-5 py-2 !rounded-button font-medium hover:bg-primary/90 transition-colors whitespace-nowrap">Sign up</a>
+</div>
+<button class="md:hidden flex items-center justify-center w-10 h-10">
+<i class="ri-menu-line ri-lg"></i>
+</button>
+</div>
+</div>
+</header>
+<!-- Hero Section -->
+<section class="hero-section relative" style="background-image: url('https://readdy.ai/api/search-image?query=modern%20logistics%20management%20platform%20with%20professional%20team%20discussing%20delivery%20routes%2C%20elegant%20office%20setting%20with%20blue%20accent%20lighting%2C%20minimalist%20design%20with%20floating%20UI%20elements%20and%20route%20maps%2C%20premium%20enterprise%20software%20visualization&width=1600&height=800&seq=hero2&orientation=landscape');">
+<div class="absolute inset-0 gradient-overlay"></div>
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+<div class="flex flex-col md:flex-row items-center py-20 md:py-32">
+<div class="w-full md:w-1/2 mb-10 md:mb-0">
+<h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Enterprise-Grade Delivery Management Solution</h1>
+<p class="text-lg text-gray-700 mb-8">Transform your delivery operations with our comprehensive platform. Schedule a consultation to discover how we can customize ParcelPilot for your specific needs.</p>
+<div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+<button onclick="openScheduleModal()" class="bg-primary text-white px-6 py-3 !rounded-button font-medium hover:bg-primary/90 transition-colors text-center whitespace-nowrap">Schedule Consultation</button>
+<button onclick="openDemoModal()" class="border border-gray-300 bg-white text-gray-700 px-6 py-3 !rounded-button font-medium hover:bg-gray-50 transition-colors text-center whitespace-nowrap">Schedule Demo</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Features Section -->
+<section id="features" class="py-20 bg-white">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-16">
+<h2 class="text-3xl font-bold text-gray-900 mb-4">Powerful Features for Delivery Management</h2>
+<p class="text-lg text-gray-600 max-w-3xl mx-auto">Everything you need to manage your delivery operations efficiently and boost your team's performance.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Feature 1 -->
+<div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+<div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+<i class="ri-route-line ri-xl text-primary"></i>
+</div>
+<h3 class="text-xl font-semibold text-gray-900 mb-3">Route Management</h3>
+<p class="text-gray-600">Create, store, and manage delivery routes with detailed parcel information. Optimize routes for maximum efficiency.</p>
+</div>
+<!-- Feature 2 -->
+<div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+<div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+<i class="ri-team-line ri-xl text-primary"></i>
+</div>
+<h3 class="text-xl font-semibold text-gray-900 mb-3">Team Management</h3>
+<p class="text-gray-600">Add drivers, assign routes, and track performance all in one place. Manage your entire delivery team efficiently.</p>
+</div>
+<!-- Feature 3 -->
+<div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+<div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+<i class="ri-money-dollar-circle-line ri-xl text-primary"></i>
+</div>
+<h3 class="text-xl font-semibold text-gray-900 mb-3">Custom Commissions</h3>
+<p class="text-gray-600">Set flexible commission structures per delivery, per route, or per employee to incentivize performance.</p>
+</div>
+<!-- Feature 4 -->
+<div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+<div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+<i class="ri-line-chart-line ri-xl text-primary"></i>
+</div>
+<h3 class="text-xl font-semibold text-gray-900 mb-3">Performance Analytics</h3>
+<p class="text-gray-600">Track driver performance, delivery times, and efficiency metrics with detailed analytics dashboards.</p>
+</div>
+<!-- Feature 5 -->
+<div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+<div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+<i class="ri-map-pin-time-line ri-xl text-primary"></i>
+</div>
+<h3 class="text-xl font-semibold text-gray-900 mb-3">Real-time Tracking</h3>
+<p class="text-gray-600">Monitor delivery status in real-time and get instant updates when parcels are delivered or issues arise.</p>
+</div>
+<!-- Feature 6 -->
+<div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+<div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+<i class="ri-file-list-3-line ri-xl text-primary"></i>
+</div>
+<h3 class="text-xl font-semibold text-gray-900 mb-3">Financial Records</h3>
+<p class="text-gray-600">Manage payment history, earnings reports, and financial records all in one secure platform.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- How It Works Section -->
+<section id="how-it-works" class="py-20 bg-gray-50">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-16">
+<h2 class="text-3xl font-bold text-gray-900 mb-4">How ParcelPilot Works</h2>
+<p class="text-lg text-gray-600 max-w-3xl mx-auto">A simple three-step process to get your delivery operations up and running.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Step 1 -->
+<div class="bg-white p-8 rounded-lg shadow-sm border border-gray-100">
+<div class="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center mb-6 font-bold text-lg">1</div>
+<h3 class="text-xl font-semibold text-gray-900 mb-3">Sign Up & Payment</h3>
+<p class="text-gray-600 mb-4">Register your company, choose a plan, and complete payment via e-Transfer to get started.</p>
+<ul class="space-y-2 text-gray-600">
+<li class="flex items-start">
+<div class="w-5 h-5 flex-shrink-0 flex items-center justify-center mt-0.5">
+<i class="ri-check-line ri-sm text-primary"></i>
+</div>
+<span class="ml-2">Quick registration process</span>
+</li>
+<li class="flex items-start">
+<div class="w-5 h-5 flex-shrink-0 flex items-center justify-center mt-0.5">
+<i class="ri-check-line ri-sm text-primary"></i>
+</div>
+<span class="ml-2">Flexible payment options</span>
+</li>
+<li class="flex items-start">
+<div class="w-5 h-5 flex-shrink-0 flex items-center justify-center mt-0.5">
+<i class="ri-check-line ri-sm text-primary"></i>
+</div>
+<span class="ml-2">Immediate setup after approval</span>
+</li>
+</ul>
+</div>
+<!-- Step 2 -->
+<div class="bg-white p-8 rounded-lg shadow-sm border border-gray-100">
+<div class="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center mb-6 font-bold text-lg">2</div>
+<h3 class="text-xl font-semibold text-gray-900 mb-3">Manage Your Team</h3>
+<p class="text-gray-600 mb-4">Add drivers, create routes, and set up custom commission structures for your team.</p>
+<ul class="space-y-2 text-gray-600">
+<li class="flex items-start">
+<div class="w-5 h-5 flex-shrink-0 flex items-center justify-center mt-0.5">
+<i class="ri-check-line ri-sm text-primary"></i>
+</div>
+<span class="ml-2">Add unlimited drivers</span>
+</li>
+<li class="flex items-start">
+<div class="w-5 h-5 flex-shrink-0 flex items-center justify-center mt-0.5">
+<i class="ri-check-line ri-sm text-primary"></i>
+</div>
+<span class="ml-2">Create and assign routes</span>
+</li>
+<li class="flex items-start">
+<div class="w-5 h-5 flex-shrink-0 flex items-center justify-center mt-0.5">
+<i class="ri-check-line ri-sm text-primary"></i>
+</div>
+<span class="ml-2">Set custom commission rates</span>
+</li>
+</ul>
+</div>
+<!-- Step 3 -->
+<div class="bg-white p-8 rounded-lg shadow-sm border border-gray-100">
+<div class="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center mb-6 font-bold text-lg">3</div>
+<h3 class="text-xl font-semibold text-gray-900 mb-3">Track & Optimize</h3>
+<p class="text-gray-600 mb-4">Monitor deliveries in real-time, analyze performance, and optimize your operations.</p>
+<ul class="space-y-2 text-gray-600">
+<li class="flex items-start">
+<div class="w-5 h-5 flex-shrink-0 flex items-center justify-center mt-0.5">
+<i class="ri-check-line ri-sm text-primary"></i>
+</div>
+<span class="ml-2">Real-time delivery tracking</span>
+</li>
+<li class="flex items-start">
+<div class="w-5 h-5 flex-shrink-0 flex items-center justify-center mt-0.5">
+<i class="ri-check-line ri-sm text-primary"></i>
+</div>
+<span class="ml-2">Performance analytics dashboard</span>
+</li>
+<li class="flex items-start">
+<div class="w-5 h-5 flex-shrink-0 flex items-center justify-center mt-0.5">
+<i class="ri-check-line ri-sm text-primary"></i>
+</div>
+<span class="ml-2">Financial reporting and insights</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<!-- Dashboard Preview Section -->
+<section id="demo" class="py-20 bg-white">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-16">
+<h2 class="text-3xl font-bold text-gray-900 mb-4">Powerful Dashboard for Contractors</h2>
+<p class="text-lg text-gray-600 max-w-3xl mx-auto">Take control of your delivery operations with our intuitive and feature-rich dashboard.</p>
+</div>
+<div class="bg-white rounded-xl shadow-lg overflow-hidden">
+<img src="https://readdy.ai/api/search-image?query=modern%20delivery%20management%20dashboard%20interface%20with%20route%20maps%2C%20driver%20performance%20metrics%2C%20parcel%20tracking%20status%2C%20and%20financial%20analytics%2C%20professional%20UI%20design%20with%20blue%20accent%20colors%2C%20clean%20layout%20with%20data%20visualization%20charts%20and%20tables%2C%20high-tech%20logistics%20management%20software%20interface&width=1200&height=700&seq=dashboard1&orientation=landscape" alt="ParcelPilot Dashboard" class="w-full h-auto object-cover">
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
+<div class="flex flex-col items-center text-center">
+<div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+<i class="ri-dashboard-line ri-xl text-primary"></i>
+</div>
+<h3 class="text-xl font-semibold text-gray-900 mb-2">Intuitive Interface</h3>
+<p class="text-gray-600">User-friendly dashboard designed for efficiency and ease of use.</p>
+</div>
+<div class="flex flex-col items-center text-center">
+<div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+<i class="ri-bar-chart-grouped-line ri-xl text-primary"></i>
+</div>
+<h3 class="text-xl font-semibold text-gray-900 mb-2">Detailed Analytics</h3>
+<p class="text-gray-600">Comprehensive performance metrics and financial reporting.</p>
+</div>
+<div class="flex flex-col items-center text-center">
+<div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+<i class="ri-device-line ri-xl text-primary"></i>
+</div>
+<h3 class="text-xl font-semibold text-gray-900 mb-2">Mobile Responsive</h3>
+<p class="text-gray-600">Access your dashboard from any device, anywhere, anytime.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Pricing Section -->
+<section id="pricing" class="py-20 bg-gray-50">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-16">
+<h2 class="text-3xl font-bold text-gray-900 mb-4">Tailored Solutions for Your Business</h2>
+<p class="text-lg text-gray-600 max-w-3xl mx-auto">We offer customized plans designed to meet your specific delivery operation needs.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Small Business -->
+<div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+<div class="p-6 border-b border-gray-100">
+<h3 class="text-xl font-semibold text-gray-900 mb-4">Small Business</h3>
+<p class="text-gray-600">Perfect for small contractors managing up to 5 drivers.</p>
+</div>
+<div class="p-6">
+<ul class="space-y-3">
+<li class="flex items-start">
+<div class="w-5 h-5 flex-shrink-0 flex items-center justify-center mt-0.5">
+<i class="ri-check-line ri-sm text-primary"></i>
+</div>
+<span class="ml-2 text-gray-600">Up to 5 drivers</span>
+</li>
+<li class="flex items-start">
+<div class="w-5 h-5 flex-shrink-0 flex items-center justify-center mt-0.5">
+<i class="ri-check-line ri-sm text-primary"></i>
+</div>
+<span class="ml-2 text-gray-600">Basic route management</span>
+</li>
+<li class="flex items-start">
+<div class="w-5 h-5 flex-shrink-0 flex items-center justify-center mt-0.5">
+<i class="ri-check-line ri-sm text-primary"></i>
+</div>
+<span class="ml-2 text-gray-600">Standard commission settings</span>
+</li>
+<li class="flex items-start">
+<div class="w-5 h-5 flex-shrink-0 flex items-center justify-center mt-0.5">
+<i class="ri-check-line ri-sm text-primary"></i>
+</div>
+<span class="ml-2 text-gray-600">Basic performance tracking</span>
+</li>
+<li class="flex items-start">
+<div class="w-5 h-5 flex-shrink-0 flex items-center justify-center mt-0.5">
+<i class="ri-check-line ri-sm text-primary"></i>
+</div>
+<span class="ml-2 text-gray-600">Email support</span>
+</li>
+</ul>
+<a href="#" class="block w-full bg-white border border-primary text-primary text-center py-3 mt-6 !rounded-button font-medium hover:bg-primary/5 transition-colors whitespace-nowrap">Schedule Consultation</a>
+</div>
+</div>
+<!-- Growing Business -->
+<div class="bg-white rounded-lg shadow-md border-2 border-primary overflow-hidden relative">
+<div class="absolute top-0 right-0 bg-primary text-white text-xs font-bold px-3 py-1 !rounded-bl-lg">POPULAR</div>
+<div class="p-6 border-b border-gray-100">
+<h3 class="text-xl font-semibold text-gray-900 mb-4">Growing Business</h3>
+<p class="text-gray-600">Ideal for growing contractors with up to 15 drivers.</p>
+</div>
+<div class="p-6">
+<ul class="space-y-3">
+<li class="flex items-start">
+<div class="w-5 h-5 flex-shrink-0 flex items-center justify-center mt-0.5">
+<i class="ri-check-line ri-sm text-primary"></i>
+</div>
+<span class="ml-2 text-gray-600">Up to 15 drivers</span>
+</li>
+<li class="flex items-start">
+<div class="w-5 h-5 flex-shrink-0 flex items-center justify-center mt-0.5">
+<i class="ri-check-line ri-sm text-primary"></i>
+</div>
+<span class="ml-2 text-gray-600">Advanced route management</span>
+</li>
+<li class="flex items-start">
+<div class="w-5 h-5 flex-shrink-0 flex items-center justify-center mt-0.5">
+<i class="ri-check-line ri-sm text-primary"></i>
+</div>
+<span class="ml-2 text-gray-600">Custom commission structures</span>
+</li>
+<li class="flex items-start">
+<div class="w-5 h-5 flex-shrink-0 flex items-center justify-center mt-0.5">
+<i class="ri-check-line ri-sm text-primary"></i>
+</div>
+<span class="ml-2 text-gray-600">Detailed performance analytics</span>
+</li>
+<li class="flex items-start">
+<div class="w-5 h-5 flex-shrink-0 flex items-center justify-center mt-0.5">
+<i class="ri-check-line ri-sm text-primary"></i>
+</div>
+<span class="ml-2 text-gray-600">Priority email & phone support</span>
+</li>
+<li class="flex items-start">
+<div class="w-5 h-5 flex-shrink-0 flex items-center justify-center mt-0.5">
+<i class="ri-check-line ri-sm text-primary"></i>
+</div>
+<span class="ml-2 text-gray-600">Financial reporting tools</span>
+</li>
+</ul>
+<a href="#" class="block w-full bg-primary text-white text-center py-3 mt-6 !rounded-button font-medium hover:bg-primary/90 transition-colors whitespace-nowrap">Get Started</a>
+</div>
+</div>
+<!-- Enterprise -->
+<div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+<div class="p-6 border-b border-gray-100">
+<h3 class="text-xl font-semibold text-gray-900 mb-4">Enterprise</h3>
+<p class="text-gray-600">For large contractors with unlimited drivers and advanced needs.</p>
+</div>
+<div class="p-6">
+<ul class="space-y-3">
+<li class="flex items-start">
+<div class="w-5 h-5 flex-shrink-0 flex items-center justify-center mt-0.5">
+<i class="ri-check-line ri-sm text-primary"></i>
+</div>
+<span class="ml-2 text-gray-600">Unlimited drivers</span>
+</li>
+<li class="flex items-start">
+<div class="w-5 h-5 flex-shrink-0 flex items-center justify-center mt-0.5">
+<i class="ri-check-line ri-sm text-primary"></i>
+</div>
+<span class="ml-2 text-gray-600">Premium route optimization</span>
+</li>
+<li class="flex items-start">
+<div class="w-5 h-5 flex-shrink-0 flex items-center justify-center mt-0.5">
+<i class="ri-check-line ri-sm text-primary"></i>
+</div>
+<span class="ml-2 text-gray-600">Advanced commission management</span>
+</li>
+<li class="flex items-start">
+<div class="w-5 h-5 flex-shrink-0 flex items-center justify-center mt-0.5">
+<i class="ri-check-line ri-sm text-primary"></i>
+</div>
+<span class="ml-2 text-gray-600">Comprehensive analytics suite</span>
+</li>
+<li class="flex items-start">
+<div class="w-5 h-5 flex-shrink-0 flex items-center justify-center mt-0.5">
+<i class="ri-check-line ri-sm text-primary"></i>
+</div>
+<span class="ml-2 text-gray-600">24/7 dedicated support</span>
+</li>
+<li class="flex items-start">
+<div class="w-5 h-5 flex-shrink-0 flex items-center justify-center mt-0.5">
+<i class="ri-check-line ri-sm text-primary"></i>
+</div>
+<span class="ml-2 text-gray-600">API access & custom integrations</span>
+</li>
+</ul>
+<a href="#" class="block w-full bg-white border border-primary text-primary text-center py-3 mt-6 !rounded-button font-medium hover:bg-primary/5 transition-colors whitespace-nowrap">Schedule Consultation</a>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Testimonials Section -->
+<section id="testimonials" class="py-20 bg-white">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-16">
+<h2 class="text-3xl font-bold text-gray-900 mb-4">What Our Customers Say</h2>
+<p class="text-lg text-gray-600 max-w-3xl mx-auto">Hear from contractors who have transformed their delivery operations with ParcelPilot.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Testimonial 1 -->
+<div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+<div class="flex items-center mb-4">
+<div class="text-primary">
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+</div>
+</div>
+<p class="text-gray-600 mb-6">"ParcelPilot has completely transformed how we manage our delivery operations. The custom commission structure has helped us incentivize our drivers and improve overall performance."</p>
+<div class="flex items-center">
+<div class="w-12 h-12 bg-gray-200 rounded-full overflow-hidden mr-4">
+<img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20middle-aged%20caucasian%20man%20with%20short%20brown%20hair%20wearing%20a%20business%20casual%20outfit%2C%20neutral%20background%2C%20high%20quality%20portrait&width=100&height=100&seq=person1&orientation=squarish" alt="Michael Thompson" class="w-full h-full object-cover">
+</div>
+<div>
+<h4 class="font-semibold text-gray-900">Michael Thompson</h4>
+<p class="text-sm text-gray-500">Express Delivery Services</p>
+</div>
+</div>
+</div>
+<!-- Testimonial 2 -->
+<div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+<div class="flex items-center mb-4">
+<div class="text-primary">
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+</div>
+</div>
+<p class="text-gray-600 mb-6">"The real-time tracking and performance analytics have been game-changers for our business. We've increased our delivery efficiency by 35% since implementing ParcelPilot."</p>
+<div class="flex items-center">
+<div class="w-12 h-12 bg-gray-200 rounded-full overflow-hidden mr-4">
+<img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20an%20asian%20woman%20in%20her%2030s%20with%20shoulder-length%20black%20hair%20wearing%20business%20attire%2C%20neutral%20background%2C%20high%20quality%20portrait&width=100&height=100&seq=person2&orientation=squarish" alt="Jennifer Chen" class="w-full h-full object-cover">
+</div>
+<div>
+<h4 class="font-semibold text-gray-900">Jennifer Chen</h4>
+<p class="text-sm text-gray-500">Swift Parcel Solutions</p>
+</div>
+</div>
+</div>
+<!-- Testimonial 3 -->
+<div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+<div class="flex items-center mb-4">
+<div class="text-primary">
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-half-fill"></i>
+</div>
+</div>
+<p class="text-gray-600 mb-6">"As a growing contractor, managing our team was becoming increasingly complex. ParcelPilot simplified everything, from route assignments to financial tracking. Highly recommended!"</p>
+<div class="flex items-center">
+<div class="w-12 h-12 bg-gray-200 rounded-full overflow-hidden mr-4">
+<img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20an%20african%20american%20man%20in%20his%2040s%20with%20short%20hair%20and%20glasses%20wearing%20a%20business%20suit%2C%20neutral%20background%2C%20high%20quality%20portrait&width=100&height=100&seq=person3&orientation=squarish" alt="Marcus Johnson" class="w-full h-full object-cover">
+</div>
+<div>
+<h4 class="font-semibold text-gray-900">Marcus Johnson</h4>
+<p class="text-sm text-gray-500">Urban Delivery Network</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="py-20 bg-primary/5">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+<div class="max-w-4xl mx-auto text-center">
+<h2 class="text-3xl font-bold text-gray-900 mb-6">Ready to Transform Your Delivery Operations?</h2>
+<p class="text-lg text-gray-600 mb-8">Let's discuss how ParcelPilot can streamline your delivery management and boost efficiency.</p>
+<div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+<a href="#" class="bg-primary text-white px-8 py-3 !rounded-button font-medium hover:bg-primary/90 transition-colors whitespace-nowrap">Schedule Consultation</a>
+<a href="#" class="bg-white border border-gray-300 text-gray-700 px-8 py-3 !rounded-button font-medium hover:bg-gray-50 transition-colors whitespace-nowrap">Learn More</a>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-gray-900 text-white py-12">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+<div>
+<a href="#" class="text-2xl font-['Pacifico'] text-white mb-4 inline-block">ParcelPilot</a>
+<p class="text-gray-400 mb-4">Smart parcel management for modern contractors.</p>
+<div class="flex space-x-4">
+<a href="#" class="text-gray-400 hover:text-white transition-colors">
+<div class="w-10 h-10 flex items-center justify-center">
+<i class="ri-facebook-fill ri-lg"></i>
+</div>
+</a>
+<a href="#" class="text-gray-400 hover:text-white transition-colors">
+<div class="w-10 h-10 flex items-center justify-center">
+<i class="ri-twitter-x-fill ri-lg"></i>
+</div>
+</a>
+<a href="#" class="text-gray-400 hover:text-white transition-colors">
+<div class="w-10 h-10 flex items-center justify-center">
+<i class="ri-linkedin-fill ri-lg"></i>
+</div>
+</a>
+<a href="#" class="text-gray-400 hover:text-white transition-colors">
+<div class="w-10 h-10 flex items-center justify-center">
+<i class="ri-instagram-fill ri-lg"></i>
+</div>
+</a>
+</div>
+</div>
+<div>
+<h3 class="text-lg font-semibold mb-4">Product</h3>
+<ul class="space-y-2">
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Features</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Pricing</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Integrations</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Updates</a></li>
+</ul>
+</div>
+<div>
+<h3 class="text-lg font-semibold mb-4">Resources</h3>
+<ul class="space-y-2">
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Documentation</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Tutorials</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Blog</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Support</a></li>
+</ul>
+</div>
+<div>
+<h3 class="text-lg font-semibold mb-4">Company</h3>
+<ul class="space-y-2">
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">About Us</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Careers</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Contact</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a></li>
+</ul>
+</div>
+</div>
+<div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+<p class="text-gray-400 text-sm">&copy; 2025 ParcelPilot. All rights reserved.</p>
+<div class="flex space-x-4 mt-4 md:mt-0">
+<div class="flex items-center text-gray-400">
+<div class="w-6 h-6 flex items-center justify-center mr-2">
+<i class="ri-visa-fill ri-lg"></i>
+</div>
+<span>Visa</span>
+</div>
+<div class="flex items-center text-gray-400">
+<div class="w-6 h-6 flex items-center justify-center mr-2">
+<i class="ri-mastercard-fill ri-lg"></i>
+</div>
+<span>Mastercard</span>
+</div>
+<div class="flex items-center text-gray-400">
+<div class="w-6 h-6 flex items-center justify-center mr-2">
+<i class="ri-paypal-fill ri-lg"></i>
+</div>
+<span>PayPal</span>
+</div>
+</div>
+</div>
+</div>
+</footer>
+<script id="modalHandlers">
+document.addEventListener('DOMContentLoaded', function() {
+    const modalTemplate = `
+        <div class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+            <div class="bg-white rounded-lg max-w-lg w-full p-6 relative">
+                <button class="absolute top-4 right-4 text-gray-500 hover:text-gray-700" onclick="closeModal(this)">
+                    <i class="ri-close-line ri-lg"></i>
+                </button>
+                <div class="modal-content">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">{title}</h3>
+                    <p class="text-gray-600 mb-6">{description}</p>
+                    <form class="space-y-4" onsubmit="handleFormSubmit(event, '{type}')">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                            <input type="text" name="name" required class="w-full px-4 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                            <input type="email" name="email" required class="w-full px-4 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Company Size</label>
+                            <select name="size" required class="w-full px-4 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none">
+                                <option value="">Select company size</option>
+                                <option value="1-5">1-5 drivers</option>
+                                <option value="6-15">6-15 drivers</option>
+                                <option value="16+">16+ drivers</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Preferred Date</label>
+                            <input type="date" name="date" required class="w-full px-4 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none" min="${new Date().toISOString().split('T')[0]}">
+                        </div>
+                        <button type="submit" class="w-full bg-primary text-white py-3 !rounded-button font-medium hover:bg-primary/90 transition-colors">Submit Request</button>
+                    </form>
+                </div>
+                <div class="success-message hidden text-center py-8">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="ri-check-line ri-2x text-green-500"></i>
+                    </div>
+                    <h4 class="text-xl font-semibold text-gray-900 mb-2">Request Submitted!</h4>
+                    <p class="text-gray-600">We'll contact you shortly to confirm your {type}.</p>
+                </div>
+            </div>
+        </div>
+    `;
+    window.openScheduleModal = function() {
+        const modal = document.createElement('div');
+        modal.innerHTML = modalTemplate
+            .replace('{title}', 'Schedule a Consultation')
+            .replace('{description}', 'Let\'s discuss how ParcelPilot can be tailored to your delivery operations.')
+            .replace(/{type}/g, 'consultation');
+        document.body.appendChild(modal.firstElementChild);
+        document.body.classList.add('overflow-hidden');
+    };
+    window.openDemoModal = function() {
+        const modal = document.createElement('div');
+        modal.innerHTML = modalTemplate
+            .replace('{title}', 'Schedule a Demo')
+            .replace('{description}', 'See ParcelPilot in action with a personalized demo of our platform.')
+            .replace(/{type}/g, 'demo');
+        document.body.appendChild(modal.firstElementChild);
+        document.body.classList.add('overflow-hidden');
+    };
+    window.closeModal = function(button) {
+        const modal = button.closest('.fixed');
+        modal.remove();
+        document.body.classList.remove('overflow-hidden');
+    };
+    window.handleFormSubmit = function(event, type) {
+        event.preventDefault();
+        const form = event.target;
+        const modal = form.closest('.fixed');
+        const modalContent = modal.querySelector('.modal-content');
+        const successMessage = modal.querySelector('.success-message');
+        
+        modalContent.classList.add('hidden');
+        successMessage.classList.remove('hidden');
+        
+        setTimeout(() => {
+            modal.remove();
+            document.body.classList.remove('overflow-hidden');
+        }, 3000);
+    };
+});
+</script>
+<script id="navToggle">
+document.addEventListener('DOMContentLoaded', function() {
+const menuButton = document.querySelector('.md\\:hidden');
+const mobileNav = document.createElement('div');
+mobileNav.className = 'fixed inset-0 bg-white z-50 flex flex-col p-4 transform translate-x-full transition-transform duration-300 ease-in-out';
+mobileNav.innerHTML = `
+<div class="flex justify-between items-center border-b border-gray-100 pb-4">
+<a href="#" class="text-2xl font-['Pacifico'] text-primary">ParcelPilot</a>
+<button class="close-menu w-10 h-10 flex items-center justify-center">
+<i class="ri-close-line ri-lg"></i>
+</button>
+</div>
+<nav class="flex flex-col space-y-4 mt-8">
+<a href="#features" class="text-gray-600 hover:text-primary font-medium py-2 border-b border-gray-100">Features</a>
+<a href="#how-it-works" class="text-gray-600 hover:text-primary font-medium py-2 border-b border-gray-100">How It Works</a>
+<a href="#pricing" class="text-gray-600 hover:text-primary font-medium py-2 border-b border-gray-100">Pricing</a>
+<a href="#testimonials" class="text-gray-600 hover:text-primary font-medium py-2 border-b border-gray-100">Testimonials</a>
+</nav>
+<div class="mt-auto pt-4 border-t border-gray-100">
+<a href="https://readdy.ai/home/a4cb12ef-b4e2-415e-889e-29c37723d4f1/fcdea6b1-4724-4eb1-8c03-c4a978ad7f54" data-readdy="true" class="block w-full bg-primary text-white text-center py-3 !rounded-button font-medium hover:bg-primary/90 transition-colors whitespace-nowrap mb-4">Sign up</a>
+<a href="#" class="block w-full bg-white border border-gray-300 text-gray-700 text-center py-3 !rounded-button font-medium hover:bg-gray-50 transition-colors whitespace-nowrap">Log in</a>
+</div>
+`;
+document.body.appendChild(mobileNav);
+const closeButton = mobileNav.querySelector('.close-menu');
+const navLinks = mobileNav.querySelectorAll('nav a');
+menuButton.addEventListener('click', function() {
+mobileNav.classList.remove('translate-x-full');
+document.body.classList.add('overflow-hidden');
+});
+closeButton.addEventListener('click', function() {
+mobileNav.classList.add('translate-x-full');
+document.body.classList.remove('overflow-hidden');
+});
+navLinks.forEach(link => {
+link.addEventListener('click', function() {
+mobileNav.classList.add('translate-x-full');
+document.body.classList.remove('overflow-hidden');
+});
+});
+});
+</script>
+<script id="smoothScroll">
+document.addEventListener('DOMContentLoaded', function() {
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+anchor.addEventListener('click', function (e) {
+e.preventDefault();
+const targetId = this.getAttribute('href');
+if (targetId === '#') return;
+const targetElement = document.querySelector(targetId);
+if (targetElement) {
+window.scrollTo({
+top: targetElement.offsetTop - 80,
+behavior: 'smooth'
+});
+}
+});
+});
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payments - ParcelPilot Admin Dashboard</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>tailwind.config={theme:{extend:{colors:{primary:'#4f46e5',secondary:'#0ea5e9'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+body {
+font-family: 'Inter', sans-serif;
+background-color: #f9fafb;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+-webkit-appearance: none;
+margin: 0;
+}
+.custom-checkbox {
+position: relative;
+display: inline-block;
+width: 18px;
+height: 18px;
+}
+.custom-checkbox input {
+opacity: 0;
+width: 0;
+height: 0;
+}
+.checkmark {
+position: absolute;
+top: 0;
+left: 0;
+height: 18px;
+width: 18px;
+background-color: #fff;
+border: 1.5px solid #d1d5db;
+border-radius: 4px;
+transition: all 0.2s ease;
+}
+.custom-checkbox input:checked ~ .checkmark {
+background-color: #4f46e5;
+border-color: #4f46e5;
+}
+.checkmark:after {
+content: "";
+position: absolute;
+display: none;
+}
+.custom-checkbox input:checked ~ .checkmark:after {
+display: block;
+}
+.custom-checkbox .checkmark:after {
+left: 6px;
+top: 2px;
+width: 5px;
+height: 10px;
+border: solid white;
+border-width: 0 2px 2px 0;
+transform: rotate(45deg);
+}
+.custom-switch {
+position: relative;
+display: inline-block;
+width: 44px;
+height: 24px;
+}
+.custom-switch input {
+opacity: 0;
+width: 0;
+height: 0;
+}
+.switch-slider {
+position: absolute;
+cursor: pointer;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: #e5e7eb;
+transition: .4s;
+border-radius: 34px;
+}
+.switch-slider:before {
+position: absolute;
+content: "";
+height: 18px;
+width: 18px;
+left: 3px;
+bottom: 3px;
+background-color: white;
+transition: .4s;
+border-radius: 50%;
+}
+.custom-switch input:checked + .switch-slider {
+background-color: #4f46e5;
+}
+.custom-switch input:checked + .switch-slider:before {
+transform: translateX(20px);
+}
+.table-scroll::-webkit-scrollbar {
+height: 8px;
+}
+.table-scroll::-webkit-scrollbar-track {
+background: #f1f1f1;
+border-radius: 4px;
+}
+.table-scroll::-webkit-scrollbar-thumb {
+background: #d1d5db;
+border-radius: 4px;
+}
+.table-scroll::-webkit-scrollbar-thumb:hover {
+background: #9ca3af;
+}
+.date-picker-input {
+border: 1px solid #e5e7eb;
+border-radius: 8px;
+padding: 0.5rem 0.75rem;
+font-size: 0.875rem;
+width: 100%;
+outline: none;
+}
+.date-picker-input:focus {
+border-color: #4f46e5;
+box-shadow: 0 0 0 1px #4f46e5;
+}
+.custom-range {
+-webkit-appearance: none;
+width: 100%;
+height: 6px;
+border-radius: 3px;
+background: #e5e7eb;
+outline: none;
+}
+.custom-range::-webkit-slider-thumb {
+-webkit-appearance: none;
+appearance: none;
+width: 18px;
+height: 18px;
+border-radius: 50%;
+background: #4f46e5;
+cursor: pointer;
+}
+.custom-range::-moz-range-thumb {
+width: 18px;
+height: 18px;
+border-radius: 50%;
+background: #4f46e5;
+cursor: pointer;
+border: none;
+}
+.status-badge {
+display: inline-flex;
+align-items: center;
+padding: 0.25rem 0.75rem;
+border-radius: 9999px;
+font-size: 0.75rem;
+font-weight: 500;
+}
+.status-badge.paid {
+background-color: #d1fae5;
+color: #065f46;
+}
+.status-badge.pending {
+background-color: #fef3c7;
+color: #92400e;
+}
+.status-badge.overdue {
+background-color: #fee2e2;
+color: #b91c1c;
+}
+.status-badge.processing {
+background-color: #e0e7ff;
+color: #4338ca;
+}
+</style>
+</head>
+<body>
+<div class="flex h-screen bg-gray-50">
+<!-- Sidebar -->
+<div class="w-64 bg-white shadow-lg flex flex-col">
+<div class="p-4 flex items-center border-b border-gray-100">
+<span class="text-2xl font-['Pacifico'] text-primary">logo</span>
+<span class="ml-2 font-semibold text-gray-800">Admin Panel</span>
+</div>
+<nav class="flex-1 py-4 overflow-y-auto">
+<div class="px-4 mb-4">
+<div class="relative">
+<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none w-10 h-10">
+<i class="ri-search-line text-gray-400"></i>
+</div>
+<input type="text" class="bg-gray-50 border border-gray-200 text-gray-700 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full pl-10 p-2.5" placeholder="Search...">
+</div>
+</div>
+<div class="space-y-1">
+<a href="https://readdy.ai/home/a4cb12ef-b4e2-415e-889e-29c37723d4f1/ee452203-44db-485f-9901-cbcae97badb2" data-readdy="true" class="flex items-center px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-primary">
+<div class="w-6 h-6 flex items-center justify-center mr-3">
+<i class="ri-dashboard-line"></i>
+</div>
+Dashboard
+</a>
+<a href="https://readdy.ai/home/a4cb12ef-b4e2-415e-889e-29c37723d4f1/41ab264b-bb86-481e-83ae-b07cb342ac75" data-readdy="true" class="flex items-center px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-primary">
+<div class="w-6 h-6 flex items-center justify-center mr-3">
+<i class="ri-history-line"></i>
+</div>
+Activity Log
+</a>
+<a href="https://readdy.ai/home/a4cb12ef-b4e2-415e-889e-29c37723d4f1/e9663dc3-c840-4604-bd24-9b6f3bafed00" data-readdy="true" class="flex items-center px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-primary">
+<div class="w-6 h-6 flex items-center justify-center mr-3">
+<i class="ri-user-line"></i>
+</div>
+Contractors
+</a>
+<a href="#" class="flex items-center px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-primary">
+<div class="w-6 h-6 flex items-center justify-center mr-3">
+<i class="ri-truck-line"></i>
+</div>
+Drivers
+</a>
+<a href="https://readdy.ai/home/a4cb12ef-b4e2-415e-889e-29c37723d4f1/41ab264b-bb86-481e-83ae-b07cb342ac75" data-readdy="true" class="flex items-center px-4 py-3 text-sm font-medium text-white bg-primary rounded-r-lg">
+<div class="w-6 h-6 flex items-center justify-center mr-3">
+<i class="ri-money-dollar-circle-line"></i>
+</div>
+Payments
+</a>
+<a href="https://readdy.ai/home/a4cb12ef-b4e2-415e-889e-29c37723d4f1/c4335695-0b34-42be-afb1-dbe9958c0e38" data-readdy="true" class="flex items-center px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-primary">
+<div class="w-6 h-6 flex items-center justify-center mr-3">
+<i class="ri-mail-send-line"></i>
+</div>
+Reminders
+</a>
+<a href="#" class="flex items-center px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-primary">
+<div class="w-6 h-6 flex items-center justify-center mr-3">
+<i class="ri-file-chart-line"></i>
+</div>
+Reports
+</a>
+<a href="#" class="flex items-center px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-primary">
+<div class="w-6 h-6 flex items-center justify-center mr-3">
+<i class="ri-settings-line"></i>
+</div>
+Settings
+</a>
+</div>
+</nav>
+<div class="p-4 border-t border-gray-100">
+<div class="flex items-center">
+<img class="w-10 h-10 rounded-full" src="https://readdy.ai/api/search-image?query=professional%252520business%252520portrait%252520of%252520a%252520male%252520administrator%252520with%252520short%252520hair%25252C%252520business%252520attire%25252C%252520neutral%252520background%25252C%252520high%252520quality%25252C%252520photorealistic&width=200&height=200&seq=admin-avatar-001&orientation=squarish" alt="Admin avatar">
+<div class="ml-3">
+<p class="text-sm font-medium text-gray-800">Michael Anderson</p>
+<p class="text-xs text-gray-500">System Administrator</p>
+</div>
+</div>
+<button class="mt-4 flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 !rounded-button whitespace-nowrap">
+<div class="w-4 h-4 flex items-center justify-center mr-2">
+<i class="ri-logout-box-line"></i>
+</div>
+Sign Out
+</button>
+</div>
+</div>
+<!-- Main Content -->
+<div class="flex-1 flex flex-col overflow-hidden">
+<!-- Top Header -->
+<header class="bg-white shadow-sm z-10">
+<div class="flex justify-between items-center px-6 py-3">
+<div class="flex items-center">
+<a href="https://readdy.ai/home/a4cb12ef-b4e2-415e-889e-29c37723d4f1/41ab264b-bb86-481e-83ae-b07cb342ac75" data-readdy="true" class="flex items-center text-gray-500 hover:text-primary mr-4">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-arrow-left-line"></i>
+</div>
+<span class="ml-1 text-sm">Back</span>
+</a>
+<nav class="flex" aria-label="Breadcrumb">
+<ol class="inline-flex items-center space-x-1 md:space-x-3">
+<li class="inline-flex items-center">
+<a href="https://readdy.ai/home/a4cb12ef-b4e2-415e-889e-29c37723d4f1/ee452203-44db-485f-9901-cbcae97badb2" data-readdy="true" class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-primary">
+Dashboard
+</a>
+</li>
+<li>
+<div class="flex items-center">
+<i class="ri-arrow-right-s-line text-gray-400"></i>
+<span class="ml-1 text-sm font-medium text-gray-800">Payments</span>
+</div>
+</li>
+</ol>
+</nav>
+</div>
+<div class="flex items-center space-x-4">
+<button class="relative p-2 text-gray-600 hover:text-primary focus:outline-none">
+<div class="w-6 h-6 flex items-center justify-center">
+<i class="ri-notification-3-line"></i>
+</div>
+<span class="absolute top-0 right-0 h-5 w-5 flex items-center justify-center text-xs text-white bg-red-500 rounded-full">3</span>
+</button>
+<div class="relative" id="settingsDropdown">
+<button class="p-2 text-gray-600 hover:text-primary focus:outline-none" id="settingsButton">
+<div class="w-6 h-6 flex items-center justify-center">
+<i class="ri-settings-3-line"></i>
+</div>
+</button>
+<div class="hidden absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg py-2 z-50" id="settingsMenu">
+<a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+<i class="ri-user-settings-line mr-3"></i>
+Account Settings
+</a>
+<a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+<i class="ri-notification-line mr-3"></i>
+Notification Preferences
+</a>
+<a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+<i class="ri-palette-line mr-3"></i>
+Display Options
+</a>
+<a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+<i class="ri-shield-keyhole-line mr-3"></i>
+Security Settings
+</a>
+<div class="border-t border-gray-100 my-2"></div>
+<a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+<i class="ri-question-line mr-3"></i>
+Help & Support
+</a>
+</div>
+</div>
+<div class="h-6 border-l border-gray-300"></div>
+<div class="flex items-center">
+<img class="w-8 h-8 rounded-full" src="https://readdy.ai/api/search-image?query=professional%252520business%252520portrait%252520of%252520a%252520male%252520administrator%252520with%252520short%252520hair%25252C%252520business%252520attire%25252C%252520neutral%252520background%25252C%252520high%252520quality%25252C%252520photorealistic&width=200&height=200&seq=admin-avatar-001&orientation=squarish" alt="Admin avatar">
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto p-6 bg-gray-50">
+<!-- Payment Overview Header -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+<div>
+<h1 class="text-2xl font-semibold text-gray-800">Payments</h1>
+<p class="text-sm text-gray-500 mt-1">Last updated: May 27, 2025 at 11:45 AM</p>
+</div>
+<div class="flex items-center space-x-3 mt-4 md:mt-0">
+<div class="relative" id="exportDropdown">
+<button id="exportButton" class="px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 flex items-center !rounded-button whitespace-nowrap">
+<i class="ri-download-2-line mr-2"></i>
+Export
+<i class="ri-arrow-down-s-line ml-2"></i>
+</button>
+<div class="hidden absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg py-2 z-40" id="exportMenu">
+<a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+<i class="ri-file-excel-line mr-3"></i>
+CSV
+</a>
+<a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+<i class="ri-file-pdf-line mr-3"></i>
+PDF
+</a>
+<a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+<i class="ri-printer-line mr-3"></i>
+Print
+</a>
+</div>
+</div>
+<button id="generateReport" class="px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 flex items-center !rounded-button whitespace-nowrap">
+<i class="ri-file-chart-line mr-2"></i>
+Generate Report
+</button>
+<button id="processPayment" class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-indigo-700 flex items-center !rounded-button whitespace-nowrap">
+<i class="ri-money-dollar-circle-line mr-2"></i>
+Process Payment
+</button>
+</div>
+</div>
+<!-- Payment Metrics Dashboard -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+<!-- Total Payments -->
+<div class="bg-white rounded-lg shadow p-6">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-sm font-medium text-gray-500">Total Payments</h3>
+<div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center">
+<i class="ri-money-dollar-circle-line text-primary text-xl"></i>
+</div>
+</div>
+<div class="flex items-end">
+<span class="text-2xl font-bold text-gray-800">$124,580</span>
+<span class="ml-2 text-sm font-medium text-green-600 flex items-center">
+<i class="ri-arrow-up-s-line mr-1"></i>
+8.2%
+</span>
+</div>
+<p class="text-xs text-gray-500 mt-2">Compared to last month</p>
+</div>
+<!-- Pending Payments -->
+<div class="bg-white rounded-lg shadow p-6">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-sm font-medium text-gray-500">Pending Payments</h3>
+<div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center">
+<i class="ri-time-line text-yellow-600 text-xl"></i>
+</div>
+</div>
+<div class="flex items-end">
+<span class="text-2xl font-bold text-gray-800">$28,900</span>
+<span class="ml-2 text-sm font-medium text-red-600 flex items-center">
+<i class="ri-arrow-up-s-line mr-1"></i>
+12.5%
+</span>
+</div>
+<p class="text-xs text-gray-500 mt-2">12 invoices pending</p>
+</div>
+<!-- Overdue Payments -->
+<div class="bg-white rounded-lg shadow p-6">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-sm font-medium text-gray-500">Overdue Payments</h3>
+<div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
+<i class="ri-error-warning-line text-red-600 text-xl"></i>
+</div>
+</div>
+<div class="flex items-end">
+<span class="text-2xl font-bold text-gray-800">$12,450</span>
+<span class="ml-2 text-sm font-medium text-red-600 flex items-center">
+<i class="ri-arrow-up-s-line mr-1"></i>
+5.3%
+</span>
+</div>
+<p class="text-xs text-gray-500 mt-2">5 invoices overdue</p>
+</div>
+<!-- Completed Payments -->
+<div class="bg-white rounded-lg shadow p-6">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-sm font-medium text-gray-500">Completed Payments</h3>
+<div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+<i class="ri-check-line text-green-600 text-xl"></i>
+</div>
+</div>
+<div class="flex items-end">
+<span class="text-2xl font-bold text-gray-800">$83,230</span>
+<span class="ml-2 text-sm font-medium text-green-600 flex items-center">
+<i class="ri-arrow-up-s-line mr-1"></i>
+6.8%
+</span>
+</div>
+<p class="text-xs text-gray-500 mt-2">42 invoices paid this month</p>
+</div>
+</div>
+<!-- Filter Section -->
+<div class="bg-white rounded-lg shadow mb-6">
+<div class="p-5 border-b border-gray-100 flex justify-between items-center">
+<h2 class="text-lg font-semibold text-gray-800">Filters</h2>
+<button id="toggleFilters" class="text-sm text-primary font-medium flex items-center">
+<i class="ri-filter-3-line mr-1"></i>
+<span id="filterToggleText">Hide Filters</span>
+</button>
+</div>
+<div id="filterSection" class="p-5">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+<div>
+<label for="search" class="block text-sm font-medium text-gray-700 mb-1">Search</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<i class="ri-search-line text-gray-400"></i>
+</div>
+<input type="text" id="search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full pl-10 p-2.5" placeholder="Search invoices...">
+</div>
+</div>
+<div>
+<label for="dateFrom" class="block text-sm font-medium text-gray-700 mb-1">Date From</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<i class="ri-calendar-line text-gray-400"></i>
+</div>
+<input type="date" id="dateFrom" class="date-picker-input pl-10" value="2025-05-01">
+</div>
+</div>
+<div>
+<label for="dateTo" class="block text-sm font-medium text-gray-700 mb-1">Date To</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<i class="ri-calendar-line text-gray-400"></i>
+</div>
+<input type="date" id="dateTo" class="date-picker-input pl-10" value="2025-05-27">
+</div>
+</div>
+<div>
+<label for="paymentStatus" class="block text-sm font-medium text-gray-700 mb-1">Payment Status</label>
+<div class="relative">
+<select id="paymentStatus" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 pr-8 appearance-none">
+<option value="">All Statuses</option>
+<option value="paid">Paid</option>
+<option value="pending">Pending</option>
+<option value="overdue">Overdue</option>
+<option value="processing">Processing</option>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+<i class="ri-arrow-down-s-line text-gray-400"></i>
+</div>
+</div>
+</div>
+<div>
+<label for="contractor" class="block text-sm font-medium text-gray-700 mb-1">Contractor</label>
+<div class="relative">
+<select id="contractor" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 pr-8 appearance-none">
+<option value="">All Contractors</option>
+<option value="metro">Metro Courier Services</option>
+<option value="express">Express Delivery Solutions</option>
+<option value="rapid">Rapid Logistics Inc.</option>
+<option value="urban">Urban Delivery Co.</option>
+<option value="swift">Swift Parcel Network</option>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+<i class="ri-arrow-down-s-line text-gray-400"></i>
+</div>
+</div>
+</div>
+<div>
+<label for="paymentMethod" class="block text-sm font-medium text-gray-700 mb-1">Payment Method</label>
+<div class="relative">
+<select id="paymentMethod" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 pr-8 appearance-none">
+<option value="">All Methods</option>
+<option value="bank">Bank Transfer</option>
+<option value="credit">Credit Card</option>
+<option value="paypal">PayPal</option>
+<option value="check">Check</option>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+<i class="ri-arrow-down-s-line text-gray-400"></i>
+</div>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Amount Range</label>
+<div class="flex items-center space-x-2">
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="text-gray-500">$</span>
+</div>
+<input type="number" id="amountMin" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full pl-7 p-2.5" placeholder="Min">
+</div>
+<span class="text-gray-500">-</span>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="text-gray-500">$</span>
+</div>
+<input type="number" id="amountMax" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full pl-7 p-2.5" placeholder="Max">
+</div>
+</div>
+</div>
+<div class="flex items-end">
+<button id="applyFilters" class="w-full px-4 py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:bg-indigo-700 !rounded-button whitespace-nowrap">
+Apply Filters
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Payments Table -->
+<div class="bg-white rounded-lg shadow mb-6">
+<div class="p-5 border-b border-gray-100 flex justify-between items-center">
+<h2 class="text-lg font-semibold text-gray-800">Payment Transactions</h2>
+<div class="flex items-center space-x-2">
+<button id="refreshPayments" class="px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 flex items-center !rounded-button whitespace-nowrap">
+<i class="ri-refresh-line mr-2"></i>
+Refresh
+</button>
+<button id="bulkActions" class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-indigo-700 flex items-center !rounded-button whitespace-nowrap">
+<i class="ri-more-2-fill mr-2"></i>
+Bulk Actions
+</button>
+</div>
+</div>
+<div class="overflow-x-auto table-scroll">
+<table class="min-w-full divide-y divide-gray-200">
+<thead class="bg-gray-50">
+<tr>
+<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+<label class="custom-checkbox">
+<input type="checkbox" id="selectAll">
+<span class="checkmark"></span>
+</label>
+</th>
+<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer">
+<div class="flex items-center">
+Invoice #
+<i class="ri-arrow-down-s-line ml-1"></i>
+</div>
+</th>
+<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer">
+<div class="flex items-center">
+Contractor
+<i class="ri-arrow-down-s-line ml-1"></i>
+</div>
+</th>
+<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer">
+<div class="flex items-center">
+Amount
+<i class="ri-arrow-down-s-line ml-1"></i>
+</div>
+</th>
+<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer">
+<div class="flex items-center">
+Issue Date
+<i class="ri-arrow-down-s-line ml-1"></i>
+</div>
+</th>
+<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer">
+<div class="flex items-center">
+Due Date
+<i class="ri-arrow-down-s-line ml-1"></i>
+</div>
+</th>
+<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+Status
+</th>
+<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+Actions
+</th>
+</tr>
+</thead>
+<tbody class="bg-white divide-y divide-gray-200">
+<tr class="hover:bg-gray-50 cursor-pointer">
+<td class="px-6 py-4 whitespace-nowrap">
+<label class="custom-checkbox">
+<input type="checkbox">
+<span class="checkmark"></span>
+</label>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm font-medium text-gray-900">INV-2025-0512</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<img class="h-8 w-8 rounded-full" src="https://readdy.ai/api/search-image?query=modern%2520delivery%2520company%2520logo%2520with%2520blue%2520and%2520white%2520color%2520scheme%252C%2520minimalist%2520design%252C%2520professional%2520corporate%2520identity&width=200&height=200&seq=metro-logo-001&orientation=squarish" alt="Metro Courier logo">
+<div class="ml-3">
+<div class="text-sm font-medium text-gray-900">Metro Courier Services</div>
+<div class="text-xs text-gray-500">ID: CONT-2025-0023</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm font-medium text-gray-900">$1,950.00</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-gray-900">May 12, 2025</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-gray-900">May 26, 2025</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="status-badge paid">
+<i class="ri-checkbox-circle-line mr-1"></i>
+Paid
+</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+<div class="flex items-center space-x-2">
+<button class="text-gray-500 hover:text-primary">
+<i class="ri-eye-line"></i>
+</button>
+<button class="text-gray-500 hover:text-primary">
+<i class="ri-edit-line"></i>
+</button>
+<button class="text-gray-500 hover:text-primary">
+<i class="ri-download-line"></i>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 cursor-pointer">
+<td class="px-6 py-4 whitespace-nowrap">
+<label class="custom-checkbox">
+<input type="checkbox">
+<span class="checkmark"></span>
+</label>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm font-medium text-gray-900">INV-2025-0509</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<img class="h-8 w-8 rounded-full" src="https://readdy.ai/api/search-image?query=modern%2520delivery%2520company%2520logo%2520with%2520red%2520and%2520white%2520color%2520scheme%252C%2520minimalist%2520design%252C%2520professional%2520corporate%2520identity&width=200&height=200&seq=express-logo-001&orientation=squarish" alt="Express Delivery logo">
+<div class="ml-3">
+<div class="text-sm font-medium text-gray-900">Express Delivery Solutions</div>
+<div class="text-xs text-gray-500">ID: CONT-2025-0018</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm font-medium text-gray-900">$3,780.00</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-gray-900">May 09, 2025</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-gray-900">May 23, 2025</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="status-badge overdue">
+<i class="ri-error-warning-line mr-1"></i>
+Overdue
+</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+<div class="flex items-center space-x-2">
+<button class="text-gray-500 hover:text-primary">
+<i class="ri-eye-line"></i>
+</button>
+<button class="text-gray-500 hover:text-primary">
+<i class="ri-edit-line"></i>
+</button>
+<button class="text-gray-500 hover:text-primary">
+<i class="ri-download-line"></i>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 cursor-pointer">
+<td class="px-6 py-4 whitespace-nowrap">
+<label class="custom-checkbox">
+<input type="checkbox">
+<span class="checkmark"></span>
+</label>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm font-medium text-gray-900">INV-2025-0505</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<img class="h-8 w-8 rounded-full" src="https://readdy.ai/api/search-image?query=modern%2520delivery%2520company%2520logo%2520with%2520green%2520and%2520white%2520color%2520scheme%252C%2520minimalist%2520design%252C%2520professional%2520corporate%2520identity&width=200&height=200&seq=rapid-logo-001&orientation=squarish" alt="Rapid Logistics logo">
+<div class="ml-3">
+<div class="text-sm font-medium text-gray-900">Rapid Logistics Inc.</div>
+<div class="text-xs text-gray-500">ID: CONT-2025-0015</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm font-medium text-gray-900">$2,340.00</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-gray-900">May 05, 2025</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-gray-900">May 19, 2025</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="status-badge processing">
+<i class="ri-loop-left-line mr-1"></i>
+Processing
+</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+<div class="flex items-center space-x-2">
+<button class="text-gray-500 hover:text-primary">
+<i class="ri-eye-line"></i>
+</button>
+<button class="text-gray-500 hover:text-primary">
+<i class="ri-edit-line"></i>
+</button>
+<button class="text-gray-500 hover:text-primary">
+<i class="ri-download-line"></i>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 cursor-pointer">
+<td class="px-6 py-4 whitespace-nowrap">
+<label class="custom-checkbox">
+<input type="checkbox">
+<span class="checkmark"></span>
+</label>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm font-medium text-gray-900">INV-2025-0502</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<img class="h-8 w-8 rounded-full" src="https://readdy.ai/api/search-image?query=modern%2520delivery%2520company%2520logo%2520with%2520purple%2520and%2520white%2520color%2520scheme%252C%2520minimalist%2520design%252C%2520professional%2520corporate%2520identity&width=200&height=200&seq=urban-logo-001&orientation=squarish" alt="Urban Delivery logo">
+<div class="ml-3">
+<div class="text-sm font-medium text-gray-900">Urban Delivery Co.</div>
+<div class="text-xs text-gray-500">ID: CONT-2025-0031</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm font-medium text-gray-900">$4,120.00</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-gray-900">May 02, 2025</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-gray-900">May 16, 2025</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="status-badge paid">
+<i class="ri-checkbox-circle-line mr-1"></i>
+Paid
+</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+<div class="flex items-center space-x-2">
+<button class="text-gray-500 hover:text-primary">
+<i class="ri-eye-line"></i>
+</button>
+<button class="text-gray-500 hover:text-primary">
+<i class="ri-edit-line"></i>
+</button>
+<button class="text-gray-500 hover:text-primary">
+<i class="ri-download-line"></i>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 cursor-pointer">
+<td class="px-6 py-4 whitespace-nowrap">
+<label class="custom-checkbox">
+<input type="checkbox">
+<span class="checkmark"></span>
+</label>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm font-medium text-gray-900">INV-2025-0428</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<img class="h-8 w-8 rounded-full" src="https://readdy.ai/api/search-image?query=modern%2520delivery%2520company%2520logo%2520with%2520green%2520and%2520white%2520color%2520scheme%252C%2520minimalist%2520design%252C%2520professional%2520corporate%2520identity&width=200&height=200&seq=rapid-logo-001&orientation=squarish" alt="Rapid Logistics logo">
+<div class="ml-3">
+<div class="text-sm font-medium text-gray-900">Rapid Logistics Inc.</div>
+<div class="text-xs text-gray-500">ID: CONT-2025-0015</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm font-medium text-gray-900">$1,870.00</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-gray-900">Apr 28, 2025</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-gray-900">May 12, 2025</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="status-badge pending">
+<i class="ri-time-line mr-1"></i>
+Pending
+</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+<div class="flex items-center space-x-2">
+<button class="text-gray-500 hover:text-primary">
+<i class="ri-eye-line"></i>
+</button>
+<button class="text-gray-500 hover:text-primary">
+<i class="ri-edit-line"></i>
+</button>
+<button class="text-gray-500 hover:text-primary">
+<i class="ri-download-line"></i>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 cursor-pointer">
+<td class="px-6 py-4 whitespace-nowrap">
+<label class="custom-checkbox">
+<input type="checkbox">
+<span class="checkmark"></span>
+</label>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm font-medium text-gray-900">INV-2025-0425</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<img class="h-8 w-8 rounded-full" src="https://readdy.ai/api/search-image?query=modern%2520delivery%2520company%2520logo%2520with%2520orange%2520and%2520white%2520color%2520scheme%252C%2520minimalist%2520design%252C%2520professional%2520corporate%2520identity&width=200&height=200&seq=swift-logo-001&orientation=squarish" alt="Swift Parcel logo">
+<div class="ml-3">
+<div class="text-sm font-medium text-gray-900">Swift Parcel Network</div>
+<div class="text-xs text-gray-500">ID: CONT-2025-0027</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm font-medium text-gray-900">$2,800.00</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-gray-900">Apr 25, 2025</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-gray-900">May 09, 2025</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="status-badge overdue">
+<i class="ri-error-warning-line mr-1"></i>
+Overdue
+</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+<div class="flex items-center space-x-2">
+<button class="text-gray-500 hover:text-primary">
+<i class="ri-eye-line"></i>
+</button>
+<button class="text-gray-500 hover:text-primary">
+<i class="ri-edit-line"></i>
+</button>
+<button class="text-gray-500 hover:text-primary">
+<i class="ri-download-line"></i>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 cursor-pointer">
+<td class="px-6 py-4 whitespace-nowrap">
+<label class="custom-checkbox">
+<input type="checkbox">
+<span class="checkmark"></span>
+</label>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm font-medium text-gray-900">INV-2025-0422</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<img class="h-8 w-8 rounded-full" src="https://readdy.ai/api/search-image?query=modern%2520delivery%2520company%2520logo%2520with%2520blue%2520and%2520white%2520color%2520scheme%252C%2520minimalist%2520design%252C%2520professional%2520corporate%2520identity&width=200&height=200&seq=metro-logo-001&orientation=squarish" alt="Metro Courier logo">
+<div class="ml-3">
+<div class="text-sm font-medium text-gray-900">Metro Courier Services</div>
+<div class="text-xs text-gray-500">ID: CONT-2025-0023</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm font-medium text-gray-900">$3,250.00</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-gray-900">Apr 22, 2025</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-gray-900">May 06, 2025</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="status-badge paid">
+<i class="ri-checkbox-circle-line mr-1"></i>
+Paid
+</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+<div class="flex items-center space-x-2">
+<button class="text-gray-500 hover:text-primary">
+<i class="ri-eye-line"></i>
+</button>
+<button class="text-gray-500 hover:text-primary">
+<i class="ri-edit-line"></i>
+</button>
+<button class="text-gray-500 hover:text-primary">
+<i class="ri-download-line"></i>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 cursor-pointer">
+<td class="px-6 py-4 whitespace-nowrap">
+<label class="custom-checkbox">
+<input type="checkbox">
+<span class="checkmark"></span>
+</label>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm font-medium text-gray-900">INV-2025-0418</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<img class="h-8 w-8 rounded-full" src="https://readdy.ai/api/search-image?query=modern%2520delivery%2520company%2520logo%2520with%2520purple%2520and%2520white%2520color%2520scheme%252C%2520minimalist%2520design%252C%2520professional%2520corporate%2520identity&width=200&height=200&seq=urban-logo-001&orientation=squarish" alt="Urban Delivery logo">
+<div class="ml-3">
+<div class="text-sm font-medium text-gray-900">Urban Delivery Co.</div>
+<div class="text-xs text-gray-500">ID: CONT-2025-0031</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm font-medium text-gray-900">$2,650.00</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-gray-900">Apr 18, 2025</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-gray-900">May 02, 2025</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="status-badge paid">
+<i class="ri-checkbox-circle-line mr-1"></i>
+Paid
+</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+<div class="flex items-center space-x-2">
+<button class="text-gray-500 hover:text-primary">
+<i class="ri-eye-line"></i>
+</button>
+<button class="text-gray-500 hover:text-primary">
+<i class="ri-edit-line"></i>
+</button>
+<button class="text-gray-500 hover:text-primary">
+<i class="ri-download-line"></i>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 cursor-pointer">
+<td class="px-6 py-4 whitespace-nowrap">
+<label class="custom-checkbox">
+<input type="checkbox">
+<span class="checkmark"></span>
+</label>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm font-medium text-gray-900">INV-2025-0415</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<img class="h-8 w-8 rounded-full" src="https://readdy.ai/api/search-image?query=modern%2520delivery%2520company%2520logo%2520with%2520red%2520and%2520white%2520color%2520scheme%252C%2520minimalist%2520design%252C%2520professional%2520corporate%2520identity&width=200&height=200&seq=express-logo-001&orientation=squarish" alt="Express Delivery logo">
+<div class="ml-3">
+<div class="text-sm font-medium text-gray-900">Express Delivery Solutions</div>
+<div class="text-xs text-gray-500">ID: CONT-2025-0018</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm font-medium text-gray-900">$1,950.00</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-gray-900">Apr 15, 2025</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-gray-900">Apr 29, 2025</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="status-badge paid">
+<i class="ri-checkbox-circle-line mr-1"></i>
+Paid
+</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+<div class="flex items-center space-x-2">
+<button class="text-gray-500 hover:text-primary">
+<i class="ri-eye-line"></i>
+</button>
+<button class="text-gray-500 hover:text-primary">
+<i class="ri-edit-line"></i>
+</button>
+<button class="text-gray-500 hover:text-primary">
+<i class="ri-download-line"></i>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 cursor-pointer">
+<td class="px-6 py-4 whitespace-nowrap">
+<label class="custom-checkbox">
+<input type="checkbox">
+<span class="checkmark"></span>
+</label>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm font-medium text-gray-900">INV-2025-0412</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<img class="h-8 w-8 rounded-full" src="https://readdy.ai/api/search-image?query=modern%2520delivery%2520company%2520logo%2520with%2520orange%2520and%2520white%2520color%2520scheme%252C%2520minimalist%2520design%252C%2520professional%2520corporate%2520identity&width=200&height=200&seq=swift-logo-001&orientation=squarish" alt="Swift Parcel logo">
+<div class="ml-3">
+<div class="text-sm font-medium text-gray-900">Swift Parcel Network</div>
+<div class="text-xs text-gray-500">ID: CONT-2025-0027</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm font-medium text-gray-900">$3,470.00</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-gray-900">Apr 12, 2025</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-gray-900">Apr 26, 2025</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="status-badge paid">
+<i class="ri-checkbox-circle-line mr-1"></i>
+Paid
+</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+<div class="flex items-center space-x-2">
+<button class="text-gray-500 hover:text-primary">
+<i class="ri-eye-line"></i>
+</button>
+<button class="text-gray-500 hover:text-primary">
+<i class="ri-edit-line"></i>
+</button>
+<button class="text-gray-500 hover:text-primary">
+<i class="ri-download-line"></i>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-6 py-3 flex items-center justify-between border-t border-gray-200">
+<div class="flex-1 flex justify-between sm:hidden">
+<a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+Previous
+</a>
+<a href="#" class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+Next
+</a>
+</div>
+<div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+<div>
+<p class="text-sm text-gray-700">
+Showing <span class="font-medium">1</span> to <span class="font-medium">10</span> of <span class="font-medium">86</span> results
+</p>
+</div>
+<div>
+<nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+<a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+<span class="sr-only">Previous</span>
+<i class="ri-arrow-left-s-line"></i>
+</a>
+<a href="#" aria-current="page" class="z-10 bg-primary border-primary text-white relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+1
+</a>
+<a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+2
+</a>
+<a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+3
+</a>
+<span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
+...
+</span>
+<a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+8
+</a>
+<a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+9
+</a>
+<a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+<span class="sr-only">Next</span>
+<i class="ri-arrow-right-s-line"></i>
+</a>
+</nav>
+</div>
+</div>
+</div>
+</div>
+<!-- Payment Details Modal (Hidden by default) -->
+<div id="paymentModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 hidden">
+<div class="bg-white rounded-lg shadow-xl w-full max-w-3xl mx-4">
+<div class="p-5 border-b border-gray-100 flex justify-between items-center">
+<h3 class="text-lg font-semibold text-gray-800">Payment Details</h3>
+<button id="closeModal" class="text-gray-400 hover:text-gray-500">
+<i class="ri-close-line text-xl"></i>
+</button>
+</div>
+<div class="p-5">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div>
+<div class="flex items-center mb-4">
+<div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center mr-3">
+<i class="ri-file-list-3-line text-primary text-xl"></i>
+</div>
+<div>
+<h4 class="text-lg font-medium text-gray-900">Invoice #INV-2025-0512</h4>
+<p class="text-sm text-gray-500">Issued on May 12, 2025</p>
+</div>
+</div>
+<div class="space-y-3">
+<div>
+<p class="text-sm text-gray-500">Status</p>
+<span class="status-badge paid mt-1">
+<i class="ri-checkbox-circle-line mr-1"></i>
+Paid
+</span>
+</div>
+<div>
+<p class="text-sm text-gray-500">Amount</p>
+<p class="text-lg font-semibold text-gray-900">$1,950.00</p>
+</div>
+<div>
+<p class="text-sm text-gray-500">Due Date</p>
+<p class="text-sm font-medium text-gray-900">May 26, 2025</p>
+</div>
+<div>
+<p class="text-sm text-gray-500">Payment Method</p>
+<p class="text-sm font-medium text-gray-900">Bank Transfer</p>
+</div>
+<div>
+<p class="text-sm text-gray-500">Transaction ID</p>
+<p class="text-sm font-medium text-gray-900">TRX-85429631</p>
+</div>
+</div>
+</div>
+<div>
+<div class="mb-4">
+<h5 class="text-sm font-medium text-gray-700 mb-2">Contractor Information</h5>
+<div class="flex items-center">
+<img class="h-10 w-10 rounded-full" src="https://readdy.ai/api/search-image?query=modern%2520delivery%2520company%2520logo%2520with%2520blue%2520and%2520white%2520color%2520scheme%252C%2520minimalist%2520design%252C%2520professional%2520corporate%2520identity&width=200&height=200&seq=metro-logo-001&orientation=squarish" alt="Metro Courier logo">
+<div class="ml-3">
+<p class="text-sm font-medium text-gray-900">Metro Courier Services</p>
+<p class="text-xs text-gray-500">ID: CONT-2025-0023</p>
+</div>
+</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-4">
+<h5 class="text-sm font-medium text-gray-700 mb-2">Contact Information</h5>
+<div class="space-y-2 text-sm">
+<p><span class="text-gray-500">Contact Person:</span> <span class="font-medium text-gray-900">Robert Johnson</span></p>
+<p><span class="text-gray-500">Email:</span> <span class="font-medium text-gray-900">robert.johnson@metrocourier.com</span></p>
+<p><span class="text-gray-500">Phone:</span> <span class="font-medium text-gray-900">(555) 123-4567</span></p>
+<p><span class="text-gray-500">Address:</span> <span class="font-medium text-gray-900">1234 Delivery Ave, Suite 500, Boston, MA 02108</span></p>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-4 mb-6">
+<h5 class="text-sm font-medium text-gray-700 mb-3">Payment Breakdown</h5>
+<div class="space-y-2">
+<div class="flex justify-between text-sm">
+<span class="text-gray-600">Base Service Fee</span>
+<span class="font-medium text-gray-900">$1,650.00</span>
+</div>
+<div class="flex justify-between text-sm">
+<span class="text-gray-600">Additional Services</span>
+<span class="font-medium text-gray-900">$200.00</span>
+</div>
+<div class="flex justify-between text-sm">
+<span class="text-gray-600">Insurance</span>
+<span class="font-medium text-gray-900">$100.00</span>
+</div>
+<div class="border-t border-gray-200 my-2 pt-2 flex justify-between">
+<span class="font-medium text-gray-700">Total Amount</span>
+<span class="font-bold text-gray-900">$1,950.00</span>
+</div>
+</div>
+</div>
+<div class="border-t border-gray-100 pt-4">
+<h5 class="text-sm font-medium text-gray-700 mb-2">Payment History</h5>
+<ul class="space-y-3">
+<li class="flex items-start">
+<div class="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mr-2 mt-0.5">
+<i class="ri-check-line text-green-600 text-xs"></i>
+</div>
+<div>
+<p class="text-sm text-gray-900">Payment received</p>
+<p class="text-xs text-gray-500">May 24, 2025 at 2:15 PM</p>
+</div>
+</li>
+<li class="flex items-start">
+<div class="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center mr-2 mt-0.5">
+<i class="ri-mail-send-line text-blue-600 text-xs"></i>
+</div>
+<div>
+<p class="text-sm text-gray-900">Payment reminder sent</p>
+<p class="text-xs text-gray-500">May 19, 2025 at 9:00 AM</p>
+</div>
+</li>
+<li class="flex items-start">
+<div class="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center mr-2 mt-0.5">
+<i class="ri-file-list-line text-purple-600 text-xs"></i>
+</div>
+<div>
+<p class="text-sm text-gray-900">Invoice created</p>
+<p class="text-xs text-gray-500">May 12, 2025 at 11:30 AM</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="p-5 border-t border-gray-100 flex justify-end space-x-3">
+<button class="px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 !rounded-button whitespace-nowrap">
+<i class="ri-download-line mr-2"></i>
+Download Invoice
+</button>
+<button class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-indigo-700 !rounded-button whitespace-nowrap">
+<i class="ri-mail-send-line mr-2"></i>
+Send Receipt
+</button>
+</div>
+</div>
+</div>
+<!-- Process Payment Modal (Hidden by default) -->
+<div id="processPaymentModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 hidden">
+<div class="bg-white rounded-lg shadow-xl w-full max-w-lg mx-4">
+<div class="p-5 border-b border-gray-100 flex justify-between items-center">
+<h3 class="text-lg font-semibold text-gray-800">Process Payment</h3>
+<button id="closeProcessModal" class="text-gray-400 hover:text-gray-500">
+<i class="ri-close-line text-xl"></i>
+</button>
+</div>
+<div class="p-5">
+<div class="mb-4">
+<label for="selectContractor" class="block text-sm font-medium text-gray-700 mb-1">Select Contractor</label>
+<div class="relative">
+<select id="selectContractor" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 pr-8 appearance-none">
+<option value="">-- Select Contractor --</option>
+<option value="express">Express Delivery Solutions</option>
+<option value="rapid">Rapid Logistics Inc.</option>
+<option value="swift">Swift Parcel Network</option>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+<i class="ri-arrow-down-s-line text-gray-400"></i>
+</div>
+</div>
+</div>
+<div class="mb-4">
+<label for="selectInvoice" class="block text-sm font-medium text-gray-700 mb-1">Select Invoice</label>
+<div class="relative">
+<select id="selectInvoice" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 pr-8 appearance-none">
+<option value="">-- Select Invoice --</option>
+<option value="inv-0509">INV-2025-0509 - $3,780.00</option>
+<option value="inv-0428">INV-2025-0428 - $1,870.00</option>
+<option value="inv-0425">INV-2025-0425 - $2,800.00</option>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+<i class="ri-arrow-down-s-line text-gray-400"></i>
+</div>
+</div>
+</div>
+<div class="mb-4">
+<label for="paymentAmount" class="block text-sm font-medium text-gray-700 mb-1">Payment Amount</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="text-gray-500">$</span>
+</div>
+<input type="number" id="paymentAmount" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full pl-7 p-2.5" value="3780.00">
+</div>
+</div>
+<div class="mb-4">
+<label for="paymentDate" class="block text-sm font-medium text-gray-700 mb-1">Payment Date</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<i class="ri-calendar-line text-gray-400"></i>
+</div>
+<input type="date" id="paymentDate" class="date-picker-input pl-10" value="2025-05-27">
+</div>
+</div>
+<div class="mb-4">
+<label for="paymentMethod" class="block text-sm font-medium text-gray-700 mb-1">Payment Method</label>
+<div class="relative">
+<select id="paymentMethodSelect" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 pr-8 appearance-none">
+<option value="bank">Bank Transfer</option>
+<option value="credit">Credit Card</option>
+<option value="paypal">PayPal</option>
+<option value="check">Check</option>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+<i class="ri-arrow-down-s-line text-gray-400"></i>
+</div>
+</div>
+</div>
+<div class="mb-4">
+<label for="paymentNotes" class="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+<textarea id="paymentNotes" rows="3" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5" placeholder="Add any notes about this payment..."></textarea>
+</div>
+<div class="mb-4">
+<label for="sendReceipt" class="flex items-center">
+<input type="checkbox" id="sendReceipt" class="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary">
+<span class="ml-2 text-sm text-gray-700">Send receipt to contractor</span>
+</label>
+</div>
+</div>
+<div class="p-5 border-t border-gray-100 flex justify-end space-x-3">
+<button id="cancelProcess" class="px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 !rounded-button whitespace-nowrap">
+Cancel
+</button>
+<button id="confirmProcess" class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-indigo-700 !rounded-button whitespace-nowrap">
+Process Payment
+</button>
+</div>
+</div>
+</div>
+<!-- Toast Notification (Hidden by default) -->
+<div id="toast" class="fixed bottom-5 right-5 bg-gray-800 text-white px-6 py-3 rounded-lg shadow-lg flex items-center hidden">
+<i class="ri-check-line text-green-400 mr-3"></i>
+<span id="toastMessage">Payment processed successfully!</span>
+</div>
+</main>
+</div>
+</div>
+<script id="tableInteractions">
+document.addEventListener('DOMContentLoaded', function() {
+// Select all checkbox functionality
+const selectAllCheckbox = document.getElementById('selectAll');
+if (selectAllCheckbox) {
+selectAllCheckbox.addEventListener('change', function() {
+const checkboxes = document.querySelectorAll('tbody .custom-checkbox input[type="checkbox"]');
+checkboxes.forEach(checkbox => {
+checkbox.checked = selectAllCheckbox.checked;
+});
+});
+}
+// Row click to show details modal
+const tableRows = document.querySelectorAll('tbody tr');
+const paymentModal = document.getElementById('paymentModal');
+const closeModal = document.getElementById('closeModal');
+tableRows.forEach(row => {
+row.addEventListener('click', function(e) {
+// Don't open modal if clicking on checkbox or button
+if (e.target.closest('.custom-checkbox') || e.target.closest('button')) {
+return;
+}
+paymentModal.classList.remove('hidden');
+});
+});
+if (closeModal) {
+closeModal.addEventListener('click', function() {
+paymentModal.classList.add('hidden');
+});
+}
+// Close modal when clicking outside
+paymentModal.addEventListener('click', function(e) {
+if (e.target === paymentModal) {
+paymentModal.classList.add('hidden');
+}
+});
+// Toggle filters section
+const toggleFilters = document.getElementById('toggleFilters');
+const filterSection = document.getElementById('filterSection');
+const filterToggleText = document.getElementById('filterToggleText');
+if (toggleFilters && filterSection) {
+toggleFilters.addEventListener('click', function() {
+filterSection.classList.toggle('hidden');
+filterToggleText.textContent = filterSection.classList.contains('hidden') ? 'Show Filters' : 'Hide Filters';
+});
+}
+// Apply filters button
+const applyFilters = document.getElementById('applyFilters');
+if (applyFilters) {
+applyFilters.addEventListener('click', function() {
+// Show toast notification
+showToast('Filters applied successfully!');
+});
+}
+// Refresh payments button
+const refreshPayments = document.getElementById('refreshPayments');
+if (refreshPayments) {
+refreshPayments.addEventListener('click', function() {
+// Show toast notification
+showToast('Payments refreshed!');
+});
+}
+// Process Payment button
+const processPaymentBtn = document.getElementById('processPayment');
+const processPaymentModal = document.getElementById('processPaymentModal');
+const closeProcessModal = document.getElementById('closeProcessModal');
+const cancelProcess = document.getElementById('cancelProcess');
+const confirmProcess = document.getElementById('confirmProcess');
+if (processPaymentBtn) {
+processPaymentBtn.addEventListener('click', function() {
+processPaymentModal.classList.remove('hidden');
+});
+}
+if (closeProcessModal) {
+closeProcessModal.addEventListener('click', function() {
+processPaymentModal.classList.add('hidden');
+});
+}
+if (cancelProcess) {
+cancelProcess.addEventListener('click', function() {
+processPaymentModal.classList.add('hidden');
+});
+}
+if (confirmProcess) {
+confirmProcess.addEventListener('click', function() {
+processPaymentModal.classList.add('hidden');
+showToast('Payment processed successfully!');
+});
+}
+// Close process modal when clicking outside
+processPaymentModal.addEventListener('click', function(e) {
+if (e.target === processPaymentModal) {
+processPaymentModal.classList.add('hidden');
+}
+});
+// Helper function to show toast
+function showToast(message) {
+const toast = document.getElementById('toast');
+const toastMessage = document.getElementById('toastMessage');
+toastMessage.textContent = message;
+toast.classList.remove('hidden');
+// Hide toast after 3 seconds
+setTimeout(() => {
+toast.classList.add('hidden');
+}, 3000);
+}
+});
+</script>
+<script id="exportDropdown">
+document.addEventListener('DOMContentLoaded', function() {
+const exportButton = document.getElementById('exportButton');
+const exportMenu = document.getElementById('exportMenu');
+const exportDropdown = document.getElementById('exportDropdown');
+function toggleDropdown() {
+exportMenu.classList.toggle('hidden');
+}
+function closeDropdown(event) {
+if (!exportDropdown.contains(event.target)) {
+exportMenu.classList.add('hidden');
+}
+}
+exportButton.addEventListener('click', function(event) {
+event.stopPropagation();
+toggleDropdown();
+});
+document.addEventListener('click', closeDropdown);
+const menuItems = exportMenu.querySelectorAll('a');
+menuItems.forEach(item => {
+item.addEventListener('click', function(event) {
+event.preventDefault();
+exportMenu.classList.add('hidden');
+const toast = document.getElementById('toast');
+const toastMessage = document.getElementById('toastMessage');
+toastMessage.textContent = `${this.textContent.trim()} export completed successfully!`;
+toast.classList.remove('hidden');
+// Hide toast after 3 seconds
+setTimeout(() => {
+toast.classList.add('hidden');
+}, 3000);
+});
+});
+});
+</script>
+<script id="settingsDropdown">
+document.addEventListener('DOMContentLoaded', function() {
+const settingsButton = document.getElementById('settingsButton');
+const settingsMenu = document.getElementById('settingsMenu');
+const settingsDropdown = document.getElementById('settingsDropdown');
+function toggleDropdown() {
+settingsMenu.classList.toggle('hidden');
+}
+function closeDropdown(event) {
+if (!settingsDropdown.contains(event.target)) {
+settingsMenu.classList.add('hidden');
+}
+}
+settingsButton.addEventListener('click', function(event) {
+event.stopPropagation();
+toggleDropdown();
+});
+document.addEventListener('click', closeDropdown);
+const menuItems = settingsMenu.querySelectorAll('a');
+menuItems.forEach(item => {
+item.addEventListener('click', function(event) {
+event.preventDefault();
+settingsMenu.classList.add('hidden');
+});
+});
+});
+</script>
+<script id="paginationHandler">
+document.addEventListener('DOMContentLoaded', function() {
+const paginationLinks = document.querySelectorAll('nav[aria-label="Pagination"] a');
+paginationLinks.forEach(link => {
+link.addEventListener('click', function(e) {
+e.preventDefault();
+// Remove active class from all links
+paginationLinks.forEach(link => {
+link.classList.remove('bg-primary', 'border-primary', 'text-white');
+link.classList.add('bg-white', 'border-gray-300', 'text-gray-500', 'hover:bg-gray-50');
+});
+// Add active class to clicked link
+if (!isNaN(this.textContent.trim())) {
+this.classList.remove('bg-white', 'border-gray-300', 'text-gray-500', 'hover:bg-gray-50');
+this.classList.add('z-10', 'bg-primary', 'border-primary', 'text-white');
+}
+});
+});
+});
+</script>
+<script id="generateReportHandler">
+document.addEventListener('DOMContentLoaded', function() {
+const generateReportBtn = document.getElementById('generateReport');
+if (generateReportBtn) {
+generateReportBtn.addEventListener('click', function() {
+const toast = document.getElementById('toast');
+const toastMessage = document.getElementById('toastMessage');
+toastMessage.textContent = 'Generating payment report...';
+toast.classList.remove('hidden');
+// Hide toast after 3 seconds
+setTimeout(() => {
+toast.classList.add('hidden');
+}, 3000);
+});
+}
+});
+</script>
+</body>
+</html>

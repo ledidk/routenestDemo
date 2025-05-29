@@ -1,0 +1,2720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ParcelPilot - Route Management</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+<script>
+tailwind.config = {
+darkMode: 'class',
+theme: {
+extend: {
+colors: {
+primary: '#4f46e5',
+secondary: '#10b981'
+},
+borderRadius: {
+'none': '0px',
+'sm': '4px',
+DEFAULT: '8px',
+'md': '12px',
+'lg': '16px',
+'xl': '20px',
+'2xl': '24px',
+'3xl': '32px',
+'full': '9999px',
+'button': '8px'
+}
+}
+}
+}
+</script>
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+.custom-scrollbar::-webkit-scrollbar {
+width: 6px;
+height: 6px;
+}
+/* Dark mode styles */
+.dark body { background-color: #111827; color: #f3f4f6; }
+.dark .bg-white { background-color: #1f2937; }
+.dark .bg-gray-50 { background-color: #374151; }
+.dark .text-gray-500 { color: #9ca3af; }
+.dark .text-gray-600 { color: #d1d5db; }
+.dark .text-gray-700 { color: #e5e7eb; }
+.dark .text-gray-800 { color: #f3f4f6; }
+.dark .border-gray-200 { border-color: #374151; }
+.dark .border-gray-300 { border-color: #4b5563; }
+.dark .shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25); }
+.dark .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2); }
+.dark .hover\:bg-gray-100:hover { background-color: #374151; }
+.dark .hover\:bg-gray-50:hover { background-color: #374151; }
+.dark .bg-gray-100 { background-color: #374151; }
+.dark .hover\:bg-gray-200:hover { background-color: #4b5563; }
+.dark input,
+.dark select,
+.dark textarea {
+background-color: #374151;
+border-color: #4b5563;
+color: #f3f4f6;
+}
+.dark input::placeholder { color: #9ca3af; }
+.dark .bg-opacity-50 { background-color: rgba(0, 0, 0, 0.7); }
+.custom-scrollbar::-webkit-scrollbar-track {
+background: #f1f1f1;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+background: #d1d5db;
+border-radius: 3px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+background: #9ca3af;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+-webkit-appearance: none;
+margin: 0;
+}
+.custom-checkbox {
+position: relative;
+width: 18px;
+height: 18px;
+cursor: pointer;
+}
+.custom-checkbox input {
+position: absolute;
+opacity: 0;
+cursor: pointer;
+}
+.checkmark {
+position: absolute;
+top: 0;
+left: 0;
+height: 18px;
+width: 18px;
+background-color: #fff;
+border: 1.5px solid #d1d5db;
+border-radius: 4px;
+}
+.custom-checkbox input:checked ~ .checkmark {
+background-color: #4f46e5;
+border-color: #4f46e5;
+}
+.checkmark:after {
+content: "";
+position: absolute;
+display: none;
+}
+.custom-checkbox input:checked ~ .checkmark:after {
+display: block;
+}
+.custom-checkbox .checkmark:after {
+left: 6px;
+top: 2px;
+width: 5px;
+height: 10px;
+border: solid white;
+border-width: 0 2px 2px 0;
+transform: rotate(45deg);
+}
+.custom-switch {
+position: relative;
+display: inline-block;
+width: 44px;
+height: 24px;
+}
+.custom-switch input {
+opacity: 0;
+width: 0;
+height: 0;
+}
+.switch-slider {
+position: absolute;
+cursor: pointer;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: #e5e7eb;
+transition: .4s;
+border-radius: 34px;
+}
+.switch-slider:before {
+position: absolute;
+content: "";
+height: 18px;
+width: 18px;
+left: 3px;
+bottom: 3px;
+background-color: white;
+transition: .4s;
+border-radius: 50%;
+}
+input:checked + .switch-slider {
+background-color: #4f46e5;
+}
+input:checked + .switch-slider:before {
+transform: translateX(20px);
+}
+.custom-range {
+-webkit-appearance: none;
+width: 100%;
+height: 6px;
+border-radius: 5px;
+background: #e5e7eb;
+outline: none;
+}
+.custom-range::-webkit-slider-thumb {
+-webkit-appearance: none;
+appearance: none;
+width: 18px;
+height: 18px;
+border-radius: 50%;
+background: #4f46e5;
+cursor: pointer;
+}
+.custom-range::-moz-range-thumb {
+width: 18px;
+height: 18px;
+border-radius: 50%;
+background: #4f46e5;
+cursor: pointer;
+border: none;
+}
+.custom-radio {
+position: relative;
+padding-left: 28px;
+cursor: pointer;
+user-select: none;
+}
+.custom-radio input {
+position: absolute;
+opacity: 0;
+cursor: pointer;
+}
+.radio-mark {
+position: absolute;
+top: 0;
+left: 0;
+height: 20px;
+width: 20px;
+background-color: #fff;
+border: 1.5px solid #d1d5db;
+border-radius: 50%;
+}
+.custom-radio input:checked ~ .radio-mark {
+border-color: #4f46e5;
+}
+.radio-mark:after {
+content: "";
+position: absolute;
+display: none;
+top: 4px;
+left: 4px;
+width: 10px;
+height: 10px;
+border-radius: 50%;
+background: #4f46e5;
+}
+.custom-radio input:checked ~ .radio-mark:after {
+display: block;
+}
+.map-container {
+position: relative;
+width: 100%;
+height: 100%;
+overflow: hidden;
+}
+.map-overlay {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.05);
+pointer-events: none;
+}
+.route-path {
+stroke: #4f46e5;
+stroke-width: 3;
+fill: none;
+stroke-dasharray: 6, 3;
+animation: dash 20s linear infinite;
+}
+@keyframes dash {
+to {
+stroke-dashoffset: -1000;
+}
+}
+.route-dot {
+fill: #4f46e5;
+}
+.delivery-point {
+fill: #ef4444;
+}
+.driver-marker {
+fill: #10b981;
+}
+.tab-button {
+position: relative;
+}
+.tab-button.active:after {
+content: '';
+position: absolute;
+bottom: -1px;
+left: 0;
+width: 100%;
+height: 2px;
+background-color: #4f46e5;
+}
+.multi-step-form-container {
+display: none;
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.5);
+z-index: 50;
+justify-content: center;
+align-items: center;
+}
+.multi-step-form {
+background-color: white;
+border-radius: 8px;
+width: 100%;
+max-width: 800px;
+max-height: 90vh;
+overflow-y: auto;
+}
+.step {
+display: none;
+}
+.step.active {
+display: block;
+}
+.step-indicator {
+width: 30px;
+height: 30px;
+border-radius: 50%;
+background-color: #e5e7eb;
+color: #6b7280;
+display: flex;
+align-items: center;
+justify-content: center;
+font-weight: 600;
+}
+.step-indicator.active {
+background-color: #4f46e5;
+color: white;
+}
+.step-indicator.completed {
+background-color: #10b981;
+color: white;
+}
+.step-line {
+flex: 1;
+height: 2px;
+background-color: #e5e7eb;
+}
+.step-line.active {
+background-color: #4f46e5;
+}
+</style>
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar -->
+<div class="w-64 bg-white shadow-lg z-20 flex flex-col">
+<div class="p-4 border-b flex items-center">
+<span class="text-2xl font-['Pacifico'] text-primary">logo</span>
+<span class="ml-2 text-lg font-semibold">ParcelPilot</span>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar">
+<nav class="p-4">
+<div class="mb-6">
+<p class="text-xs font-medium text-gray-400 uppercase mb-4 pl-2">Main</p>
+<a href="dashboard.html" data-readdy="true" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
+<div class="w-5 h-5 flex items-center justify-center mr-3">
+<i class="ri-dashboard-line"></i>
+</div>
+<span>Dashboard</span>
+</a>
+<a href="#" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg bg-primary bg-opacity-10 text-primary">
+<div class="w-5 h-5 flex items-center justify-center mr-3">
+<i class="ri-route-line"></i>
+</div>
+<span>Route Management</span>
+</a>
+<a href="https://readdy.ai/home/a4cb12ef-b4e2-415e-889e-29c37723d4f1/1d005530-b5ea-4f94-93f6-66530a77f39d" data-readdy="true" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
+<div class="w-5 h-5 flex items-center justify-center mr-3">
+<i class="ri-team-line"></i>
+</div>
+<span>Team Management</span>
+</a>
+<a href="#" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
+<div class="w-5 h-5 flex items-center justify-center mr-3">
+<i class="ri-money-dollar-circle-line"></i>
+</div>
+<span>Financial Reports</span>
+</a>
+<a href="https://readdy.ai/home/a4cb12ef-b4e2-415e-889e-29c37723d4f1/d5e48114-a7be-4c21-b503-20803a6dca0a" data-readdy="true" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
+<div class="w-5 h-5 flex items-center justify-center mr-3">
+<i class="ri-line-chart-line"></i>
+</div>
+<span>Performance Tracking</span>
+</a>
+</div>
+<div class="mb-6">
+<p class="text-xs font-medium text-gray-400 uppercase mb-4 pl-2">Settings</p>
+<a href="#" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
+<div class="w-5 h-5 flex items-center justify-center mr-3">
+<i class="ri-settings-3-line"></i>
+</div>
+<span>General Settings</span>
+</a>
+<a href="#" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
+<div class="w-5 h-5 flex items-center justify-center mr-3">
+<i class="ri-user-settings-line"></i>
+</div>
+<span>Account Settings</span>
+</a>
+<a href="#" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
+<div class="w-5 h-5 flex items-center justify-center mr-3">
+<i class="ri-notification-2-line"></i>
+</div>
+<span>Notifications</span>
+</a>
+</div>
+</nav>
+</div>
+<div class="p-4 border-t">
+<div class="flex items-center">
+<div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
+<div class="w-5 h-5 flex items-center justify-center text-gray-600">
+<i class="ri-user-line"></i>
+</div>
+</div>
+<div class="ml-3">
+<p class="text-sm font-medium">James Wilson</p>
+<p class="text-xs text-gray-500">Regional Manager</p>
+</div>
+<button class="ml-auto p-1 text-gray-400 hover:text-gray-600">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-logout-box-r-line"></i>
+</div>
+</button>
+</div>
+</div>
+</div>
+<!-- Main Content -->
+<div class="flex-1 flex flex-col overflow-hidden">
+<!-- Top Navigation -->
+<header class="bg-white shadow-sm z-10">
+<div class="flex items-center justify-between px-6 py-3">
+<div class="flex items-center">
+<a href="https://readdy.ai/home/a4cb12ef-b4e2-415e-889e-29c37723d4f1/e80499b6-2a92-4e39-befa-9e0714cfd966" data-readdy="true" class="flex items-center text-gray-500 hover:text-gray-700 mr-4">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-arrow-left-line"></i>
+</div>
+<span class="ml-1 text-sm">Back to Dashboard</span>
+</a>
+<div class="h-5 border-l border-gray-300 mx-3"></div>
+<h1 class="text-xl font-semibold">Route Management</h1>
+<span class="ml-4 text-sm text-gray-500">Tuesday, May 27, 2025</span>
+</div>
+<div class="flex items-center space-x-4">
+<div class="relative">
+<input type="text" placeholder="Search routes, drivers, areas..." class="pl-9 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary w-64">
+<div class="absolute left-3 top-2.5 text-gray-400 w-4 h-4 flex items-center justify-center">
+<i class="ri-search-line"></i>
+</div>
+</div>
+<div class="flex items-center space-x-2 mr-2">
+<div class="w-5 h-5 flex items-center justify-center text-gray-500">
+<i class="ri-sun-line"></i>
+</div>
+<label class="custom-switch">
+<input type="checkbox" id="themeToggle">
+<span class="switch-slider"></span>
+</label>
+<div class="w-5 h-5 flex items-center justify-center text-gray-500">
+<i class="ri-moon-line"></i>
+</div>
+</div>
+<button id="notificationBtn" class="relative p-2 text-gray-500 hover:text-gray-700 focus:outline-none">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-notification-3-line"></i>
+</div>
+<span id="notificationIndicator" class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+</button>
+<div id="notificationPanel" class="hidden absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+<div class="p-4 border-b">
+<div class="flex items-center justify-between">
+<h3 class="text-sm font-semibold">Notifications</h3>
+<button id="markAllReadBtn" class="text-primary hover:text-primary-dark text-sm">Mark all as read</button>
+</div>
+</div>
+<div class="max-h-96 overflow-y-auto">
+<div class="divide-y">
+<div class="p-4 hover:bg-gray-50 cursor-pointer unread">
+<div class="flex items-start">
+<div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
+<i class="ri-truck-line text-lg"></i>
+</div>
+<div class="ml-3 flex-1">
+<p class="text-sm text-gray-800">Route RT-2589 completed successfully</p>
+<div class="flex items-center mt-1">
+<span class="text-xs text-gray-500">2 minutes ago</span>
+<span class="w-1.5 h-1.5 rounded-full bg-blue-500 ml-2"></span>
+</div>
+</div>
+</div>
+</div>
+<div class="p-4 hover:bg-gray-50 cursor-pointer unread">
+<div class="flex items-start">
+<div class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600 flex-shrink-0">
+<i class="ri-alert-line text-lg"></i>
+</div>
+<div class="ml-3 flex-1">
+<p class="text-sm text-gray-800">Driver John Miller reported delay in North District</p>
+<div class="flex items-center mt-1">
+<span class="text-xs text-gray-500">15 minutes ago</span>
+<span class="w-1.5 h-1.5 rounded-full bg-blue-500 ml-2"></span>
+</div>
+</div>
+</div>
+</div>
+<div class="p-4 hover:bg-gray-50 cursor-pointer">
+<div class="flex items-start">
+<div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600 flex-shrink-0">
+<i class="ri-user-add-line text-lg"></i>
+</div>
+<div class="ml-3 flex-1">
+<p class="text-sm text-gray-800">New driver Rachel Brown added to Team Alpha</p>
+<div class="flex items-center mt-1">
+<span class="text-xs text-gray-500">1 hour ago</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-3 border-t bg-gray-50">
+<a href="#" class="block text-center text-sm text-primary hover:text-primary-dark font-medium">View all notifications</a>
+</div>
+</div>
+<button id="messageBtn" class="p-2 text-gray-500 hover:text-gray-700 focus:outline-none relative">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-message-2-line"></i>
+</div>
+<span id="messageIndicator" class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+</button>
+<div id="messagePanel" class="hidden absolute right-0 mt-2 w-96 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+<div class="p-4 border-b">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-sm font-semibold">Messages</h3>
+<button id="newMessageBtn" class="text-primary hover:text-primary-dark text-sm">New Message</button>
+</div>
+<div class="relative">
+<input type="text" placeholder="Search conversations..." class="w-full pl-9 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+<div class="absolute left-3 top-2.5 text-gray-400 w-4 h-4 flex items-center justify-center">
+<i class="ri-search-line"></i>
+</div>
+</div>
+</div>
+<div class="max-h-96 overflow-y-auto">
+<div class="divide-y">
+<div class="p-4 hover:bg-gray-50 cursor-pointer unread">
+<div class="flex items-start">
+<div class="relative">
+<div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-medium">JM</div>
+<div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></div>
+</div>
+<div class="ml-3 flex-1">
+<div class="flex items-center justify-between">
+<p class="text-sm font-medium">John Miller</p>
+<span class="text-xs text-gray-500">2m ago</span>
+</div>
+<p class="text-sm text-gray-600 line-clamp-1">Route RT-2589 delivery update: 15 parcels completed</p>
+<span class="inline-flex items-center justify-center px-2 py-1 mt-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">New</span>
+</div>
+</div>
+</div>
+<div class="p-4 hover:bg-gray-50 cursor-pointer">
+<div class="flex items-start">
+<div class="relative">
+<div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-medium">KL</div>
+<div class="absolute bottom-0 right-0 w-3 h-3 bg-gray-300 border-2 border-white rounded-full"></div>
+</div>
+<div class="ml-3 flex-1">
+<div class="flex items-center justify-between">
+<p class="text-sm font-medium">Kevin Lee</p>
+<span class="text-xs text-gray-500">1h ago</span>
+</div>
+<p class="text-sm text-gray-600 line-clamp-1">Vehicle maintenance check completed</p>
+</div>
+</div>
+</div>
+<div class="p-4 hover:bg-gray-50 cursor-pointer unread">
+<div class="flex items-start">
+<div class="relative">
+<div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-medium">RB</div>
+<div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></div>
+</div>
+<div class="ml-3 flex-1">
+<div class="flex items-center justify-between">
+<p class="text-sm font-medium">Rachel Brown</p>
+<span class="text-xs text-gray-500">30m ago</span>
+</div>
+<p class="text-sm text-gray-600 line-clamp-1">Need assistance with route optimization</p>
+<span class="inline-flex items-center justify-center px-2 py-1 mt-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">New</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-3 border-t bg-gray-50">
+<a href="https://readdy.ai/home/a4cb12ef-b4e2-415e-889e-29c37723d4f1/3f1b6350-5d5a-45da-bad9-491bd1e0da9e" data-readdy="true" class="block text-center text-sm text-primary hover:text-primary-dark font-medium">View all messages</a>
+</div>
+</div>
+<button class="p-2 text-gray-500 hover:text-gray-700 focus:outline-none">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-settings-4-line"></i>
+</div>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto custom-scrollbar bg-gray-50 p-6">
+<!-- Route Management Header -->
+<div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
+<div>
+<h2 class="text-2xl font-bold">Route Management</h2>
+<p class="text-gray-500 mt-1">Create, manage, and optimize delivery routes</p>
+</div>
+<div class="mt-4 md:mt-0 flex items-center space-x-3">
+<button id="manageInventoryBtn" class="bg-gray-100 hover:bg-gray-200 px-4 py-2 text-sm font-medium rounded-button flex items-center whitespace-nowrap">
+<div class="w-4 h-4 flex items-center justify-center mr-2">
+<i class="ri-store-2-line"></i>
+</div>
+Route Inventory
+</button>
+<button id="manageTeamsBtn" class="bg-gray-100 hover:bg-gray-200 px-4 py-2 text-sm font-medium rounded-button flex items-center whitespace-nowrap">
+<div class="w-4 h-4 flex items-center justify-center mr-2">
+<i class="ri-team-line"></i>
+</div>
+Team Assignment
+</button>
+<button id="manageCommissionsBtn" class="bg-gray-100 hover:bg-gray-200 px-4 py-2 text-sm font-medium rounded-button flex items-center whitespace-nowrap">
+<div class="w-4 h-4 flex items-center justify-center mr-2">
+<i class="ri-money-dollar-circle-line"></i>
+</div>
+Commissions
+</button>
+<button class="bg-gray-100 hover:bg-gray-200 px-4 py-2 text-sm font-medium rounded-button flex items-center whitespace-nowrap">
+<div class="w-4 h-4 flex items-center justify-center mr-2">
+<i class="ri-download-line"></i>
+</div>
+Export Routes
+</button>
+<button class="bg-gray-100 hover:bg-gray-200 px-4 py-2 text-sm font-medium rounded-button flex items-center whitespace-nowrap">
+<div class="w-4 h-4 flex items-center justify-center mr-2">
+<i class="ri-upload-line"></i>
+</div>
+Import Routes
+</button>
+<button id="createRouteBtn" class="bg-primary text-white px-4 py-2 text-sm font-medium rounded-button flex items-center whitespace-nowrap">
+<div class="w-4 h-4 flex items-center justify-center mr-2">
+<i class="ri-add-line"></i>
+</div>
+Create Route
+</button>
+</div>
+</div>
+<!-- Route Management Tabs -->
+<div class="bg-white rounded-lg shadow mb-6">
+<div class="border-b px-6 py-4">
+<div class="flex space-x-6">
+<button class="tab-button active py-2 text-sm font-medium text-primary">All Routes</button>
+<button class="tab-button py-2 text-sm font-medium text-gray-500 hover:text-gray-700">Active</button>
+<button class="tab-button py-2 text-sm font-medium text-gray-500 hover:text-gray-700">In Progress</button>
+<button class="tab-button py-2 text-sm font-medium text-gray-500 hover:text-gray-700">Completed</button>
+<button class="tab-button py-2 text-sm font-medium text-gray-500 hover:text-gray-700">Pending</button>
+</div>
+</div>
+<div class="p-6">
+<!-- Filter and Search Section -->
+<div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
+<div class="flex flex-wrap gap-3">
+<div class="relative">
+<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+<div class="w-4 h-4 flex items-center justify-center text-gray-400">
+<i class="ri-search-line"></i>
+</div>
+</div>
+<input type="text" class="pl-10 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary w-64" placeholder="Search routes...">
+</div>
+<div class="relative">
+<button class="flex items-center px-4 py-2 text-sm border border-gray-300 rounded-lg bg-white">
+<div class="w-4 h-4 flex items-center justify-center mr-2 text-gray-500">
+<i class="ri-map-pin-line"></i>
+</div>
+<span class="text-gray-700">Area</span>
+<div class="w-4 h-4 flex items-center justify-center ml-2 text-gray-500">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</button>
+</div>
+<div class="relative">
+<button class="flex items-center px-4 py-2 text-sm border border-gray-300 rounded-lg bg-white">
+<div class="w-4 h-4 flex items-center justify-center mr-2 text-gray-500">
+<i class="ri-user-line"></i>
+</div>
+<span class="text-gray-700">Driver</span>
+<div class="w-4 h-4 flex items-center justify-center ml-2 text-gray-500">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</button>
+</div>
+<div class="relative">
+<button class="flex items-center px-4 py-2 text-sm border border-gray-300 rounded-lg bg-white">
+<div class="w-4 h-4 flex items-center justify-center mr-2 text-gray-500">
+<i class="ri-calendar-line"></i>
+</div>
+<span class="text-gray-700">Date Range</span>
+<div class="w-4 h-4 flex items-center justify-center ml-2 text-gray-500">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</button>
+</div>
+</div>
+<div class="mt-4 md:mt-0 flex items-center space-x-2">
+<button class="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-refresh-line"></i>
+</div>
+</button>
+<button class="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-filter-3-line"></i>
+</div>
+</button>
+<button class="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-settings-4-line"></i>
+</div>
+</button>
+</div>
+</div>
+<!-- Route Table -->
+<div class="overflow-x-auto">
+<table class="min-w-full divide-y divide-gray-200">
+<thead>
+<tr>
+<th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Route ID</th>
+<th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Area</th>
+<th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Parcels</th>
+<th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Drivers</th>
+<th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Delivery Window</th>
+<th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Completion</th>
+<th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+<th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+</tr>
+</thead>
+<tbody class="bg-white divide-y divide-gray-200">
+<tr class="hover:bg-gray-50 cursor-pointer route-row" data-route-id="RT-2589">
+<td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-primary">RT-2589</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">North District</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">87</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<div class="flex -space-x-2">
+<div class="w-7 h-7 rounded-full bg-blue-100 border-2 border-white flex items-center justify-center text-xs font-medium text-blue-600">JM</div>
+<div class="w-7 h-7 rounded-full bg-green-100 border-2 border-white flex items-center justify-center text-xs font-medium text-green-600">KL</div>
+</div>
+</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">8:00 AM - 12:00 PM</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="w-full bg-gray-200 rounded-full h-2 mr-2 w-24">
+<div class="bg-primary h-2 rounded-full" style="width: 75%"></div>
+</div>
+<span class="text-sm text-gray-700">75%</span>
+</div>
+</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">Active</span>
+</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+<div class="flex space-x-2">
+<button class="text-gray-500 hover:text-primary">
+<div class="w-4 h-4 flex items-center justify-center view-route-btn" data-route-id="RT-2589">
+<i class="ri-eye-line"></i>
+</div>
+</button>
+<button class="text-gray-500 hover:text-primary">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-edit-line"></i>
+</div>
+</button>
+<button class="text-gray-500 hover:text-red-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-delete-bin-line"></i>
+</div>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 cursor-pointer route-row" data-route-id="RT-2590">
+<td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-primary">RT-2590</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">East District</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">64</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<div class="flex -space-x-2">
+<div class="w-7 h-7 rounded-full bg-purple-100 border-2 border-white flex items-center justify-center text-xs font-medium text-purple-600">RB</div>
+</div>
+</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">9:00 AM - 1:00 PM</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="w-full bg-gray-200 rounded-full h-2 mr-2 w-24">
+<div class="bg-primary h-2 rounded-full" style="width: 92%"></div>
+</div>
+<span class="text-sm text-gray-700">92%</span>
+</div>
+</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">Active</span>
+</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+<div class="flex space-x-2">
+<button class="text-gray-500 hover:text-primary">
+<div class="w-4 h-4 flex items-center justify-center view-route-btn" data-route-id="RT-2589">
+<i class="ri-eye-line"></i>
+</div>
+</button>
+<button class="text-gray-500 hover:text-primary">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-edit-line"></i>
+</div>
+</button>
+<button class="text-gray-500 hover:text-red-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-delete-bin-line"></i>
+</div>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 cursor-pointer route-row" data-route-id="RT-2591">
+<td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-primary">RT-2591</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">South District</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">102</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<div class="flex -space-x-2">
+<div class="w-7 h-7 rounded-full bg-yellow-100 border-2 border-white flex items-center justify-center text-xs font-medium text-yellow-600">AH</div>
+<div class="w-7 h-7 rounded-full bg-red-100 border-2 border-white flex items-center justify-center text-xs font-medium text-red-600">TW</div>
+<div class="w-7 h-7 rounded-full bg-gray-100 border-2 border-white flex items-center justify-center text-xs font-medium text-gray-600">+1</div>
+</div>
+</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">10:00 AM - 2:00 PM</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="w-full bg-gray-200 rounded-full h-2 mr-2 w-24">
+<div class="bg-yellow-400 h-2 rounded-full" style="width: 45%"></div>
+</div>
+<span class="text-sm text-gray-700">45%</span>
+</div>
+</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<span class="px-2 py-1 text-xs font-medium rounded-full bg-yellow-100 text-yellow-800">In Progress</span>
+</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+<div class="flex space-x-2">
+<button class="text-gray-500 hover:text-primary">
+<div class="w-4 h-4 flex items-center justify-center view-route-btn" data-route-id="RT-2589">
+<i class="ri-eye-line"></i>
+</div>
+</button>
+<button class="text-gray-500 hover:text-primary">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-edit-line"></i>
+</div>
+</button>
+<button class="text-gray-500 hover:text-red-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-delete-bin-line"></i>
+</div>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 cursor-pointer route-row" data-route-id="RT-2592">
+<td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-primary">RT-2592</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">West District</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">56</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<span class="text-sm text-gray-500">Not assigned</span>
+</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">1:00 PM - 5:00 PM</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="w-full bg-gray-200 rounded-full h-2 mr-2 w-24">
+<div class="bg-gray-400 h-2 rounded-full" style="width: 0%"></div>
+</div>
+<span class="text-sm text-gray-700">0%</span>
+</div>
+</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<span class="px-2 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-800">Pending</span>
+</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+<div class="flex space-x-2">
+<button class="text-gray-500 hover:text-primary">
+<div class="w-4 h-4 flex items-center justify-center view-route-btn" data-route-id="RT-2589">
+<i class="ri-eye-line"></i>
+</div>
+</button>
+<button class="text-gray-500 hover:text-primary">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-edit-line"></i>
+</div>
+</button>
+<button class="text-gray-500 hover:text-red-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-delete-bin-line"></i>
+</div>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 cursor-pointer route-row" data-route-id="RT-2593">
+<td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-primary">RT-2593</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">Central District</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">78</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<div class="flex -space-x-2">
+<div class="w-7 h-7 rounded-full bg-blue-100 border-2 border-white flex items-center justify-center text-xs font-medium text-blue-600">JM</div>
+</div>
+</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">8:30 AM - 12:30 PM</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="w-full bg-gray-200 rounded-full h-2 mr-2 w-24">
+<div class="bg-green-500 h-2 rounded-full" style="width: 100%"></div>
+</div>
+<span class="text-sm text-gray-700">100%</span>
+</div>
+</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<span class="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">Completed</span>
+</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+<div class="flex space-x-2">
+<button class="text-gray-500 hover:text-primary">
+<div class="w-4 h-4 flex items-center justify-center view-route-btn" data-route-id="RT-2589">
+<i class="ri-eye-line"></i>
+</div>
+</button>
+<button class="text-gray-500 hover:text-primary">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-edit-line"></i>
+</div>
+</button>
+<button class="text-gray-500 hover:text-red-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-delete-bin-line"></i>
+</div>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 cursor-pointer route-row" data-route-id="RT-2594">
+<td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-primary">RT-2594</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">Northwest District</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">93</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<div class="flex -space-x-2">
+<div class="w-7 h-7 rounded-full bg-green-100 border-2 border-white flex items-center justify-center text-xs font-medium text-green-600">KL</div>
+<div class="w-7 h-7 rounded-full bg-purple-100 border-2 border-white flex items-center justify-center text-xs font-medium text-purple-600">RB</div>
+</div>
+</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">9:30 AM - 1:30 PM</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="w-full bg-gray-200 rounded-full h-2 mr-2 w-24">
+<div class="bg-primary h-2 rounded-full" style="width: 68%"></div>
+</div>
+<span class="text-sm text-gray-700">68%</span>
+</div>
+</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">Active</span>
+</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+<div class="flex space-x-2">
+<button class="text-gray-500 hover:text-primary">
+<div class="w-4 h-4 flex items-center justify-center view-route-btn" data-route-id="RT-2589">
+<i class="ri-eye-line"></i>
+</div>
+</button>
+<button class="text-gray-500 hover:text-primary">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-edit-line"></i>
+</div>
+</button>
+<button class="text-gray-500 hover:text-red-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-delete-bin-line"></i>
+</div>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 cursor-pointer route-row" data-route-id="RT-2595">
+<td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-primary">RT-2595</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">Northeast District</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">71</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<div class="flex -space-x-2">
+<div class="w-7 h-7 rounded-full bg-yellow-100 border-2 border-white flex items-center justify-center text-xs font-medium text-yellow-600">AH</div>
+</div>
+</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">10:30 AM - 2:30 PM</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="w-full bg-gray-200 rounded-full h-2 mr-2 w-24">
+<div class="bg-blue-500 h-2 rounded-full" style="width: 100%"></div>
+</div>
+<span class="text-sm text-gray-700">100%</span>
+</div>
+</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<span class="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">Completed</span>
+</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+<div class="flex space-x-2">
+<button class="text-gray-500 hover:text-primary">
+<div class="w-4 h-4 flex items-center justify-center view-route-btn" data-route-id="RT-2589">
+<i class="ri-eye-line"></i>
+</div>
+</button>
+<button class="text-gray-500 hover:text-primary">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-edit-line"></i>
+</div>
+</button>
+<button class="text-gray-500 hover:text-red-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-delete-bin-line"></i>
+</div>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 cursor-pointer route-row" data-route-id="RT-2596">
+<td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-primary">RT-2596</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">Southwest District</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">62</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<span class="text-sm text-gray-500">Not assigned</span>
+</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">1:30 PM - 5:30 PM</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="w-full bg-gray-200 rounded-full h-2 mr-2 w-24">
+<div class="bg-gray-400 h-2 rounded-full" style="width: 0%"></div>
+</div>
+<span class="text-sm text-gray-700">0%</span>
+</div>
+</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<span class="px-2 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-800">Pending</span>
+</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+<div class="flex space-x-2">
+<button class="text-gray-500 hover:text-primary">
+<div class="w-4 h-4 flex items-center justify-center view-route-btn" data-route-id="RT-2589">
+<i class="ri-eye-line"></i>
+</div>
+</button>
+<button class="text-gray-500 hover:text-primary">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-edit-line"></i>
+</div>
+</button>
+<button class="text-gray-500 hover:text-red-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-delete-bin-line"></i>
+</div>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="flex items-center justify-between mt-6">
+<div class="text-sm text-gray-700">
+Showing <span class="font-medium">1</span> to <span class="font-medium">8</span> of <span class="font-medium">24</span> routes
+</div>
+<div class="flex space-x-1">
+<button class="px-3 py-1 text-sm rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed" disabled>Previous</button>
+<button class="px-3 py-1 text-sm rounded-lg border border-primary bg-primary text-white">1</button>
+<button class="px-3 py-1 text-sm rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-50">2</button>
+<button class="px-3 py-1 text-sm rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-50">3</button>
+<button class="px-3 py-1 text-sm rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-50">Next</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Route Details and Map Section -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Route Map -->
+<div class="lg:col-span-2 bg-white rounded-lg shadow">
+<div class="border-b px-6 py-4 flex justify-between items-center">
+<h3 class="text-lg font-semibold">Route Map Visualization</h3>
+<div class="flex space-x-2">
+<button class="bg-gray-100 hover:bg-gray-200 px-3 py-1.5 text-sm font-medium rounded-lg text-gray-600 flex items-center whitespace-nowrap">
+<div class="w-4 h-4 flex items-center justify-center mr-1.5">
+<i class="ri-refresh-line"></i>
+</div>
+Refresh
+</button>
+<button class="bg-gray-100 hover:bg-gray-200 px-3 py-1.5 text-sm font-medium rounded-lg text-gray-600 flex items-center whitespace-nowrap">
+<div class="w-4 h-4 flex items-center justify-center mr-1.5">
+<i class="ri-fullscreen-line"></i>
+</div>
+Expand
+</button>
+</div>
+</div>
+<div class="p-6">
+<div class="h-96 rounded-lg overflow-hidden relative">
+<div class="map-container">
+<div style="background-image: url('https://public.readdy.ai/gen_page/map_placeholder_1280x720.png'); background-size: cover; background-position: center; width: 100%; height: 100%;"></div>
+<div class="map-overlay"></div>
+<svg class="absolute top-0 left-0 w-full h-full" viewBox="0 0 1280 720" preserveAspectRatio="none">
+<!-- Route Paths -->
+<path class="route-path" d="M320,180 C400,150 500,250 600,200 S750,100 850,150 S1000,250 1100,200" />
+<path class="route-path" d="M250,350 C350,300 450,400 550,350 S700,250 800,300 S950,400 1050,350" />
+<path class="route-path" d="M200,500 C300,450 400,550 500,500 S650,400 750,450 S900,550 1000,500" />
+<!-- Delivery Points -->
+<circle class="delivery-point" cx="320" cy="180" r="6" />
+<circle class="delivery-point" cx="600" cy="200" r="6" />
+<circle class="delivery-point" cx="850" cy="150" r="6" />
+<circle class="delivery-point" cx="1100" cy="200" r="6" />
+<circle class="delivery-point" cx="250" cy="350" r="6" />
+<circle class="delivery-point" cx="550" cy="350" r="6" />
+<circle class="delivery-point" cx="800" cy="300" r="6" />
+<circle class="delivery-point" cx="1050" cy="350" r="6" />
+<circle class="delivery-point" cx="200" cy="500" r="6" />
+<circle class="delivery-point" cx="500" cy="500" r="6" />
+<circle class="delivery-point" cx="750" cy="450" r="6" />
+<circle class="delivery-point" cx="1000" cy="500" r="6" />
+<!-- Driver Markers -->
+<g class="driver-marker" transform="translate(450, 220)">
+<circle cx="0" cy="0" r="8" />
+<text x="0" y="25" text-anchor="middle" fill="#10b981" font-size="12" font-weight="bold">JM</text>
+</g>
+<g class="driver-marker" transform="translate(700, 320)">
+<circle cx="0" cy="0" r="8" />
+<text x="0" y="25" text-anchor="middle" fill="#10b981" font-size="12" font-weight="bold">RB</text>
+</g>
+<g class="driver-marker" transform="translate(350, 480)">
+<circle cx="0" cy="0" r="8" />
+<text x="0" y="25" text-anchor="middle" fill="#10b981" font-size="12" font-weight="bold">AH</text>
+</g>
+</svg>
+</div>
+<div class="absolute top-4 left-4 bg-white rounded-lg shadow p-3 z-10">
+<div class="flex flex-col space-y-2">
+<label class="flex items-center text-sm">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" checked>
+<span class="checkmark"></span>
+</div>
+Active Routes
+</label>
+<label class="flex items-center text-sm">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" checked>
+<span class="checkmark"></span>
+</div>
+Delivery Points
+</label>
+<label class="flex items-center text-sm">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" checked>
+<span class="checkmark"></span>
+</div>
+Driver Locations
+</label>
+<label class="flex items-center text-sm">
+<div class="custom-checkbox mr-2">
+<input type="checkbox">
+<span class="checkmark"></span>
+</div>
+Traffic Data
+</label>
+</div>
+</div>
+</div>
+<div class="px-6 pb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="bg-gray-50 rounded-lg p-3">
+<div class="flex justify-between items-center mb-2">
+<h3 class="text-sm font-medium">North District</h3>
+<span class="text-xs text-gray-500">2 drivers</span>
+</div>
+<div class="flex items-center">
+<div class="w-full bg-gray-200 rounded-full h-2.5">
+<div class="bg-primary h-2.5 rounded-full" style="width: 75%"></div>
+</div>
+<span class="ml-2 text-xs font-medium">75%</span>
+</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-3">
+<div class="flex justify-between items-center mb-2">
+<h3 class="text-sm font-medium">East District</h3>
+<span class="text-xs text-gray-500">1 driver</span>
+</div>
+<div class="flex items-center">
+<div class="w-full bg-gray-200 rounded-full h-2.5">
+<div class="bg-green-500 h-2.5 rounded-full" style="width: 92%"></div>
+</div>
+<span class="ml-2 text-xs font-medium">92%</span>
+</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-3">
+<div class="flex justify-between items-center mb-2">
+<h3 class="text-sm font-medium">South District</h3>
+<span class="text-xs text-gray-500">3 drivers</span>
+</div>
+<div class="flex items-center">
+<div class="w-full bg-gray-200 rounded-full h-2.5">
+<div class="bg-purple-500 h-2.5 rounded-full" style="width: 45%"></div>
+</div>
+<span class="ml-2 text-xs font-medium">45%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Route Analytics -->
+<div class="bg-white rounded-lg shadow">
+<div class="border-b px-6 py-4">
+<h3 class="text-lg font-semibold">Route Analytics</h3>
+</div>
+<div class="p-6">
+<div class="mb-6">
+<h4 class="text-sm font-medium text-gray-700 mb-3">Performance Metrics</h4>
+<div class="space-y-4">
+<div class="bg-gray-50 rounded-lg p-4">
+<div class="flex justify-between items-center mb-1">
+<span class="text-sm font-medium">Delivery Efficiency</span>
+<span class="text-sm font-medium">87%</span>
+</div>
+<div class="w-full bg-gray-200 rounded-full h-2">
+<div class="bg-primary h-2 rounded-full" style="width: 87%"></div>
+</div>
+<p class="text-xs text-gray-500 mt-2">Average parcels delivered per hour</p>
+</div>
+<div class="bg-gray-50 rounded-lg p-4">
+<div class="flex justify-between items-center mb-1">
+<span class="text-sm font-medium">On-Time Delivery</span>
+<span class="text-sm font-medium">92%</span>
+</div>
+<div class="w-full bg-gray-200 rounded-full h-2">
+<div class="bg-green-500 h-2 rounded-full" style="width: 92%"></div>
+</div>
+<p class="text-xs text-gray-500 mt-2">Percentage of deliveries made within window</p>
+</div>
+<div class="bg-gray-50 rounded-lg p-4">
+<div class="flex justify-between items-center mb-1">
+<span class="text-sm font-medium">Fuel Efficiency</span>
+<span class="text-sm font-medium">78%</span>
+</div>
+<div class="w-full bg-gray-200 rounded-full h-2">
+<div class="bg-yellow-500 h-2 rounded-full" style="width: 78%"></div>
+</div>
+<p class="text-xs text-gray-500 mt-2">Optimized vs. actual miles driven</p>
+</div>
+</div>
+</div>
+<div class="mb-6">
+<h4 class="text-sm font-medium text-gray-700 mb-3">Cost Analysis</h4>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-gray-50 rounded-lg p-3">
+<p class="text-xs text-gray-500">Cost Per Delivery</p>
+<p class="text-lg font-semibold mt-1">$2.47</p>
+<div class="flex items-center mt-1">
+<span class="text-green-500 text-xs font-medium flex items-center">
+<div class="w-3 h-3 flex items-center justify-center mr-1">
+<i class="ri-arrow-down-line"></i>
+</div>
+8.3%
+</span>
+<span class="text-xs text-gray-500 ml-1">vs last month</span>
+</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-3">
+<p class="text-xs text-gray-500">Driver Earnings</p>
+<p class="text-lg font-semibold mt-1">$1.65/parcel</p>
+<div class="flex items-center mt-1">
+<span class="text-green-500 text-xs font-medium flex items-center">
+<div class="w-3 h-3 flex items-center justify-center mr-1">
+<i class="ri-arrow-up-line"></i>
+</div>
+4.2%
+</span>
+<span class="text-xs text-gray-500 ml-1">vs last month</span>
+</div>
+</div>
+</div>
+</div>
+<div>
+<h4 class="text-sm font-medium text-gray-700 mb-3">Quick Actions</h4>
+<div class="grid grid-cols-2 gap-3">
+<button class="flex items-center justify-center px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-button text-sm font-medium whitespace-nowrap">
+<div class="w-4 h-4 flex items-center justify-center mr-2">
+<i class="ri-file-chart-line"></i>
+</div>
+Detailed Report
+</button>
+<button class="flex items-center justify-center px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-button text-sm font-medium whitespace-nowrap">
+<div class="w-4 h-4 flex items-center justify-center mr-2">
+<i class="ri-download-line"></i>
+</div>
+Export Data
+</button>
+<button class="flex items-center justify-center px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-button text-sm font-medium whitespace-nowrap">
+<div class="w-4 h-4 flex items-center justify-center mr-2">
+<i class="ri-settings-line"></i>
+</div>
+Route Settings
+</button>
+<button class="flex items-center justify-center px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-button text-sm font-medium whitespace-nowrap">
+<div class="w-4 h-4 flex items-center justify-center mr-2">
+<i class="ri-user-settings-line"></i>
+</div>
+Driver Assignment
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Route Performance Chart -->
+<div class="bg-white rounded-lg shadow">
+<div class="border-b px-6 py-4 flex justify-between items-center">
+<h3 class="text-lg font-semibold">Route Performance</h3>
+<div class="flex items-center space-x-2">
+<button id="dayBtn" class="bg-primary text-white px-3 py-1 text-sm font-medium rounded-lg">Day</button>
+<button id="weekBtn" class="bg-gray-100 hover:bg-gray-200 px-3 py-1 text-sm font-medium rounded-lg text-gray-600">Week</button>
+<button id="monthBtn" class="bg-gray-100 hover:bg-gray-200 px-3 py-1 text-sm font-medium rounded-lg text-gray-600">Month</button>
+</div>
+</div>
+<div class="p-6">
+<div id="routePerformanceChart" class="h-80"></div>
+</div>
+</div>
+</main>
+</div>
+</div>
+<!-- Route Detail Modal -->
+<div id="routeDetailModal" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden flex items-center justify-center">
+<div class="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
+<div class="p-5 border-b flex justify-between items-center">
+<h3 class="text-lg font-semibold">Route Details - RT-2589</h3>
+<button id="closeRouteDetailBtn" class="text-gray-500 hover:text-gray-700">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="overflow-y-auto max-h-[calc(90vh-120px)]">
+<div class="p-5">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div>
+<h4 class="text-sm font-medium text-gray-700 mb-3">Route Information</h4>
+<div class="bg-gray-50 rounded-lg p-4 space-y-3">
+<div class="flex justify-between">
+<span class="text-sm text-gray-600">Route ID:</span>
+<span class="text-sm font-medium">RT-2589</span>
+</div>
+<div class="flex justify-between">
+<span class="text-sm text-gray-600">Area:</span>
+<span class="text-sm font-medium">North District</span>
+</div>
+<div class="flex justify-between">
+<span class="text-sm text-gray-600">Total Parcels:</span>
+<span class="text-sm font-medium">87</span>
+</div>
+<div class="flex justify-between">
+<span class="text-sm text-gray-600">Delivery Window:</span>
+<span class="text-sm font-medium">8:00 AM - 12:00 PM</span>
+</div>
+<div class="flex justify-between">
+<span class="text-sm text-gray-600">Status:</span>
+<span class="px-2 py-0.5 text-xs font-medium rounded-full bg-green-100 text-green-800">Active</span>
+</div>
+<div class="flex justify-between">
+<span class="text-sm text-gray-600">Created On:</span>
+<span class="text-sm font-medium">May 26, 2025</span>
+</div>
+</div>
+<h4 class="text-sm font-medium text-gray-700 mt-6 mb-3">Assigned Drivers</h4>
+<div class="bg-gray-50 rounded-lg p-4 space-y-4">
+<div class="flex items-center">
+<div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-medium">JM</div>
+<div class="ml-3">
+<p class="text-sm font-medium">John Miller</p>
+<p class="text-xs text-gray-500">42 deliveries assigned</p>
+</div>
+<div class="ml-auto">
+<button class="text-primary hover:text-primary-dark text-sm font-medium">Contact</button>
+</div>
+</div>
+<div class="flex items-center">
+<div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-medium">KL</div>
+<div class="ml-3">
+<p class="text-sm font-medium">Kevin Lee</p>
+<p class="text-xs text-gray-500">45 deliveries assigned</p>
+</div>
+<div class="ml-auto">
+<button class="text-primary hover:text-primary-dark text-sm font-medium">Contact</button>
+</div>
+</div>
+</div>
+</div>
+<div>
+<h4 class="text-sm font-medium text-gray-700 mb-3">Delivery Progress</h4>
+<div class="bg-gray-50 rounded-lg p-4">
+<div class="mb-4">
+<div class="flex justify-between items-center mb-1">
+<span class="text-sm font-medium">Completion Rate</span>
+<span class="text-sm font-medium">75% (65/87)</span>
+</div>
+<div class="w-full bg-gray-200 rounded-full h-2.5">
+<div class="bg-primary h-2.5 rounded-full" style="width: 75%"></div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-4">
+<div>
+<p class="text-xs text-gray-500">Delivered</p>
+<p class="text-lg font-semibold mt-1">65</p>
+</div>
+<div>
+<p class="text-xs text-gray-500">Pending</p>
+<p class="text-lg font-semibold mt-1">22</p>
+</div>
+<div>
+<p class="text-xs text-gray-500">On-Time</p>
+<p class="text-lg font-semibold mt-1">62</p>
+</div>
+<div>
+<p class="text-xs text-gray-500">Delayed</p>
+<p class="text-lg font-semibold mt-1">3</p>
+</div>
+</div>
+<div class="flex justify-between items-center mb-1">
+<span class="text-sm font-medium">Time Remaining</span>
+<span class="text-sm font-medium">1h 45m</span>
+</div>
+<div class="w-full bg-gray-200 rounded-full h-2.5 mb-4">
+<div class="bg-yellow-500 h-2.5 rounded-full" style="width: 35%"></div>
+</div>
+</div>
+<h4 class="text-sm font-medium text-gray-700 mt-6 mb-3">Route Map</h4>
+<div class="bg-gray-50 rounded-lg overflow-hidden h-40 relative">
+<div style="background-image: url('https://public.readdy.ai/gen_page/map_placeholder_1280x720.png'); background-size: cover; background-position: center; width: 100%; height: 100%;"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<button class="bg-white bg-opacity-90 px-3 py-2 rounded-lg text-sm font-medium shadow flex items-center">
+<div class="w-4 h-4 flex items-center justify-center mr-2">
+<i class="ri-fullscreen-line"></i>
+</div>
+View Full Map
+</button>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-6">
+<h4 class="text-sm font-medium text-gray-700 mb-3">Delivery List</h4>
+<div class="overflow-x-auto">
+<table class="min-w-full divide-y divide-gray-200">
+<thead>
+<tr>
+<th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Parcel ID</th>
+<th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Address</th>
+<th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Driver</th>
+<th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+<th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Delivery Time</th>
+</tr>
+</thead>
+<tbody class="bg-white divide-y divide-gray-200">
+<tr>
+<td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-700">PCL-78542</td>
+<td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">1234 Oak Street, North District</td>
+<td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">John Miller</td>
+<td class="px-4 py-3 whitespace-nowrap">
+<span class="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">Delivered</span>
+</td>
+<td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">9:15 AM</td>
+</tr>
+<tr>
+<td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-700">PCL-78543</td>
+<td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">567 Pine Avenue, North District</td>
+<td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">Kevin Lee</td>
+<td class="px-4 py-3 whitespace-nowrap">
+<span class="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">Delivered</span>
+</td>
+<td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">9:22 AM</td>
+</tr>
+<tr>
+<td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-700">PCL-78544</td>
+<td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">890 Maple Drive, North District</td>
+<td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">John Miller</td>
+<td class="px-4 py-3 whitespace-nowrap">
+<span class="px-2 py-1 text-xs font-medium rounded-full bg-yellow-100 text-yellow-800">In Transit</span>
+</td>
+<td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">--</td>
+</tr>
+<tr>
+<td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-700">PCL-78545</td>
+<td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">123 Cedar Lane, North District</td>
+<td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">Kevin Lee</td>
+<td class="px-4 py-3 whitespace-nowrap">
+<span class="px-2 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-800">Pending</span>
+</td>
+<td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">--</td>
+</tr>
+<tr>
+<td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-700">PCL-78546</td>
+<td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">456 Birch Street, North District</td>
+<td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">John Miller</td>
+<td class="px-4 py-3 whitespace-nowrap">
+<span class="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">Delivered</span>
+</td>
+<td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">10:05 AM</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="p-5 border-t flex justify-between">
+<div>
+<button class="bg-gray-100 hover:bg-gray-200 px-4 py-2 text-sm font-medium rounded-button flex items-center whitespace-nowrap">
+<div class="w-4 h-4 flex items-center justify-center mr-2">
+<i class="ri-download-line"></i>
+</div>
+Export Details
+</button>
+</div>
+<div class="flex space-x-3">
+<button class="bg-gray-100 hover:bg-gray-200 px-4 py-2 text-sm font-medium rounded-button flex items-center whitespace-nowrap">
+<div class="w-4 h-4 flex items-center justify-center mr-2">
+<i class="ri-edit-line"></i>
+</div>
+Edit Route
+</button>
+<button class="bg-primary text-white px-4 py-2 text-sm font-medium rounded-button flex items-center whitespace-nowrap">
+<div class="w-4 h-4 flex items-center justify-center mr-2">
+<i class="ri-user-add-line"></i>
+</div>
+Assign Drivers
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Route Inventory Modal -->
+<div id="routeInventoryModal" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden flex items-center justify-center">
+<div class="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
+<div class="p-5 border-b flex justify-between items-center">
+<h3 class="text-lg font-semibold">Route Inventory Management</h3>
+<button class="closeModal text-gray-500 hover:text-gray-700">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="p-6">
+<div class="mb-6">
+<div class="flex justify-between items-center mb-4">
+<h4 class="text-sm font-medium text-gray-700">Available Routes in Inventory</h4>
+<button class="bg-primary text-white px-3 py-1.5 text-sm font-medium rounded-button flex items-center">
+<div class="w-4 h-4 flex items-center justify-center mr-1.5">
+<i class="ri-add-line"></i>
+</div>
+Add to Inventory
+</button>
+</div>
+<div class="bg-gray-50 rounded-lg p-4">
+<div class="overflow-x-auto">
+<table class="min-w-full divide-y divide-gray-200">
+<thead>
+<tr>
+<th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Route ID</th>
+<th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Area</th>
+<th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Total Parcels</th>
+<th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Assigned Team</th>
+<th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Commission/Parcel</th>
+<th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-200">
+<tr class="hover:bg-gray-100">
+<td class="px-4 py-3 text-sm">RT-2589</td>
+<td class="px-4 py-3 text-sm">North District</td>
+<td class="px-4 py-3 text-sm">87</td>
+<td class="px-4 py-3 text-sm">Team Alpha</td>
+<td class="px-4 py-3 text-sm">$2.50</td>
+<td class="px-4 py-3 text-sm">
+<div class="flex space-x-2">
+<button class="text-primary hover:text-primary-dark">Edit</button>
+<button class="text-red-500 hover:text-red-600">Remove</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Team Assignment Modal -->
+<div id="teamAssignmentModal" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden flex items-center justify-center">
+<div class="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
+<div class="p-5 border-b flex justify-between items-center">
+<h3 class="text-lg font-semibold">Team Assignment</h3>
+<button class="closeModal text-gray-500 hover:text-gray-700">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="p-6">
+<div class="grid grid-cols-2 gap-6">
+<div>
+<h4 class="text-sm font-medium text-gray-700 mb-4">Teams</h4>
+<div class="space-y-4">
+<div class="bg-gray-50 rounded-lg p-4">
+<div class="flex justify-between items-center mb-3">
+<h5 class="font-medium">Team Alpha</h5>
+<span class="text-sm text-gray-500">5 members</span>
+</div>
+<div class="space-y-2">
+<div class="flex items-center justify-between text-sm">
+<span>John Miller</span>
+<span class="text-gray-500">42 parcels</span>
+</div>
+<div class="flex items-center justify-between text-sm">
+<span>Kevin Lee</span>
+<span class="text-gray-500">45 parcels</span>
+</div>
+</div>
+<button class="mt-3 text-primary hover:text-primary-dark text-sm font-medium">Manage Team</button>
+</div>
+</div>
+</div>
+<div>
+<h4 class="text-sm font-medium text-gray-700 mb-4">Route Assignment</h4>
+<div class="bg-gray-50 rounded-lg p-4">
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Select Route</label>
+<select class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+<option>RT-2589 - North District (87 parcels)</option>
+<option>RT-2590 - East District (64 parcels)</option>
+</select>
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Assign to Team</label>
+<select class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+<option>Team Alpha</option>
+<option>Team Beta</option>
+</select>
+</div>
+<button class="w-full bg-primary text-white px-4 py-2 rounded-button text-sm font-medium">Assign Route</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Commission Management Modal -->
+<div id="commissionModal" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden flex items-center justify-center">
+<div class="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
+<div class="p-5 border-b flex justify-between items-center">
+<h3 class="text-lg font-semibold">Commission Management</h3>
+<button class="closeModal text-gray-500 hover:text-gray-700">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="p-6">
+<div class="grid grid-cols-2 gap-6">
+<div>
+<h4 class="text-sm font-medium text-gray-700 mb-4">Route Commission Rates</h4>
+<div class="space-y-4">
+<div class="bg-gray-50 rounded-lg p-4">
+<div class="mb-3">
+<label class="block text-sm font-medium text-gray-700 mb-1">Route</label>
+<select class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+<option>RT-2589 - North District</option>
+<option>RT-2590 - East District</option>
+</select>
+</div>
+<div class="mb-3">
+<label class="block text-sm font-medium text-gray-700 mb-1">Commission per Parcel</label>
+<div class="relative">
+<span class="absolute left-3 top-2 text-gray-500">$</span>
+<input type="number" class="w-full pl-7 pr-3 py-2 border border-gray-300 rounded-lg" value="2.50" step="0.10">
+</div>
+</div>
+<button class="w-full bg-primary text-white px-4 py-2 rounded-button text-sm font-medium">Update Rate</button>
+</div>
+</div>
+</div>
+<div>
+<h4 class="text-sm font-medium text-gray-700 mb-4">Team Commission Rates</h4>
+<div class="bg-gray-50 rounded-lg p-4">
+<div class="mb-3">
+<label class="block text-sm font-medium text-gray-700 mb-1">Team</label>
+<select class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+<option>Team Alpha</option>
+<option>Team Beta</option>
+</select>
+</div>
+<div class="mb-3">
+<label class="block text-sm font-medium text-gray-700 mb-1">Base Commission per Parcel</label>
+<div class="relative">
+<span class="absolute left-3 top-2 text-gray-500">$</span>
+<input type="number" class="w-full pl-7 pr-3 py-2 border border-gray-300 rounded-lg" value="2.00" step="0.10">
+</div>
+</div>
+<div class="mb-3">
+<label class="block text-sm font-medium text-gray-700 mb-1">Performance Bonus</label>
+<div class="relative">
+<span class="absolute left-3 top-2 text-gray-500">$</span>
+<input type="number" class="w-full pl-7 pr-3 py-2 border border-gray-300 rounded-lg" value="0.50" step="0.10">
+</div>
+</div>
+<button class="w-full bg-primary text-white px-4 py-2 rounded-button text-sm font-medium">Update Team Rates</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Multi-step Create Route Form -->
+<div id="createRouteForm" class="multi-step-form-container">
+<div class="multi-step-form">
+<div class="p-5 border-b flex justify-between items-center">
+<h3 class="text-lg font-semibold">Create New Route</h3>
+<button id="closeCreateRouteBtn" class="text-gray-500 hover:text-gray-700">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="p-5">
+<!-- Step Indicators -->
+<div class="flex items-center mb-8">
+<div class="step-indicator active">1</div>
+<div class="step-line"></div>
+<div class="step-indicator">2</div>
+<div class="step-line"></div>
+<div class="step-indicator">3</div>
+<div class="step-line"></div>
+<div class="step-indicator">4</div>
+<div class="step-line"></div>
+<div class="step-indicator">5</div>
+</div>
+<!-- Step 1: Basic Route Information -->
+<div class="step active" id="step1">
+<h4 class="text-lg font-medium mb-4">Basic Route Information</h4>
+<div class="space-y-4">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Route Name</label>
+<input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary" placeholder="Enter route name">
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Area/District</label>
+<div class="relative">
+<select class="w-full pl-3 pr-10 py-2 border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+<option>North District</option>
+<option>South District</option>
+<option>East District</option>
+<option>West District</option>
+<option>Central District</option>
+<option>Northwest District</option>
+<option>Northeast District</option>
+<option>Southwest District</option>
+<option>Southeast District</option>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+<div class="w-5 h-5 flex items-center justify-center text-gray-400">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</div>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Route Type</label>
+<div class="flex space-x-4">
+<label class="custom-radio">
+<input type="radio" name="routeType" checked>
+<span class="radio-mark"></span>
+Standard
+</label>
+<label class="custom-radio">
+<input type="radio" name="routeType">
+<span class="radio-mark"></span>
+Express
+</label>
+<label class="custom-radio">
+<input type="radio" name="routeType">
+<span class="radio-mark"></span>
+Heavy Package
+</label>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Delivery Date</label>
+<input type="date" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Start Time</label>
+<input type="time" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">End Time</label>
+<input type="time" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Description (Optional)</label>
+<textarea class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary" rows="3" placeholder="Enter route description"></textarea>
+</div>
+</div>
+</div>
+<!-- Step 2: Address Selection -->
+<div class="step" id="step2">
+<h4 class="text-lg font-medium mb-4">Address Selection</h4>
+<div class="mb-4">
+<div class="relative">
+<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+<div class="w-4 h-4 flex items-center justify-center text-gray-400">
+<i class="ri-search-line"></i>
+</div>
+</div>
+<input type="text" class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary" placeholder="Search addresses or upload CSV file">
+<div class="absolute inset-y-0 right-0 flex items-center pr-3">
+<button class="text-primary hover:text-primary-dark">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-upload-line"></i>
+</div>
+</button>
+</div>
+</div>
+</div>
+<div class="h-64 border border-gray-300 rounded-lg mb-4 overflow-hidden">
+<div style="background-image: url('https://public.readdy.ai/gen_page/map_placeholder_1280x720.png'); background-size: cover; background-position: center; width: 100%; height: 100%;"></div>
+</div>
+<div class="mb-4">
+<h5 class="text-sm font-medium text-gray-700 mb-2">Selected Addresses (12)</h5>
+<div class="max-h-48 overflow-y-auto border border-gray-300 rounded-lg p-2">
+<div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded">
+<div class="flex items-center">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" checked>
+<span class="checkmark"></span>
+</div>
+<span class="text-sm">1234 Oak Street, North District</span>
+</div>
+<button class="text-gray-500 hover:text-red-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-delete-bin-line"></i>
+</div>
+</button>
+</div>
+<div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded">
+<div class="flex items-center">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" checked>
+<span class="checkmark"></span>
+</div>
+<span class="text-sm">567 Pine Avenue, North District</span>
+</div>
+<button class="text-gray-500 hover:text-red-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-delete-bin-line"></i>
+</div>
+</button>
+</div>
+<div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded">
+<div class="flex items-center">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" checked>
+<span class="checkmark"></span>
+</div>
+<span class="text-sm">890 Maple Drive, North District</span>
+</div>
+<button class="text-gray-500 hover:text-red-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-delete-bin-line"></i>
+</div>
+</button>
+</div>
+<div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded">
+<div class="flex items-center">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" checked>
+<span class="checkmark"></span>
+</div>
+<span class="text-sm">123 Cedar Lane, North District</span>
+</div>
+<button class="text-gray-500 hover:text-red-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-delete-bin-line"></i>
+</div>
+</button>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<button class="bg-primary text-white px-4 py-2 text-sm font-medium rounded-button flex items-center whitespace-nowrap">
+<div class="w-4 h-4 flex items-center justify-center mr-2">
+<i class="ri-add-line"></i>
+</div>
+Add Address
+</button>
+<div class="text-sm text-gray-700">
+Total Parcels: <span class="font-medium">12</span>
+</div>
+</div>
+</div>
+<!-- Step 3: Delivery Window Settings -->
+<div class="step" id="step3">
+<h4 class="text-lg font-medium mb-4">Delivery Window Settings</h4>
+<div class="space-y-6">
+<div>
+<h5 class="text-sm font-medium text-gray-700 mb-3">Delivery Priority</h5>
+<div class="flex space-x-4">
+<label class="custom-radio">
+<input type="radio" name="deliveryPriority" checked>
+<span class="radio-mark"></span>
+Optimize for Speed
+</label>
+<label class="custom-radio">
+<input type="radio" name="deliveryPriority">
+<span class="radio-mark"></span>
+Optimize for Cost
+</label>
+<label class="custom-radio">
+<input type="radio" name="deliveryPriority">
+<span class="radio-mark"></span>
+Balanced
+</label>
+</div>
+</div>
+<div>
+<h5 class="text-sm font-medium text-gray-700 mb-3">Time Windows</h5>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+<div>
+<label class="block text-sm text-gray-600 mb-1">Delivery Start Time</label>
+<input type="time" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div>
+<label class="block text-sm text-gray-600 mb-1">Delivery End Time</label>
+<input type="time" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+</div>
+<div class="flex items-center mb-4">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" id="specificTimeWindows">
+<span class="checkmark"></span>
+</div>
+<label for="specificTimeWindows" class="text-sm">Set specific time windows for individual addresses</label>
+</div>
+<div class="border border-gray-300 rounded-lg p-4 bg-gray-50">
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Address</label>
+<div class="relative">
+<select class="w-full pl-3 pr-10 py-2 border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+<option>1234 Oak Street, North District</option>
+<option>567 Pine Avenue, North District</option>
+<option>890 Maple Drive, North District</option>
+<option>123 Cedar Lane, North District</option>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+<div class="w-5 h-5 flex items-center justify-center text-gray-400">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<label class="block text-sm text-gray-600 mb-1">Specific Start Time</label>
+<input type="time" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div>
+<label class="block text-sm text-gray-600 mb-1">Specific End Time</label>
+<input type="time" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+</div>
+<button class="mt-4 bg-gray-100 hover:bg-gray-200 px-4 py-2 text-sm font-medium rounded-button flex items-center whitespace-nowrap">
+<div class="w-4 h-4 flex items-center justify-center mr-2">
+<i class="ri-add-line"></i>
+</div>
+Add Time Window
+</button>
+</div>
+</div>
+<div>
+<h5 class="text-sm font-medium text-gray-700 mb-3">Special Instructions</h5>
+<textarea class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary" rows="3" placeholder="Enter any special delivery instructions"></textarea>
+</div>
+</div>
+</div>
+<!-- Step 4: Driver Assignment -->
+<div class="step" id="step4">
+<h4 class="text-lg font-medium mb-4">Driver Assignment</h4>
+<div class="space-y-6">
+<div>
+<h5 class="text-sm font-medium text-gray-700 mb-3">Assignment Method</h5>
+<div class="flex space-x-4">
+<label class="custom-radio">
+<input type="radio" name="assignmentMethod" checked>
+<span class="radio-mark"></span>
+Manual Assignment
+</label>
+<label class="custom-radio">
+<input type="radio" name="assignmentMethod">
+<span class="radio-mark"></span>
+Auto-Assign
+</label>
+</div>
+</div>
+<div>
+<h5 class="text-sm font-medium text-gray-700 mb-3">Available Drivers</h5>
+<div class="relative mb-4">
+<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+<div class="w-4 h-4 flex items-center justify-center text-gray-400">
+<i class="ri-search-line"></i>
+</div>
+</div>
+<input type="text" class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary" placeholder="Search drivers">
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="border border-gray-300 rounded-lg p-4 flex items-center">
+<div class="custom-checkbox mr-3">
+<input type="checkbox" checked>
+<span class="checkmark"></span>
+</div>
+<div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-medium">JM</div>
+<div class="ml-3">
+<p class="text-sm font-medium">John Miller</p>
+<p class="text-xs text-gray-500">Available: 8:00 AM - 4:00 PM</p>
+</div>
+</div>
+<div class="border border-gray-300 rounded-lg p-4 flex items-center">
+<div class="custom-checkbox mr-3">
+<input type="checkbox" checked>
+<span class="checkmark"></span>
+</div>
+<div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-medium">KL</div>
+<div class="ml-3">
+<p class="text-sm font-medium">Kevin Lee</p>
+<p class="text-xs text-gray-500">Available: 8:00 AM - 4:00 PM</p>
+</div>
+</div>
+<div class="border border-gray-300 rounded-lg p-4 flex items-center">
+<div class="custom-checkbox mr-3">
+<input type="checkbox">
+<span class="checkmark"></span>
+</div>
+<div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-medium">RB</div>
+<div class="ml-3">
+<p class="text-sm font-medium">Rachel Brown</p>
+<p class="text-xs text-gray-500">Available: 9:00 AM - 5:00 PM</p>
+</div>
+</div>
+<div class="border border-gray-300 rounded-lg p-4 flex items-center">
+<div class="custom-checkbox mr-3">
+<input type="checkbox">
+<span class="checkmark"></span>
+</div>
+<div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600 font-medium">AH</div>
+<div class="ml-3">
+<p class="text-sm font-medium">Alex Hernandez</p>
+<p class="text-xs text-gray-500">Available: 8:30 AM - 4:30 PM</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<h5 class="text-sm font-medium text-gray-700 mb-3">Parcel Distribution</h5>
+<div class="bg-gray-50 rounded-lg p-4">
+<div class="mb-4">
+<div class="flex justify-between items-center mb-1">
+<span class="text-sm">John Miller</span>
+<span class="text-sm font-medium">6 parcels</span>
+</div>
+<div class="w-full bg-gray-200 rounded-full h-2.5">
+<div class="bg-blue-500 h-2.5 rounded-full" style="width: 50%"></div>
+</div>
+</div>
+<div class="mb-4">
+<div class="flex justify-between items-center mb-1">
+<span class="text-sm">Kevin Lee</span>
+<span class="text-sm font-medium">6 parcels</span>
+</div>
+<div class="w-full bg-gray-200 rounded-full h-2.5">
+<div class="bg-green-500 h-2.5 rounded-full" style="width: 50%"></div>
+</div>
+</div>
+<div class="text-sm text-gray-500">
+Remaining: <span class="font-medium">0 parcels</span>
+</div>
+</div>
+</div>
+<div>
+<h5 class="text-sm font-medium text-gray-700 mb-3">Driver Instructions</h5>
+<textarea class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary" rows="3" placeholder="Enter instructions for assigned drivers"></textarea>
+</div>
+</div>
+</div>
+<!-- Step 5: Route Optimization -->
+<div class="step" id="step5">
+<h4 class="text-lg font-medium mb-4">Route Optimization</h4>
+<div class="space-y-6">
+<div>
+<h5 class="text-sm font-medium text-gray-700 mb-3">Optimization Preferences</h5>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="border border-gray-300 rounded-lg p-4">
+<label class="flex items-center">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" checked>
+<span class="checkmark"></span>
+</div>
+<div>
+<span class="text-sm font-medium">Minimize Distance</span>
+<p class="text-xs text-gray-500 mt-1">Optimize routes to reduce total distance traveled</p>
+</div>
+</label>
+</div>
+<div class="border border-gray-300 rounded-lg p-4">
+<label class="flex items-center">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" checked>
+<span class="checkmark"></span>
+</div>
+<div>
+<span class="text-sm font-medium">Avoid Traffic</span>
+<p class="text-xs text-gray-500 mt-1">Plan routes to avoid known traffic congestion</p>
+</div>
+</label>
+</div>
+<div class="border border-gray-300 rounded-lg p-4">
+<label class="flex items-center">
+<div class="custom-checkbox mr-2">
+<input type="checkbox">
+<span class="checkmark"></span>
+</div>
+<div>
+<span class="text-sm font-medium">Prioritize Time Windows</span>
+<p class="text-xs text-gray-500 mt-1">Ensure deliveries within specific time windows</p>
+</div>
+</label>
+</div>
+<div class="border border-gray-300 rounded-lg p-4">
+<label class="flex items-center">
+<div class="custom-checkbox mr-2">
+<input type="checkbox">
+<span class="checkmark"></span>
+</div>
+<div>
+<span class="text-sm font-medium">Balance Driver Workload</span>
+<p class="text-xs text-gray-500 mt-1">Distribute parcels evenly among drivers</p>
+</div>
+</label>
+</div>
+</div>
+</div>
+<div>
+<h5 class="text-sm font-medium text-gray-700 mb-3">Route Preview</h5>
+<div class="h-64 border border-gray-300 rounded-lg mb-4 overflow-hidden">
+<div style="background-image: url('https://public.readdy.ai/gen_page/map_placeholder_1280x720.png'); background-size: cover; background-position: center; width: 100%; height: 100%;"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="bg-gray-50 rounded-lg p-3">
+<p class="text-xs text-gray-500">Total Distance</p>
+<p class="text-lg font-semibold mt-1">42.5 miles</p>
+</div>
+<div class="bg-gray-50 rounded-lg p-3">
+<p class="text-xs text-gray-500">Estimated Time</p>
+<p class="text-lg font-semibold mt-1">3h 45m</p>
+</div>
+<div class="bg-gray-50 rounded-lg p-3">
+<p class="text-xs text-gray-500">Fuel Consumption</p>
+<p class="text-lg font-semibold mt-1">4.2 gallons</p>
+</div>
+</div>
+</div>
+<div>
+<h5 class="text-sm font-medium text-gray-700 mb-3">Route Summary</h5>
+<div class="bg-gray-50 rounded-lg p-4 space-y-3">
+<div class="flex justify-between">
+<span class="text-sm text-gray-600">Route Name:</span>
+<span class="text-sm font-medium">North District Route</span>
+</div>
+<div class="flex justify-between">
+<span class="text-sm text-gray-600">Area:</span>
+<span class="text-sm font-medium">North District</span>
+</div>
+<div class="flex justify-between">
+<span class="text-sm text-gray-600">Total Parcels:</span>
+<span class="text-sm font-medium">12</span>
+</div>
+<div class="flex justify-between">
+<span class="text-sm text-gray-600">Assigned Drivers:</span>
+<span class="text-sm font-medium">2 (John M., Kevin L.)</span>
+</div>
+<div class="flex justify-between">
+<span class="text-sm text-gray-600">Delivery Window:</span>
+<span class="text-sm font-medium">8:00 AM - 12:00 PM</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-5 border-t flex justify-between">
+<button id="prevStepBtn" class="bg-gray-100 hover:bg-gray-200 px-4 py-2 text-sm font-medium rounded-button flex items-center whitespace-nowrap">
+<div class="w-4 h-4 flex items-center justify-center mr-2">
+<i class="ri-arrow-left-line"></i>
+</div>
+Previous
+</button>
+<button id="nextStepBtn" class="bg-primary text-white px-4 py-2 text-sm font-medium rounded-button flex items-center whitespace-nowrap">
+Next
+<div class="w-4 h-4 flex items-center justify-center ml-2">
+<i class="ri-arrow-right-line"></i>
+</div>
+</button>
+</div>
+</div>
+</div>
+<script id="routeManagementScript">
+document.addEventListener('DOMContentLoaded', function() {
+const notificationBtn = document.getElementById('notificationBtn');
+const messageBtn = document.getElementById('messageBtn');
+const messagePanel = document.getElementById('messagePanel');
+const messageIndicator = document.getElementById('messageIndicator');
+let isMessagePanelOpen = false;
+messageBtn.addEventListener('click', (e) => {
+e.stopPropagation();
+isMessagePanelOpen = !isMessagePanelOpen;
+if (isMessagePanelOpen) {
+messagePanel.classList.remove('hidden');
+notificationPanel.classList.add('hidden');
+isNotificationPanelOpen = false;
+} else {
+messagePanel.classList.add('hidden');
+}
+});
+document.addEventListener('click', (e) => {
+if (!messagePanel.contains(e.target) && !messageBtn.contains(e.target)) {
+messagePanel.classList.add('hidden');
+isMessagePanelOpen = false;
+}
+});
+messagePanel.addEventListener('click', (e) => {
+const message = e.target.closest('.unread');
+if (message) {
+message.classList.remove('unread');
+message.querySelector('.bg-blue-100.text-blue-800')?.remove();
+if (messagePanel.querySelectorAll('.unread').length === 0) {
+messageIndicator.classList.add('hidden');
+}
+}
+});
+document.getElementById('newMessageBtn').addEventListener('click', () => {
+// Add your new message functionality here
+console.log('New message button clicked');
+});
+const notificationPanel = document.getElementById('notificationPanel');
+const notificationIndicator = document.getElementById('notificationIndicator');
+const markAllReadBtn = document.getElementById('markAllReadBtn');
+let isNotificationPanelOpen = false;
+notificationBtn.addEventListener('click', (e) => {
+e.stopPropagation();
+isNotificationPanelOpen = !isNotificationPanelOpen;
+if (isNotificationPanelOpen) {
+notificationPanel.classList.remove('hidden');
+} else {
+notificationPanel.classList.add('hidden');
+}
+});
+document.addEventListener('click', (e) => {
+if (!notificationPanel.contains(e.target) && !notificationBtn.contains(e.target)) {
+notificationPanel.classList.add('hidden');
+isNotificationPanelOpen = false;
+}
+});
+markAllReadBtn.addEventListener('click', () => {
+const unreadNotifications = notificationPanel.querySelectorAll('.unread');
+unreadNotifications.forEach(notification => {
+notification.classList.remove('unread');
+notification.querySelector('.bg-blue-500')?.remove();
+});
+notificationIndicator.classList.add('hidden');
+});
+notificationPanel.addEventListener('click', (e) => {
+const notification = e.target.closest('.unread');
+if (notification) {
+notification.classList.remove('unread');
+notification.querySelector('.bg-blue-500')?.remove();
+if (notificationPanel.querySelectorAll('.unread').length === 0) {
+notificationIndicator.classList.add('hidden');
+}
+}
+});
+// Modal Management
+const manageInventoryBtn = document.getElementById('manageInventoryBtn');
+const manageTeamsBtn = document.getElementById('manageTeamsBtn');
+const manageCommissionsBtn = document.getElementById('manageCommissionsBtn');
+const routeInventoryModal = document.getElementById('routeInventoryModal');
+const teamAssignmentModal = document.getElementById('teamAssignmentModal');
+const commissionModal = document.getElementById('commissionModal');
+const closeModalButtons = document.querySelectorAll('.closeModal');
+const openModal = (modal) => {
+modal.classList.remove('hidden');
+modal.classList.add('flex');
+document.body.style.overflow = 'hidden';
+};
+const closeModal = (modal) => {
+modal.classList.add('hidden');
+modal.classList.remove('flex');
+document.body.style.overflow = 'auto';
+};
+manageInventoryBtn.addEventListener('click', () => openModal(routeInventoryModal));
+manageTeamsBtn.addEventListener('click', () => openModal(teamAssignmentModal));
+manageCommissionsBtn.addEventListener('click', () => openModal(commissionModal));
+closeModalButtons.forEach(button => {
+button.addEventListener('click', () => {
+const modal = button.closest('.fixed');
+closeModal(modal);
+});
+});
+// Close modals when clicking outside
+[routeInventoryModal, teamAssignmentModal, commissionModal].forEach(modal => {
+modal.addEventListener('click', (e) => {
+if (e.target === modal) {
+closeModal(modal);
+}
+});
+});
+const routePerformanceChart = echarts.init(document.getElementById('routePerformanceChart'));
+const dayBtn = document.getElementById('dayBtn');
+const weekBtn = document.getElementById('weekBtn');
+const monthBtn = document.getElementById('monthBtn');
+let data = {
+day: {
+xAxis: ['8 AM', '9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM'],
+deliveries: [12, 25, 38, 42, 35, 30, 45, 40, 28, 15],
+onTimeRate: [98, 97, 95, 96, 94, 98, 97, 96, 95, 99]
+},
+week: {
+xAxis: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+deliveries: [120, 132, 145, 135, 142, 138, 128],
+onTimeRate: [96.5, 97.2, 95.8, 96.9, 97.5, 96.2, 97.8]
+},
+month: {
+xAxis: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+deliveries: [850, 920, 880, 940],
+onTimeRate: [96.8, 97.1, 96.5, 97.4]
+}
+};
+let currentView = 'day';
+const updateChartData = (view) => {
+option.xAxis.data = data[view].xAxis;
+option.series[0].data = data[view].deliveries;
+option.series[1].data = data[view].onTimeRate;
+routePerformanceChart.setOption(option);
+};
+const switchView = (view) => {
+currentView = view;
+dayBtn.className = view === 'day' ?
+'bg-primary text-white px-3 py-1 text-sm font-medium rounded-lg' :
+'bg-gray-100 hover:bg-gray-200 px-3 py-1 text-sm font-medium rounded-lg text-gray-600';
+weekBtn.className = view === 'week' ?
+'bg-primary text-white px-3 py-1 text-sm font-medium rounded-lg' :
+'bg-gray-100 hover:bg-gray-200 px-3 py-1 text-sm font-medium rounded-lg text-gray-600';
+monthBtn.className = view === 'month' ?
+'bg-primary text-white px-3 py-1 text-sm font-medium rounded-lg' :
+'bg-gray-100 hover:bg-gray-200 px-3 py-1 text-sm font-medium rounded-lg text-gray-600';
+updateChartData(view);
+};
+dayBtn.addEventListener('click', () => switchView('day'));
+weekBtn.addEventListener('click', () => switchView('week'));
+monthBtn.addEventListener('click', () => switchView('month'));
+const option = {
+animation: false,
+tooltip: {
+trigger: 'axis',
+backgroundColor: 'rgba(255, 255, 255, 0.95)',
+borderColor: '#e5e7eb',
+padding: [8, 12],
+textStyle: {
+color: '#1f2937',
+fontSize: 12
+}
+},
+legend: {
+data: ['Deliveries', 'On-Time Rate'],
+top: 0,
+textStyle: {
+color: '#1f2937'
+}
+},
+grid: {
+left: '3%',
+right: '4%',
+bottom: '3%',
+top: '40px',
+containLabel: true
+},
+xAxis: {
+type: 'category',
+data: data.day.xAxis,
+axisLine: {
+lineStyle: {
+color: '#e5e7eb'
+}
+},
+axisLabel: {
+color: '#1f2937'
+}
+},
+yAxis: [
+{
+type: 'value',
+name: 'Deliveries',
+position: 'left',
+axisLine: {
+lineStyle: {
+color: '#e5e7eb'
+}
+},
+axisLabel: {
+color: '#1f2937',
+formatter: '{value}'
+},
+splitLine: {
+lineStyle: {
+color: '#f3f4f6'
+}
+}
+},
+{
+type: 'value',
+name: 'On-Time %',
+min: 80,
+max: 100,
+position: 'right',
+axisLine: {
+lineStyle: {
+color: '#e5e7eb'
+}
+},
+axisLabel: {
+color: '#1f2937',
+formatter: '{value}%'
+},
+splitLine: {
+show: false
+}
+}
+],
+series: [
+{
+name: 'Deliveries',
+type: 'bar',
+data: data.day.deliveries,
+itemStyle: {
+color: 'rgba(87, 181, 231, 1)',
+borderRadius: [4, 4, 0, 0]
+},
+barWidth: '40%'
+},
+{
+name: 'On-Time Rate',
+type: 'line',
+yAxisIndex: 1,
+smooth: true,
+data: data.day.onTimeRate,
+itemStyle: {
+color: 'rgba(141, 211, 199, 1)'
+},
+lineStyle: {
+width: 3
+},
+symbolSize: 0
+}
+]
+};
+routePerformanceChart.setOption(option);
+window.addEventListener('resize', function() {
+routePerformanceChart.resize();
+});
+// Tab switching
+const tabButtons = document.querySelectorAll('.tab-button');
+tabButtons.forEach(button => {
+button.addEventListener('click', function() {
+tabButtons.forEach(btn => {
+btn.classList.remove('active');
+btn.classList.remove('text-primary');
+btn.classList.add('text-gray-500');
+});
+this.classList.add('active');
+this.classList.add('text-primary');
+this.classList.remove('text-gray-500');
+});
+});
+// Route detail modal
+const routeDetailModal = document.getElementById('routeDetailModal');
+const closeRouteDetailBtn = document.getElementById('closeRouteDetailBtn');
+const viewButtons = document.querySelectorAll('.view-route-btn');
+const openRouteDetailModal = (routeId) => {
+routeDetailModal.classList.remove('hidden');
+routeDetailModal.classList.add('flex');
+document.body.style.overflow = 'hidden';
+// Find the route row data
+const routeRow = document.querySelector(`[data-route-id="${routeId}"]`).closest('tr');
+// Update modal content with route data
+const routeName = routeRow.querySelector('td:nth-child(1)').textContent;
+const area = routeRow.querySelector('td:nth-child(2)').textContent;
+const parcels = routeRow.querySelector('td:nth-child(3)').textContent;
+const deliveryWindow = routeRow.querySelector('td:nth-child(5)').textContent;
+const status = routeRow.querySelector('td:nth-child(7) span').textContent;
+// Update modal title
+document.querySelector('#routeDetailModal h3').textContent = `Route Details - ${routeName}`;
+// Update route information
+const routeInfo = routeDetailModal.querySelector('.bg-gray-50.rounded-lg.p-4.space-y-3');
+routeInfo.innerHTML = `
+<div class="flex justify-between">
+<span class="text-sm text-gray-600">Route ID:</span>
+<span class="text-sm font-medium">${routeName}</span>
+</div>
+<div class="flex justify-between">
+<span class="text-sm text-gray-600">Area:</span>
+<span class="text-sm font-medium">${area}</span>
+</div>
+<div class="flex justify-between">
+<span class="text-sm text-gray-600">Total Parcels:</span>
+<span class="text-sm font-medium">${parcels}</span>
+</div>
+<div class="flex justify-between">
+<span class="text-sm text-gray-600">Delivery Window:</span>
+<span class="text-sm font-medium">${deliveryWindow}</span>
+</div>
+<div class="flex justify-between">
+<span class="text-sm text-gray-600">Status:</span>
+<span class="px-2 py-0.5 text-xs font-medium rounded-full ${
+status === 'Active' ? 'bg-green-100 text-green-800' :
+status === 'Completed' ? 'bg-blue-100 text-blue-800' :
+status === 'In Progress' ? 'bg-yellow-100 text-yellow-800' :
+'bg-gray-100 text-gray-800'
+}">${status}</span>
+</div>
+<div class="flex justify-between">
+<span class="text-sm text-gray-600">Created On:</span>
+<span class="text-sm font-medium">May 26, 2025</span>
+</div>
+`;
+};
+viewButtons.forEach(button => {
+button.addEventListener('click', (e) => {
+e.stopPropagation();
+const routeId = button.getAttribute('data-route-id');
+openRouteDetailModal(routeId);
+});
+});
+closeRouteDetailBtn.addEventListener('click', () => {
+routeDetailModal.classList.add('hidden');
+routeDetailModal.classList.remove('flex');
+document.body.style.overflow = 'auto';
+});
+// Close modal when clicking outside
+routeDetailModal.addEventListener('click', (e) => {
+if (e.target === routeDetailModal) {
+routeDetailModal.classList.add('hidden');
+routeDetailModal.classList.remove('flex');
+document.body.style.overflow = 'auto';
+}
+});
+// Create Route Form
+// Create Route Form Management
+const createRouteBtn = document.getElementById('createRouteBtn');
+const createRouteForm = document.getElementById('createRouteForm');
+const closeCreateRouteBtn = document.getElementById('closeCreateRouteBtn');
+const nextStepBtn = document.getElementById('nextStepBtn');
+const prevStepBtn = document.getElementById('prevStepBtn');
+const steps = document.querySelectorAll('.step');
+const stepIndicators = document.querySelectorAll('.step-indicator');
+const stepLines = document.querySelectorAll('.step-line');
+let currentStep = 0;
+const openCreateRouteForm = () => {
+resetForm();
+createRouteForm.classList.remove('hidden');
+createRouteForm.classList.add('flex');
+document.body.style.overflow = 'hidden';
+};
+const closeCreateRouteForm = () => {
+createRouteForm.classList.add('hidden');
+createRouteForm.classList.remove('flex');
+document.body.style.overflow = 'auto';
+};
+createRouteBtn.addEventListener('click', openCreateRouteForm);
+closeCreateRouteBtn.addEventListener('click', closeCreateRouteForm);
+// Close form when clicking outside
+createRouteForm.addEventListener('click', (e) => {
+if (e.target === createRouteForm) {
+closeCreateRouteForm();
+}
+});
+// Stop event propagation for form content
+document.querySelector('.multi-step-form').addEventListener('click', (e) => {
+e.stopPropagation();
+});
+const resetForm = () => {
+// Reset all form inputs
+createRouteForm.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], textarea').forEach(input => {
+input.value = '';
+});
+// Reset all checkboxes and radio buttons
+createRouteForm.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach(input => {
+input.checked = false;
+});
+// Check default radio buttons
+createRouteForm.querySelector('input[name="routeType"]').checked = true;
+createRouteForm.querySelector('input[name="deliveryPriority"]').checked = true;
+createRouteForm.querySelector('input[name="assignmentMethod"]').checked = true;
+// Reset step to first
+currentStep = 0;
+showStep(currentStep);
+};
+createRouteBtn.addEventListener('click', function() {
+resetForm();
+createRouteForm.classList.remove('hidden');
+createRouteForm.classList.add('flex');
+document.body.style.overflow = 'hidden';
+});
+closeCreateRouteBtn.addEventListener('click', function() {
+createRouteForm.classList.add('hidden');
+createRouteForm.classList.remove('flex');
+document.body.style.overflow = 'auto';
+});
+const updateStepIndicators = () => {
+stepIndicators.forEach((indicator, index) => {
+if (index < currentStep) {
+indicator.classList.remove('active');
+indicator.classList.add('completed');
+} else if (index === currentStep) {
+indicator.classList.add('active');
+indicator.classList.remove('completed');
+} else {
+indicator.classList.remove('active');
+indicator.classList.remove('completed');
+}
+});
+stepLines.forEach((line, index) => {
+if (index < currentStep) {
+line.classList.add('active');
+} else {
+line.classList.remove('active');
+}
+});
+};
+const showStep = (stepIndex) => {
+steps.forEach((step, index) => {
+if (index === stepIndex) {
+step.classList.add('active');
+} else {
+step.classList.remove('active');
+}
+});
+prevStepBtn.style.display = stepIndex === 0 ? 'none' : 'flex';
+nextStepBtn.innerHTML = stepIndex === steps.length - 1 ?
+'Create Route <div class="w-4 h-4 flex items-center justify-center ml-2"><i class="ri-check-line"></i></div>' :
+'Next <div class="w-4 h-4 flex items-center justify-center ml-2"><i class="ri-arrow-right-line"></i></div>';
+updateStepIndicators();
+};
+nextStepBtn.addEventListener('click', function() {
+if (currentStep < steps.length - 1) {
+currentStep++;
+showStep(currentStep);
+} else {
+// Submit form
+createRouteForm.style.display = 'none';
+document.body.style.overflow = 'auto';
+// Reset to first step for next time
+currentStep = 0;
+showStep(currentStep);
+}
+});
+prevStepBtn.addEventListener('click', function() {
+if (currentStep > 0) {
+currentStep--;
+showStep(currentStep);
+}
+});
+// Initialize the form
+showStep(currentStep);
+});
+</script>
+<script id="themeScript">
+document.addEventListener('DOMContentLoaded', function() {
+const themeToggle = document.getElementById('themeToggle');
+const html = document.documentElement;
+const enableDarkMode = () => {
+html.classList.add('dark');
+localStorage.setItem('theme', 'dark');
+};
+const disableDarkMode = () => {
+html.classList.remove('dark');
+localStorage.setItem('theme', 'light');
+};
+// Check initial theme
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+themeToggle.checked = true;
+enableDarkMode();
+}
+themeToggle.addEventListener('change', function() {
+if (this.checked) {
+enableDarkMode();
+} else {
+disableDarkMode();
+}
+});
+});
+</script>
+</body>
+</html>

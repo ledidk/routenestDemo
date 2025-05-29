@@ -1,0 +1,2289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ParcelPilot - Performance Tracking</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+<script>
+tailwind.config={theme:{extend:{colors:{primary:'#4f46e5',secondary:'#10b981'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}
+</script>
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+.custom-scrollbar::-webkit-scrollbar {
+width: 6px;
+height: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+background: #f1f1f1;
+}
+.dark .custom-scrollbar::-webkit-scrollbar-track {
+background: #1f2937;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+background: #d1d5db;
+border-radius: 3px;
+}
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+background: #4b5563;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+background: #9ca3af;
+}
+.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+background: #6b7280;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+-webkit-appearance: none;
+margin: 0;
+}
+.custom-checkbox {
+position: relative;
+width: 18px;
+height: 18px;
+cursor: pointer;
+}
+.custom-checkbox input {
+position: absolute;
+opacity: 0;
+cursor: pointer;
+}
+.checkmark {
+position: absolute;
+top: 0;
+left: 0;
+height: 18px;
+width: 18px;
+background-color: #fff;
+border: 1.5px solid #d1d5db;
+border-radius: 4px;
+}
+.custom-checkbox input:checked ~ .checkmark {
+background-color: #4f46e5;
+border-color: #4f46e5;
+}
+.checkmark:after {
+content: "";
+position: absolute;
+display: none;
+}
+.custom-checkbox input:checked ~ .checkmark:after {
+display: block;
+}
+.custom-checkbox .checkmark:after {
+left: 6px;
+top: 2px;
+width: 5px;
+height: 10px;
+border: solid white;
+border-width: 0 2px 2px 0;
+transform: rotate(45deg);
+}
+.custom-switch {
+position: relative;
+display: inline-block;
+width: 44px;
+height: 24px;
+}
+.custom-switch input {
+opacity: 0;
+width: 0;
+height: 0;
+}
+.switch-slider {
+position: absolute;
+cursor: pointer;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: #e5e7eb;
+transition: .4s;
+border-radius: 34px;
+}
+.switch-slider:before {
+position: absolute;
+content: "";
+height: 18px;
+width: 18px;
+left: 3px;
+bottom: 3px;
+background-color: white;
+transition: .4s;
+border-radius: 50%;
+}
+input:checked + .switch-slider {
+background-color: #4f46e5;
+}
+input:checked + .switch-slider:before {
+transform: translateX(20px);
+}
+.custom-range {
+-webkit-appearance: none;
+width: 100%;
+height: 6px;
+border-radius: 5px;
+background: #e5e7eb;
+outline: none;
+}
+.custom-range::-webkit-slider-thumb {
+-webkit-appearance: none;
+appearance: none;
+width: 18px;
+height: 18px;
+border-radius: 50%;
+background: #4f46e5;
+cursor: pointer;
+}
+.custom-range::-moz-range-thumb {
+width: 18px;
+height: 18px;
+border-radius: 50%;
+background: #4f46e5;
+cursor: pointer;
+border: none;
+}
+.custom-radio {
+position: relative;
+padding-left: 28px;
+cursor: pointer;
+user-select: none;
+}
+.custom-radio input {
+position: absolute;
+opacity: 0;
+cursor: pointer;
+}
+.radio-mark {
+position: absolute;
+top: 0;
+left: 0;
+height: 20px;
+width: 20px;
+background-color: #fff;
+border: 1.5px solid #d1d5db;
+border-radius: 50%;
+}
+.custom-radio input:checked ~ .radio-mark {
+border-color: #4f46e5;
+}
+.radio-mark:after {
+content: "";
+position: absolute;
+display: none;
+top: 4px;
+left: 4px;
+width: 10px;
+height: 10px;
+border-radius: 50%;
+background: #4f46e5;
+}
+.custom-radio input:checked ~ .radio-mark:after {
+display: block;
+}
+</style>
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar -->
+<div class="w-64 bg-white shadow-lg z-20 flex flex-col">
+<div class="p-4 border-b flex items-center">
+<span class="text-2xl font-['Pacifico'] text-primary">logo</span>
+<span class="ml-2 text-lg font-semibold">ParcelPilot</span>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar">
+<nav class="p-4">
+<div class="mb-6">
+<p class="text-xs font-medium text-gray-400 uppercase mb-4 pl-2">Main</p>
+<a href="dashboard.html" data-readdy="true" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
+<div class="w-5 h-5 flex items-center justify-center mr-3">
+<i class="ri-dashboard-line"></i>
+</div>
+<span>Dashboard</span>
+</a>
+<a href="route-management.html" data-readdy="true" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
+<div class="w-5 h-5 flex items-center justify-center mr-3">
+<i class="ri-route-line"></i>
+</div>
+<span>Route Management</span>
+</a>
+<a href="driver-management.html" data-readdy="true" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg bg-primary bg-opacity-10 text-primary">
+<div class="w-5 h-5 flex items-center justify-center mr-3">
+<i class="ri-team-line"></i>
+</div>
+<span>Driver Management</span>
+</a>
+<a href="team-management-dashboard.html" data-readdy="true" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
+<div class="w-5 h-5 flex items-center justify-center mr-3">
+<i class="ri-team-line"></i>
+</div>
+<span>Team Management</span>
+</a>
+<a href="financial-report.html" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
+<div class="w-5 h-5 flex items-center justify-center mr-3">
+<i class="ri-money-dollar-circle-line"></i>
+</div>
+<span>Financial Reports</span>
+</a>
+<a href="perfomance-report.html" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg bg-primary bg-opacity-10 text-primary">
+<div class="w-5 h-5 flex items-center justify-center mr-3">
+<i class="ri-line-chart-line"></i>
+</div>
+<span>Performance Tracking</span>
+</a>
+</div>
+<div class="mb-6">
+<p class="text-xs font-medium text-gray-400 uppercase mb-4 pl-2">Settings</p>
+<a href="#" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
+<div class="w-5 h-5 flex items-center justify-center mr-3">
+<i class="ri-settings-3-line"></i>
+</div>
+<span>General Settings</span>
+</a>
+<a href="#" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
+<div class="w-5 h-5 flex items-center justify-center mr-3">
+<i class="ri-user-settings-line"></i>
+</div>
+<span>Account Settings</span>
+</a>
+<a href="#" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
+<div class="w-5 h-5 flex items-center justify-center mr-3">
+<i class="ri-notification-2-line"></i>
+</div>
+<span>Notifications</span>
+</a>
+</div>
+</nav>
+</div>
+<div class="p-4 border-t">
+<div class="flex items-center">
+<div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
+<div class="w-5 h-5 flex items-center justify-center text-gray-600">
+<i class="ri-user-line"></i>
+</div>
+</div>
+<div class="ml-3">
+<p class="text-sm font-medium">James Wilson</p>
+<p class="text-xs text-gray-500">Regional Manager</p>
+</div>
+<button class="ml-auto p-1 text-gray-400 hover:text-gray-600">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-logout-box-r-line"></i>
+</div>
+</button>
+</div>
+</div>
+</div>
+<!-- Main Content -->
+<div class="flex-1 flex flex-col overflow-hidden">
+<!-- Top Navigation -->
+<header class="bg-white shadow-sm z-10">
+<div class="flex items-center justify-between px-6 py-3">
+<div class="flex items-center">
+<a href="https://readdy.ai/home/a4cb12ef-b4e2-415e-889e-29c37723d4f1/e215091a-de30-4f9f-b74c-68f1bd624d39" data-readdy="true" class="flex items-center text-gray-500 hover:text-gray-700 mr-4">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-arrow-left-line"></i>
+</div>
+<span class="ml-1 text-sm">Back to Route Management</span>
+</a>
+<div class="h-5 border-l border-gray-300 mx-3"></div>
+<h1 class="text-xl font-semibold">Performance Tracking</h1>
+<span class="ml-4 text-sm text-gray-500">Tuesday, May 27, 2025</span>
+</div>
+<div class="flex items-center space-x-4">
+<div class="relative">
+<input type="text" placeholder="Search metrics, drivers, routes..." class="pl-9 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary w-64">
+<div class="absolute left-3 top-2.5 text-gray-400 w-4 h-4 flex items-center justify-center">
+<i class="ri-search-line"></i>
+</div>
+</div>
+<div class="flex items-center space-x-2 mr-2">
+<div class="w-5 h-5 flex items-center justify-center text-gray-500">
+<i class="ri-sun-line"></i>
+</div>
+<label class="custom-switch">
+<input type="checkbox" id="themeToggle">
+<span class="switch-slider"></span>
+</label>
+<div class="w-5 h-5 flex items-center justify-center text-gray-500">
+<i class="ri-moon-line"></i>
+</div>
+</div>
+<button id="notificationBtn" class="relative p-2 text-gray-500 hover:text-gray-700 focus:outline-none">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-notification-3-line"></i>
+</div>
+<span id="notificationIndicator" class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+</button>
+<button id="messageBtn" class="p-2 text-gray-500 hover:text-gray-700 focus:outline-none relative">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-message-2-line"></i>
+</div>
+<span id="messageIndicator" class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+</button>
+<button class="p-2 text-gray-500 hover:text-gray-700 focus:outline-none">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-settings-4-line"></i>
+</div>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto custom-scrollbar bg-gray-50 p-6">
+<!-- Performance Tracking Header -->
+<div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
+<div>
+<h2 class="text-2xl font-bold">Performance Tracking</h2>
+<p class="text-gray-500 mt-1">Monitor delivery metrics, driver efficiency, and route optimization</p>
+</div>
+<div class="mt-4 md:mt-0 flex items-center space-x-3">
+<div class="relative">
+<button id="dateRangeBtn" class="bg-white border border-gray-300 hover:bg-gray-50 px-4 py-2 text-sm font-medium rounded-button flex items-center whitespace-nowrap">
+<div class="w-4 h-4 flex items-center justify-center mr-2">
+<i class="ri-calendar-line"></i>
+</div>
+<span>Last 30 Days</span>
+<div class="w-4 h-4 flex items-center justify-center ml-2">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</button>
+</div>
+<button class="bg-gray-100 hover:bg-gray-200 px-4 py-2 text-sm font-medium rounded-button flex items-center whitespace-nowrap">
+<div class="w-4 h-4 flex items-center justify-center mr-2">
+<i class="ri-download-line"></i>
+</div>
+Export Report
+</button>
+<button class="bg-primary text-white px-4 py-2 text-sm font-medium rounded-button flex items-center whitespace-nowrap">
+<div class="w-4 h-4 flex items-center justify-center mr-2">
+<i class="ri-settings-4-line"></i>
+</div>
+Configure Metrics
+</button>
+</div>
+</div>
+<!-- Key Performance Metrics -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6 mb-6">
+<div class="bg-white rounded-lg shadow p-5">
+<div class="flex items-center justify-between mb-2">
+<h3 class="text-sm font-medium text-gray-500">Total Deliveries</h3>
+<div class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-primary">
+<i class="ri-truck-line"></i>
+</div>
+</div>
+<p class="text-2xl font-bold">8,742</p>
+<div class="flex items-center mt-2">
+<span class="text-green-500 text-sm font-medium flex items-center">
+<i class="ri-arrow-up-line mr-1"></i>
+12.3%
+</span>
+<span class="text-xs text-gray-500 ml-2">vs last period</span>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow p-5">
+<div class="flex items-center justify-between mb-2">
+<h3 class="text-sm font-medium text-gray-500">On-Time Rate</h3>
+<div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+<i class="ri-time-line"></i>
+</div>
+</div>
+<p class="text-2xl font-bold">94.8%</p>
+<div class="flex items-center mt-2">
+<span class="text-green-500 text-sm font-medium flex items-center">
+<i class="ri-arrow-up-line mr-1"></i>
+2.1%
+</span>
+<span class="text-xs text-gray-500 ml-2">vs last period</span>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow p-5">
+<div class="flex items-center justify-between mb-2">
+<h3 class="text-sm font-medium text-gray-500">Avg Delivery Time</h3>
+<div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+<i class="ri-timer-line"></i>
+</div>
+</div>
+<p class="text-2xl font-bold">28.5 min</p>
+<div class="flex items-center mt-2">
+<span class="text-green-500 text-sm font-medium flex items-center">
+<i class="ri-arrow-down-line mr-1"></i>
+3.7%
+</span>
+<span class="text-xs text-gray-500 ml-2">vs last period</span>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow p-5">
+<div class="flex items-center justify-between mb-2">
+<h3 class="text-sm font-medium text-gray-500">Driver Efficiency</h3>
+<div class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600">
+<i class="ri-user-star-line"></i>
+</div>
+</div>
+<p class="text-2xl font-bold">87.2%</p>
+<div class="flex items-center mt-2">
+<span class="text-green-500 text-sm font-medium flex items-center">
+<i class="ri-arrow-up-line mr-1"></i>
+5.4%
+</span>
+<span class="text-xs text-gray-500 ml-2">vs last period</span>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow p-5">
+<div class="flex items-center justify-between mb-2">
+<h3 class="text-sm font-medium text-gray-500">Customer Rating</h3>
+<div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-600">
+<i class="ri-star-line"></i>
+</div>
+</div>
+<p class="text-2xl font-bold">4.8/5</p>
+<div class="flex items-center mt-2">
+<span class="text-green-500 text-sm font-medium flex items-center">
+<i class="ri-arrow-up-line mr-1"></i>
+0.2
+</span>
+<span class="text-xs text-gray-500 ml-2">vs last period</span>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow p-5">
+<div class="flex items-center justify-between mb-2">
+<h3 class="text-sm font-medium text-gray-500">Cost Per Delivery</h3>
+<div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-600">
+<i class="ri-money-dollar-circle-line"></i>
+</div>
+</div>
+<p class="text-2xl font-bold">$2.37</p>
+<div class="flex items-center mt-2">
+<span class="text-green-500 text-sm font-medium flex items-center">
+<i class="ri-arrow-down-line mr-1"></i>
+4.8%
+</span>
+<span class="text-xs text-gray-500 ml-2">vs last period</span>
+</div>
+</div>
+</div>
+<!-- Performance Charts -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+<!-- Delivery Trend Chart -->
+<div class="bg-white rounded-lg shadow">
+<div class="px-6 py-4 border-b flex justify-between items-center">
+<h3 class="text-lg font-semibold">Delivery Performance Trend</h3>
+<div class="flex items-center space-x-2">
+<button id="dailyBtn" class="bg-primary text-white px-3 py-1 text-sm font-medium rounded-lg">Daily</button>
+<button id="weeklyBtn" class="bg-gray-100 hover:bg-gray-200 px-3 py-1 text-sm font-medium rounded-lg text-gray-600">Weekly</button>
+<button id="monthlyBtn" class="bg-gray-100 hover:bg-gray-200 px-3 py-1 text-sm font-medium rounded-lg text-gray-600">Monthly</button>
+</div>
+</div>
+<div class="p-6">
+<div id="deliveryTrendChart" class="h-80"></div>
+</div>
+</div>
+<!-- Driver Performance Comparison Chart -->
+<div class="bg-white rounded-lg shadow">
+<div class="px-6 py-4 border-b flex justify-between items-center">
+<h3 class="text-lg font-semibold">Driver Performance Comparison</h3>
+<div class="relative">
+<button class="bg-gray-100 hover:bg-gray-200 px-3 py-1 text-sm font-medium rounded-lg text-gray-600 flex items-center">
+<span>Metrics</span>
+<div class="w-4 h-4 flex items-center justify-center ml-2">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</button>
+</div>
+</div>
+<div class="p-6">
+<div id="driverPerformanceChart" class="h-80"></div>
+</div>
+</div>
+</div>
+<!-- Driver Analytics and Route Analysis -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+<!-- Driver Analytics Table -->
+<div class="lg:col-span-2 bg-white rounded-lg shadow">
+<div class="px-6 py-4 border-b flex justify-between items-center">
+<h3 class="text-lg font-semibold">Driver Analytics</h3>
+<div class="flex items-center space-x-3">
+<div class="relative">
+<input type="text" placeholder="Search drivers..." class="pl-9 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary w-48">
+<div class="absolute left-3 top-2.5 text-gray-400 w-4 h-4 flex items-center justify-center">
+<i class="ri-search-line"></i>
+</div>
+</div>
+<button class="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-filter-3-line"></i>
+</div>
+</button>
+</div>
+</div>
+<div class="p-6">
+<div class="overflow-x-auto">
+<table class="min-w-full divide-y divide-gray-200">
+<thead>
+<tr>
+<th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Driver</th>
+<th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Deliveries</th>
+<th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Avg Time</th>
+<th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">On-Time %</th>
+<th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rating</th>
+<th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Efficiency</th>
+</tr>
+</thead>
+<tbody class="bg-white divide-y divide-gray-200" id="driverAnalyticsTable">
+<tr class="hover:bg-gray-50">
+<td class="px-4 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-medium">JM</div>
+<div class="ml-3">
+<p class="text-sm font-medium">John Miller</p>
+<p class="text-xs text-gray-500">North District</p>
+</div>
+</div>
+</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">1,245</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">26.2 min</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">96.8%</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<div class="flex text-yellow-400">
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-half-fill"></i>
+<span class="ml-1 text-gray-700 text-sm">4.9</span>
+</div>
+</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="w-full bg-gray-200 rounded-full h-2 mr-2 w-16">
+<div class="bg-primary h-2 rounded-full" style="width: 94%"></div>
+</div>
+<span class="text-sm">94%</span>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-gray-50">
+<td class="px-4 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-medium">KL</div>
+<div class="ml-3">
+<p class="text-sm font-medium">Kevin Lee</p>
+<p class="text-xs text-gray-500">East District</p>
+</div>
+</div>
+</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">1,087</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">27.8 min</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">95.2%</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<div class="flex text-yellow-400">
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-line"></i>
+<span class="ml-1 text-gray-700 text-sm">4.7</span>
+</div>
+</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="w-full bg-gray-200 rounded-full h-2 mr-2 w-16">
+<div class="bg-primary h-2 rounded-full" style="width: 91%"></div>
+</div>
+<span class="text-sm">91%</span>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-gray-50">
+<td class="px-4 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-medium">RB</div>
+<div class="ml-3">
+<p class="text-sm font-medium">Rachel Brown</p>
+<p class="text-xs text-gray-500">South District</p>
+</div>
+</div>
+</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">952</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">29.1 min</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">93.7%</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<div class="flex text-yellow-400">
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-line"></i>
+<span class="ml-1 text-gray-700 text-sm">4.8</span>
+</div>
+</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="w-full bg-gray-200 rounded-full h-2 mr-2 w-16">
+<div class="bg-primary h-2 rounded-full" style="width: 88%"></div>
+</div>
+<span class="text-sm">88%</span>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-gray-50">
+<td class="px-4 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600 font-medium">AH</div>
+<div class="ml-3">
+<p class="text-sm font-medium">Alex Hernandez</p>
+<p class="text-xs text-gray-500">West District</p>
+</div>
+</div>
+</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">1,132</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">28.4 min</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">94.5%</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<div class="flex text-yellow-400">
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-half-fill"></i>
+<span class="ml-1 text-gray-700 text-sm">4.8</span>
+</div>
+</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="w-full bg-gray-200 rounded-full h-2 mr-2 w-16">
+<div class="bg-primary h-2 rounded-full" style="width: 89%"></div>
+</div>
+<span class="text-sm">89%</span>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-gray-50">
+<td class="px-4 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-600 font-medium">TW</div>
+<div class="ml-3">
+<p class="text-sm font-medium">Thomas Wilson</p>
+<p class="text-xs text-gray-500">Central District</p>
+</div>
+</div>
+</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">876</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">30.2 min</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">92.1%</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<div class="flex text-yellow-400">
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-line"></i>
+<span class="ml-1 text-gray-700 text-sm">4.6</span>
+</div>
+</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="w-full bg-gray-200 rounded-full h-2 mr-2 w-16">
+<div class="bg-primary h-2 rounded-full" style="width: 85%"></div>
+</div>
+<span class="text-sm">85%</span>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="mt-4 flex justify-between items-center">
+<div class="text-sm text-gray-500">
+Showing 5 of 18 drivers
+</div>
+<div class="flex space-x-2">
+<button class="px-3 py-1 text-sm rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-50">Previous</button>
+<button class="px-3 py-1 text-sm rounded-lg border border-primary bg-primary text-white">1</button>
+<button id="pageBtn2" class="px-3 py-1 text-sm rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-50">2</button>
+<button class="px-3 py-1 text-sm rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-50">3</button>
+<button class="px-3 py-1 text-sm rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-50">Next</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Route Analysis -->
+<div class="bg-white rounded-lg shadow">
+<div class="px-6 py-4 border-b">
+<h3 class="text-lg font-semibold">Route Analysis</h3>
+</div>
+<div class="p-6">
+<div class="mb-6">
+<h4 class="text-sm font-medium text-gray-700 mb-3">Route Optimization Metrics</h4>
+<div class="space-y-4">
+<div class="bg-gray-50 rounded-lg p-4">
+<div class="flex justify-between items-center mb-1">
+<span class="text-sm font-medium">Distance Optimization</span>
+<span class="text-sm font-medium">92%</span>
+</div>
+<div class="w-full bg-gray-200 rounded-full h-2">
+<div class="bg-primary h-2 rounded-full" style="width: 92%"></div>
+</div>
+<p class="text-xs text-gray-500 mt-2">Actual vs. optimal route distance</p>
+</div>
+<div class="bg-gray-50 rounded-lg p-4">
+<div class="flex justify-between items-center mb-1">
+<span class="text-sm font-medium">Time Efficiency</span>
+<span class="text-sm font-medium">87%</span>
+</div>
+<div class="w-full bg-gray-200 rounded-full h-2">
+<div class="bg-green-500 h-2 rounded-full" style="width: 87%"></div>
+</div>
+<p class="text-xs text-gray-500 mt-2">Actual vs. estimated delivery time</p>
+</div>
+<div class="bg-gray-50 rounded-lg p-4">
+<div class="flex justify-between items-center mb-1">
+<span class="text-sm font-medium">Fuel Consumption</span>
+<span class="text-sm font-medium">84%</span>
+</div>
+<div class="w-full bg-gray-200 rounded-full h-2">
+<div class="bg-yellow-500 h-2 rounded-full" style="width: 84%"></div>
+</div>
+<p class="text-xs text-gray-500 mt-2">Optimal vs. actual fuel usage</p>
+</div>
+</div>
+</div>
+<div>
+<h4 class="text-sm font-medium text-gray-700 mb-3">Top Performing Routes</h4>
+<div class="space-y-3">
+<div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+<div>
+<p class="text-sm font-medium">RT-2589 (North District)</p>
+<p class="text-xs text-gray-500">87 parcels, 2 drivers</p>
+</div>
+<div class="text-sm font-medium text-green-600">96.8%</div>
+</div>
+<div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+<div>
+<p class="text-sm font-medium">RT-2590 (East District)</p>
+<p class="text-xs text-gray-500">64 parcels, 1 driver</p>
+</div>
+<div class="text-sm font-medium text-green-600">95.2%</div>
+</div>
+<div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+<div>
+<p class="text-sm font-medium">RT-2595 (Northeast District)</p>
+<p class="text-xs text-gray-500">71 parcels, 1 driver</p>
+</div>
+<div class="text-sm font-medium text-green-600">94.7%</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Time-Based Analytics -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+<!-- Delivery Success Rates -->
+<div class="bg-white rounded-lg shadow">
+<div class="px-6 py-4 border-b">
+<h3 class="text-lg font-semibold">Delivery Success Rates</h3>
+</div>
+<div class="p-6">
+<div id="deliverySuccessChart" class="h-64"></div>
+<div class="grid grid-cols-2 gap-4 mt-4">
+<div class="bg-gray-50 rounded-lg p-3">
+<p class="text-xs text-gray-500">First Attempt Success</p>
+<p class="text-lg font-semibold mt-1">87.3%</p>
+<div class="flex items-center mt-1">
+<span class="text-green-500 text-xs font-medium flex items-center">
+<i class="ri-arrow-up-line mr-1"></i>
+2.1%
+</span>
+</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-3">
+<p class="text-xs text-gray-500">Return Rate</p>
+<p class="text-lg font-semibold mt-1">4.2%</p>
+<div class="flex items-center mt-1">
+<span class="text-green-500 text-xs font-medium flex items-center">
+<i class="ri-arrow-down-line mr-1"></i>
+0.8%
+</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Hourly Performance -->
+<div class="bg-white rounded-lg shadow">
+<div class="px-6 py-4 border-b">
+<h3 class="text-lg font-semibold">Hourly Performance</h3>
+</div>
+<div class="p-6">
+<div id="hourlyPerformanceChart" class="h-64"></div>
+<div class="mt-4">
+<div class="bg-gray-50 rounded-lg p-3">
+<div class="flex justify-between items-center">
+<p class="text-sm font-medium">Peak Hours</p>
+<p class="text-sm font-medium">10 AM - 2 PM</p>
+</div>
+<p class="text-xs text-gray-500 mt-1">42% of all deliveries occur during peak hours</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Weekly Patterns -->
+<div class="bg-white rounded-lg shadow">
+<div class="px-6 py-4 border-b">
+<h3 class="text-lg font-semibold">Weekly Patterns</h3>
+</div>
+<div class="p-6">
+<div id="weeklyPatternsChart" class="h-64"></div>
+<div class="mt-4">
+<div class="bg-gray-50 rounded-lg p-3">
+<div class="flex justify-between items-center">
+<p class="text-sm font-medium">Busiest Day</p>
+<p class="text-sm font-medium">Thursday</p>
+</div>
+<p class="text-xs text-gray-500 mt-1">22% higher volume than weekly average</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Detailed Performance Analysis -->
+<div class="bg-white rounded-lg shadow mb-6">
+<div class="px-6 py-4 border-b flex justify-between items-center">
+<h3 class="text-lg font-semibold">Detailed Performance Analysis</h3>
+<div class="flex items-center space-x-3">
+<div class="relative">
+<button class="flex items-center px-4 py-2 text-sm border border-gray-300 rounded-lg bg-white">
+<div class="w-4 h-4 flex items-center justify-center mr-2 text-gray-500">
+<i class="ri-map-pin-line"></i>
+</div>
+<span class="text-gray-700">All Districts</span>
+<div class="w-4 h-4 flex items-center justify-center ml-2 text-gray-500">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</button>
+</div>
+<div class="relative">
+<button class="flex items-center px-4 py-2 text-sm border border-gray-300 rounded-lg bg-white">
+<div class="w-4 h-4 flex items-center justify-center mr-2 text-gray-500">
+<i class="ri-user-line"></i>
+</div>
+<span class="text-gray-700">All Drivers</span>
+<div class="w-4 h-4 flex items-center justify-center ml-2 text-gray-500">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</button>
+</div>
+<div class="relative">
+<button class="flex items-center px-4 py-2 text-sm border border-gray-300 rounded-lg bg-white">
+<div class="w-4 h-4 flex items-center justify-center mr-2 text-gray-500">
+<i class="ri-calendar-line"></i>
+</div>
+<span class="text-gray-700">Last 30 Days</span>
+<div class="w-4 h-4 flex items-center justify-center ml-2 text-gray-500">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</button>
+</div>
+</div>
+</div>
+<div class="p-6">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+<div class="bg-gray-50 rounded-lg p-4">
+<h4 class="text-sm font-medium text-gray-700 mb-3">Delivery Volume by District</h4>
+<div id="districtVolumeChart" class="h-60"></div>
+</div>
+<div class="bg-gray-50 rounded-lg p-4">
+<h4 class="text-sm font-medium text-gray-700 mb-3">On-Time Performance by Day</h4>
+<div id="onTimeDayChart" class="h-60"></div>
+</div>
+<div class="bg-gray-50 rounded-lg p-4">
+<h4 class="text-sm font-medium text-gray-700 mb-3">Customer Rating Distribution</h4>
+<div id="ratingDistributionChart" class="h-60"></div>
+</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-4">
+<h4 class="text-sm font-medium text-gray-700 mb-3">Performance Metrics by Route</h4>
+<div class="overflow-x-auto">
+<table class="min-w-full divide-y divide-gray-200">
+<thead>
+<tr>
+<th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Route ID</th>
+<th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Area</th>
+<th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Deliveries</th>
+<th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Avg Time</th>
+<th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">On-Time %</th>
+<th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rating</th>
+<th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Efficiency</th>
+<th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cost/Delivery</th>
+</tr>
+</thead>
+<tbody class="bg-white divide-y divide-gray-200">
+<tr class="hover:bg-gray-50">
+<td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-primary">RT-2589</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">North District</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">87</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">26.5 min</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">96.8%</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">4.9</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="w-full bg-gray-200 rounded-full h-2 mr-2 w-16">
+<div class="bg-primary h-2 rounded-full" style="width: 94%"></div>
+</div>
+<span class="text-sm">94%</span>
+</div>
+</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">$2.32</td>
+</tr>
+<tr class="hover:bg-gray-50">
+<td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-primary">RT-2590</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">East District</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">64</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">27.8 min</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">95.2%</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">4.7</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="w-full bg-gray-200 rounded-full h-2 mr-2 w-16">
+<div class="bg-primary h-2 rounded-full" style="width: 91%"></div>
+</div>
+<span class="text-sm">91%</span>
+</div>
+</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">$2.41</td>
+</tr>
+<tr class="hover:bg-gray-50">
+<td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-primary">RT-2591</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">South District</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">102</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">29.2 min</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">93.7%</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">4.6</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="w-full bg-gray-200 rounded-full h-2 mr-2 w-16">
+<div class="bg-primary h-2 rounded-full" style="width: 88%"></div>
+</div>
+<span class="text-sm">88%</span>
+</div>
+</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">$2.45</td>
+</tr>
+<tr class="hover:bg-gray-50">
+<td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-primary">RT-2593</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">Central District</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">78</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">28.1 min</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">94.5%</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">4.8</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="w-full bg-gray-200 rounded-full h-2 mr-2 w-16">
+<div class="bg-primary h-2 rounded-full" style="width: 90%"></div>
+</div>
+<span class="text-sm">90%</span>
+</div>
+</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">$2.38</td>
+</tr>
+<tr class="hover:bg-gray-50">
+<td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-primary">RT-2595</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">Northeast District</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">71</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">27.3 min</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">94.7%</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">4.8</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="w-full bg-gray-200 rounded-full h-2 mr-2 w-16">
+<div class="bg-primary h-2 rounded-full" style="width: 92%"></div>
+</div>
+<span class="text-sm">92%</span>
+</div>
+</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">$2.35</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+<script id="performanceChartScript">
+document.addEventListener('DOMContentLoaded', function() {
+// Delivery Trend Chart
+const deliveryTrendChart = echarts.init(document.getElementById('deliveryTrendChart'));
+// Data for different time periods
+const chartData = {
+daily: {
+dates: ['May 20', 'May 21', 'May 22', 'May 23', 'May 24', 'May 25', 'May 26', 'May 27'],
+deliveries: [320, 302, 341, 374, 290, 330, 362, 345],
+onTimeRate: [93.2, 94.5, 95.1, 94.8, 93.7, 95.2, 96.3, 94.8]
+},
+weekly: {
+dates: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+deliveries: [1450, 1580, 1620, 1480],
+onTimeRate: [94.2, 94.8, 95.3, 94.9]
+},
+monthly: {
+dates: ['January', 'February', 'March', 'April', 'May'],
+deliveries: [5800, 6200, 5900, 6100, 6300],
+onTimeRate: [93.8, 94.2, 94.7, 95.1, 94.8]
+}
+};
+// Function to update chart data
+function updateChartView(period) {
+const data = chartData[period];
+const option = deliveryTrendChart.getOption();
+option.xAxis[0].data = data.dates;
+option.series[0].data = data.deliveries;
+option.series[1].data = data.onTimeRate;
+deliveryTrendChart.setOption(option);
+}
+// Add click event listeners for period buttons
+const dailyBtn = document.getElementById('dailyBtn');
+const weeklyBtn = document.getElementById('weeklyBtn');
+const monthlyBtn = document.getElementById('monthlyBtn');
+function updateButtonStyles(selectedBtn) {
+[dailyBtn, weeklyBtn, monthlyBtn].forEach(btn => {
+btn.className = btn === selectedBtn
+? 'bg-primary text-white px-3 py-1 text-sm font-medium rounded-lg'
+: 'bg-gray-100 hover:bg-gray-200 px-3 py-1 text-sm font-medium rounded-lg text-gray-600';
+});
+}
+dailyBtn.addEventListener('click', () => {
+updateButtonStyles(dailyBtn);
+updateChartView('daily');
+});
+weeklyBtn.addEventListener('click', () => {
+updateButtonStyles(weeklyBtn);
+updateChartView('weekly');
+});
+monthlyBtn.addEventListener('click', () => {
+updateButtonStyles(monthlyBtn);
+updateChartView('monthly');
+});
+const deliveryTrendOption = {
+animation: false,
+tooltip: {
+trigger: 'axis',
+backgroundColor: 'rgba(255, 255, 255, 0.95)',
+borderColor: '#e5e7eb',
+padding: [8, 12],
+textStyle: {
+color: '#1f2937',
+fontSize: 12
+}
+},
+legend: {
+data: ['Deliveries', 'On-Time Rate'],
+top: 0,
+textStyle: {
+color: '#1f2937'
+}
+},
+grid: {
+left: '3%',
+right: '4%',
+bottom: '3%',
+top: '40px',
+containLabel: true
+},
+xAxis: {
+type: 'category',
+data: ['May 20', 'May 21', 'May 22', 'May 23', 'May 24', 'May 25', 'May 26', 'May 27'],
+axisLine: {
+lineStyle: {
+color: '#e5e7eb'
+}
+},
+axisLabel: {
+color: '#1f2937'
+}
+},
+yAxis: [
+{
+type: 'value',
+name: 'Deliveries',
+position: 'left',
+axisLine: {
+lineStyle: {
+color: '#e5e7eb'
+}
+},
+axisLabel: {
+color: '#1f2937',
+formatter: '{value}'
+},
+splitLine: {
+lineStyle: {
+color: '#f3f4f6'
+}
+}
+},
+{
+type: 'value',
+name: 'On-Time %',
+min: 80,
+max: 100,
+position: 'right',
+axisLine: {
+lineStyle: {
+color: '#e5e7eb'
+}
+},
+axisLabel: {
+color: '#1f2937',
+formatter: '{value}%'
+},
+splitLine: {
+show: false
+}
+}
+],
+series: [
+{
+name: 'Deliveries',
+type: 'bar',
+data: [320, 302, 341, 374, 290, 330, 362, 345],
+itemStyle: {
+color: 'rgba(87, 181, 231, 1)',
+borderRadius: [4, 4, 0, 0]
+},
+barWidth: '40%'
+},
+{
+name: 'On-Time Rate',
+type: 'line',
+yAxisIndex: 1,
+smooth: true,
+data: [93.2, 94.5, 95.1, 94.8, 93.7, 95.2, 96.3, 94.8],
+itemStyle: {
+color: 'rgba(141, 211, 199, 1)'
+},
+lineStyle: {
+width: 3
+},
+symbolSize: 0,
+areaStyle: {
+color: {
+type: 'linear',
+x: 0,
+y: 0,
+x2: 0,
+y2: 1,
+colorStops: [{
+offset: 0, color: 'rgba(141, 211, 199, 0.2)'
+}, {
+offset: 1, color: 'rgba(141, 211, 199, 0.01)'
+}]
+}
+}
+}
+]
+};
+deliveryTrendChart.setOption(deliveryTrendOption);
+// Driver Performance Comparison Chart
+const driverPerformanceChart = echarts.init(document.getElementById('driverPerformanceChart'));
+const driverPerformanceOption = {
+animation: false,
+tooltip: {
+trigger: 'axis',
+backgroundColor: 'rgba(255, 255, 255, 0.95)',
+borderColor: '#e5e7eb',
+padding: [8, 12],
+textStyle: {
+color: '#1f2937',
+fontSize: 12
+}
+},
+legend: {
+data: ['Deliveries', 'Avg Time', 'Efficiency'],
+top: 0,
+textStyle: {
+color: '#1f2937'
+}
+},
+grid: {
+left: '3%',
+right: '4%',
+bottom: '3%',
+top: '40px',
+containLabel: true
+},
+xAxis: {
+type: 'category',
+data: ['John M.', 'Kevin L.', 'Rachel B.', 'Alex H.', 'Thomas W.'],
+axisLine: {
+lineStyle: {
+color: '#e5e7eb'
+}
+},
+axisLabel: {
+color: '#1f2937'
+}
+},
+yAxis: {
+type: 'value',
+axisLine: {
+lineStyle: {
+color: '#e5e7eb'
+}
+},
+axisLabel: {
+color: '#1f2937'
+},
+splitLine: {
+lineStyle: {
+color: '#f3f4f6'
+}
+}
+},
+series: [
+{
+name: 'Deliveries',
+type: 'bar',
+data: [94, 91, 88, 89, 85],
+itemStyle: {
+color: 'rgba(87, 181, 231, 1)',
+borderRadius: [4, 4, 0, 0]
+}
+},
+{
+name: 'Avg Time',
+type: 'bar',
+data: [90, 88, 85, 87, 82],
+itemStyle: {
+color: 'rgba(141, 211, 199, 1)',
+borderRadius: [4, 4, 0, 0]
+}
+},
+{
+name: 'Efficiency',
+type: 'bar',
+data: [96, 93, 90, 92, 88],
+itemStyle: {
+color: 'rgba(251, 191, 114, 1)',
+borderRadius: [4, 4, 0, 0]
+}
+}
+]
+};
+driverPerformanceChart.setOption(driverPerformanceOption);
+// Delivery Success Chart
+const deliverySuccessChart = echarts.init(document.getElementById('deliverySuccessChart'));
+const deliverySuccessOption = {
+animation: false,
+tooltip: {
+trigger: 'item',
+backgroundColor: 'rgba(255, 255, 255, 0.95)',
+borderColor: '#e5e7eb',
+padding: [8, 12],
+textStyle: {
+color: '#1f2937',
+fontSize: 12
+}
+},
+legend: {
+orient: 'horizontal',
+bottom: 0,
+textStyle: {
+color: '#1f2937'
+}
+},
+series: [
+{
+name: 'Delivery Status',
+type: 'pie',
+radius: ['40%', '70%'],
+center: ['50%', '45%'],
+avoidLabelOverlap: false,
+itemStyle: {
+borderRadius: 8,
+borderColor: '#fff',
+borderWidth: 2
+},
+label: {
+show: false
+},
+emphasis: {
+label: {
+show: true,
+fontSize: '12',
+fontWeight: 'bold'
+}
+},
+labelLine: {
+show: false
+},
+data: [
+{ value: 87.3, name: 'First Attempt Success', itemStyle: { color: 'rgba(87, 181, 231, 1)' } },
+{ value: 8.5, name: 'Second Attempt Success', itemStyle: { color: 'rgba(141, 211, 199, 1)' } },
+{ value: 4.2, name: 'Return to Sender', itemStyle: { color: 'rgba(252, 141, 98, 1)' } }
+]
+}
+]
+};
+deliverySuccessChart.setOption(deliverySuccessOption);
+// Hourly Performance Chart
+const hourlyPerformanceChart = echarts.init(document.getElementById('hourlyPerformanceChart'));
+const hourlyPerformanceOption = {
+animation: false,
+tooltip: {
+trigger: 'axis',
+backgroundColor: 'rgba(255, 255, 255, 0.95)',
+borderColor: '#e5e7eb',
+padding: [8, 12],
+textStyle: {
+color: '#1f2937',
+fontSize: 12
+}
+},
+grid: {
+left: '3%',
+right: '4%',
+bottom: '3%',
+top: '10px',
+containLabel: true
+},
+xAxis: {
+type: 'category',
+data: ['8AM', '9AM', '10AM', '11AM', '12PM', '1PM', '2PM', '3PM', '4PM', '5PM'],
+axisLine: {
+lineStyle: {
+color: '#e5e7eb'
+}
+},
+axisLabel: {
+color: '#1f2937'
+}
+},
+yAxis: {
+type: 'value',
+axisLine: {
+lineStyle: {
+color: '#e5e7eb'
+}
+},
+axisLabel: {
+color: '#1f2937'
+},
+splitLine: {
+lineStyle: {
+color: '#f3f4f6'
+}
+}
+},
+series: [
+{
+type: 'line',
+smooth: true,
+data: [42, 65, 98, 112, 96, 105, 92, 75, 58, 32],
+itemStyle: {
+color: 'rgba(87, 181, 231, 1)'
+},
+lineStyle: {
+width: 3
+},
+symbolSize: 0,
+areaStyle: {
+color: {
+type: 'linear',
+x: 0,
+y: 0,
+x2: 0,
+y2: 1,
+colorStops: [{
+offset: 0, color: 'rgba(87, 181, 231, 0.2)'
+}, {
+offset: 1, color: 'rgba(87, 181, 231, 0.01)'
+}]
+}
+},
+markArea: {
+itemStyle: {
+color: 'rgba(87, 181, 231, 0.1)'
+},
+data: [
+[{
+name: 'Peak Hours',
+xAxis: '10AM'
+}, {
+xAxis: '2PM'
+}]
+]
+}
+}
+]
+};
+hourlyPerformanceChart.setOption(hourlyPerformanceOption);
+// Weekly Patterns Chart
+const weeklyPatternsChart = echarts.init(document.getElementById('weeklyPatternsChart'));
+const weeklyPatternsOption = {
+animation: false,
+tooltip: {
+trigger: 'axis',
+backgroundColor: 'rgba(255, 255, 255, 0.95)',
+borderColor: '#e5e7eb',
+padding: [8, 12],
+textStyle: {
+color: '#1f2937',
+fontSize: 12
+}
+},
+grid: {
+left: '3%',
+right: '4%',
+bottom: '3%',
+top: '10px',
+containLabel: true
+},
+xAxis: {
+type: 'category',
+data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+axisLine: {
+lineStyle: {
+color: '#e5e7eb'
+}
+},
+axisLabel: {
+color: '#1f2937'
+}
+},
+yAxis: {
+type: 'value',
+axisLine: {
+lineStyle: {
+color: '#e5e7eb'
+}
+},
+axisLabel: {
+color: '#1f2937'
+},
+splitLine: {
+lineStyle: {
+color: '#f3f4f6'
+}
+}
+},
+series: [
+{
+type: 'bar',
+data: [320, 332, 301, 384, 330, 290, 230],
+itemStyle: {
+color: function(params) {
+const colorList = [
+'rgba(141, 211, 199, 1)',
+'rgba(141, 211, 199, 1)',
+'rgba(141, 211, 199, 1)',
+'rgba(87, 181, 231, 1)',
+'rgba(141, 211, 199, 1)',
+'rgba(141, 211, 199, 1)',
+'rgba(141, 211, 199, 1)'
+];
+return colorList[params.dataIndex];
+},
+borderRadius: [4, 4, 0, 0]
+},
+barWidth: '60%'
+}
+]
+};
+weeklyPatternsChart.setOption(weeklyPatternsOption);
+// District Volume Chart
+const districtVolumeChart = echarts.init(document.getElementById('districtVolumeChart'));
+const districtVolumeOption = {
+animation: false,
+tooltip: {
+trigger: 'item',
+backgroundColor: 'rgba(255, 255, 255, 0.95)',
+borderColor: '#e5e7eb',
+padding: [8, 12],
+textStyle: {
+color: '#1f2937',
+fontSize: 12
+}
+},
+series: [
+{
+name: 'Delivery Volume',
+type: 'pie',
+radius: '70%',
+center: ['50%', '50%'],
+data: [
+{ value: 1245, name: 'North', itemStyle: { color: 'rgba(87, 181, 231, 1)' } },
+{ value: 1087, name: 'East', itemStyle: { color: 'rgba(141, 211, 199, 1)' } },
+{ value: 952, name: 'South', itemStyle: { color: 'rgba(251, 191, 114, 1)' } },
+{ value: 1132, name: 'West', itemStyle: { color: 'rgba(252, 141, 98, 1)' } },
+{ value: 876, name: 'Central', itemStyle: { color: 'rgba(166, 216, 84, 1)' } }
+],
+itemStyle: {
+borderRadius: 8,
+borderColor: '#fff',
+borderWidth: 2
+},
+label: {
+formatter: '{b}: {c} ({d}%)',
+color: '#1f2937'
+},
+labelLine: {
+lineStyle: {
+color: '#e5e7eb'
+}
+}
+}
+]
+};
+districtVolumeChart.setOption(districtVolumeOption);
+// On-Time Day Chart
+const onTimeDayChart = echarts.init(document.getElementById('onTimeDayChart'));
+const onTimeDayOption = {
+animation: false,
+tooltip: {
+trigger: 'axis',
+backgroundColor: 'rgba(255, 255, 255, 0.95)',
+borderColor: '#e5e7eb',
+padding: [8, 12],
+textStyle: {
+color: '#1f2937',
+fontSize: 12
+}
+},
+grid: {
+left: '3%',
+right: '4%',
+bottom: '3%',
+top: '10px',
+containLabel: true
+},
+xAxis: {
+type: 'category',
+data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+axisLine: {
+lineStyle: {
+color: '#e5e7eb'
+}
+},
+axisLabel: {
+color: '#1f2937'
+}
+},
+yAxis: {
+type: 'value',
+min: 90,
+max: 100,
+axisLine: {
+lineStyle: {
+color: '#e5e7eb'
+}
+},
+axisLabel: {
+color: '#1f2937',
+formatter: '{value}%'
+},
+splitLine: {
+lineStyle: {
+color: '#f3f4f6'
+}
+}
+},
+series: [
+{
+type: 'line',
+smooth: true,
+data: [95.2, 94.8, 93.7, 96.3, 95.1, 94.5, 93.2],
+itemStyle: {
+color: 'rgba(141, 211, 199, 1)'
+},
+lineStyle: {
+width: 3
+},
+symbolSize: 6
+}
+]
+};
+onTimeDayChart.setOption(onTimeDayOption);
+// Rating Distribution Chart
+const ratingDistributionChart = echarts.init(document.getElementById('ratingDistributionChart'));
+const ratingDistributionOption = {
+animation: false,
+tooltip: {
+trigger: 'axis',
+backgroundColor: 'rgba(255, 255, 255, 0.95)',
+borderColor: '#e5e7eb',
+padding: [8, 12],
+textStyle: {
+color: '#1f2937',
+fontSize: 12
+}
+},
+grid: {
+left: '3%',
+right: '4%',
+bottom: '3%',
+top: '10px',
+containLabel: true
+},
+xAxis: {
+type: 'category',
+data: ['1 Star', '2 Stars', '3 Stars', '4 Stars', '5 Stars'],
+axisLine: {
+lineStyle: {
+color: '#e5e7eb'
+}
+},
+axisLabel: {
+color: '#1f2937'
+}
+},
+yAxis: {
+type: 'value',
+axisLine: {
+lineStyle: {
+color: '#e5e7eb'
+}
+},
+axisLabel: {
+color: '#1f2937',
+formatter: '{value}%'
+},
+splitLine: {
+lineStyle: {
+color: '#f3f4f6'
+}
+}
+},
+series: [
+{
+type: 'bar',
+data: [0.5, 1.2, 3.5, 18.8, 76.0],
+itemStyle: {
+color: function(params) {
+const colorList = [
+'rgba(252, 141, 98, 1)',
+'rgba(252, 141, 98, 0.8)',
+'rgba(251, 191, 114, 1)',
+'rgba(141, 211, 199, 1)',
+'rgba(87, 181, 231, 1)'
+];
+return colorList[params.dataIndex];
+},
+borderRadius: [4, 4, 0, 0]
+},
+barWidth: '60%'
+}
+]
+};
+ratingDistributionChart.setOption(ratingDistributionOption);
+// Handle window resize
+window.addEventListener('resize', function() {
+deliveryTrendChart.resize();
+driverPerformanceChart.resize();
+deliverySuccessChart.resize();
+hourlyPerformanceChart.resize();
+weeklyPatternsChart.resize();
+districtVolumeChart.resize();
+onTimeDayChart.resize();
+ratingDistributionChart.resize();
+});
+});
+</script>
+<script id="themeScript">
+document.addEventListener('DOMContentLoaded', function() {
+const themeToggle = document.getElementById('themeToggle');
+const html = document.documentElement;
+const updateChartTheme = (isDark) => {
+const charts = [
+'deliveryTrendChart',
+'driverPerformanceChart',
+'deliverySuccessChart',
+'hourlyPerformanceChart',
+'weeklyPatternsChart',
+'districtVolumeChart',
+'onTimeDayChart',
+'ratingDistributionChart'
+];
+const textColor = isDark ? '#e5e7eb' : '#1f2937';
+const borderColor = isDark ? '#374151' : '#e5e7eb';
+const splitLineColor = isDark ? '#1f2937' : '#f3f4f6';
+const backgroundColor = isDark ? '#111827' : '#ffffff';
+charts.forEach(chartId => {
+const chart = echarts.getInstanceByDom(document.getElementById(chartId));
+if (chart) {
+const option = chart.getOption();
+// Update text colors
+if (option.tooltip) {
+option.tooltip.backgroundColor = isDark ? 'rgba(17, 24, 39, 0.95)' : 'rgba(255, 255, 255, 0.95)';
+option.tooltip.borderColor = borderColor;
+option.tooltip.textStyle.color = textColor;
+}
+if (option.legend) {
+option.legend.textStyle = { color: textColor };
+}
+// Update axis colors
+['xAxis', 'yAxis'].forEach(axisName => {
+if (option[axisName]) {
+const axes = Array.isArray(option[axisName]) ? option[axisName] : [option[axisName]];
+axes.forEach(axis => {
+axis.axisLine = { lineStyle: { color: borderColor } };
+axis.axisLabel = { color: textColor };
+axis.splitLine = { lineStyle: { color: splitLineColor } };
+});
+}
+});
+// Update grid colors
+if (option.grid) {
+option.grid.backgroundColor = backgroundColor;
+}
+chart.setOption(option);
+}
+});
+};
+const enableDarkMode = () => {
+html.classList.add('dark');
+localStorage.setItem('theme', 'dark');
+updateChartTheme(true);
+document.body.style.backgroundColor = '#111827';
+};
+const disableDarkMode = () => {
+html.classList.remove('dark');
+localStorage.setItem('theme', 'light');
+updateChartTheme(false);
+document.body.style.backgroundColor = '#f9fafb';
+};
+// Check initial theme
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+themeToggle.checked = true;
+enableDarkMode();
+}
+themeToggle.addEventListener('change', function() {
+if (this.checked) {
+enableDarkMode();
+} else {
+disableDarkMode();
+}
+});
+// Add dark mode classes
+const darkClasses = {
+'bg-white': 'dark:bg-gray-800',
+'bg-gray-50': 'dark:bg-gray-900',
+'text-gray-500': 'dark:text-gray-400',
+'text-gray-700': 'dark:text-gray-300',
+'text-gray-800': 'dark:text-gray-200',
+'border-gray-300': 'dark:border-gray-600',
+'hover:bg-gray-50': 'dark:hover:bg-gray-700',
+'hover:bg-gray-100': 'dark:hover:bg-gray-700',
+'shadow': 'dark:shadow-gray-700',
+'shadow-sm': 'dark:shadow-gray-700'
+};
+const applyDarkClasses = () => {
+const elements = document.querySelectorAll('[class]');
+elements.forEach(element => {
+const classList = element.classList;
+Object.entries(darkClasses).forEach(([lightClass, darkClass]) => {
+if (classList.contains(lightClass)) {
+darkClass.split(' ').forEach(cls => {
+element.classList.add(cls);
+});
+}
+});
+});
+};
+applyDarkClasses();
+});
+</script>
+<style>
+.date-range-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 50;
+  margin-top: 0.5rem;
+  min-width: 280px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e5e7eb;
+  display: none;
+}
+
+.date-range-dropdown.active {
+  display: block;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.calendar-day:hover:not(.disabled) {
+  background-color: #f3f4f6;
+}
+
+.calendar-day.selected {
+  background-color: #4f46e5;
+  color: white;
+}
+
+.calendar-day.disabled {
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.calendar-day.in-range {
+  background-color: #e0e7ff;
+}
+</style>
+
+<script id="notificationScript">
+document.addEventListener('DOMContentLoaded', function() {
+  const notificationBtn = document.getElementById('notificationBtn');
+  const messageBtn = document.getElementById('messageBtn');
+  const dateRangeBtn = document.getElementById('dateRangeBtn');
+  
+  // Create dropdown element
+  const dropdown = document.createElement('div');
+  dropdown.className = 'date-range-dropdown';
+  dropdown.innerHTML = `
+    <div class="p-4">
+      <div class="space-y-2">
+        <button class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 rounded-lg" data-range="7">Last 7 Days</button>
+        <button class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 rounded-lg" data-range="30">Last 30 Days</button>
+        <button class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 rounded-lg" data-range="90">Last 90 Days</button>
+        <button class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 rounded-lg" data-range="this-month">This Month</button>
+        <button class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 rounded-lg" data-range="last-month">Last Month</button>
+        <hr class="my-2 border-gray-200">
+        <button class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 rounded-lg custom-range-btn">
+          <span>Custom Range</span>
+        </button>
+      </div>
+      <div class="custom-range-picker hidden mt-3">
+        <div class="flex justify-between items-center mb-4">
+          <button class="prev-month p-1 hover:bg-gray-100 rounded">
+            <i class="ri-arrow-left-s-line"></i>
+          </button>
+          <span class="month-year text-sm font-medium"></span>
+          <button class="next-month p-1 hover:bg-gray-100 rounded">
+            <i class="ri-arrow-right-s-line"></i>
+          </button>
+        </div>
+        <div class="calendar-header grid grid-cols-7 gap-2 mb-2">
+          <span class="text-xs text-center text-gray-500">Su</span>
+          <span class="text-xs text-center text-gray-500">Mo</span>
+          <span class="text-xs text-center text-gray-500">Tu</span>
+          <span class="text-xs text-center text-gray-500">We</span>
+          <span class="text-xs text-center text-gray-500">Th</span>
+          <span class="text-xs text-center text-gray-500">Fr</span>
+          <span class="text-xs text-center text-gray-500">Sa</span>
+        </div>
+        <div class="calendar-grid"></div>
+        <div class="mt-4 flex justify-end space-x-2">
+          <button class="cancel-btn px-3 py-1 text-sm border border-gray-300 rounded-lg hover:bg-gray-50">Cancel</button>
+          <button class="apply-btn px-3 py-1 text-sm bg-primary text-white rounded-lg hover:bg-primary/90">Apply</button>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  dateRangeBtn.parentNode.style.position = 'relative';
+  dateRangeBtn.parentNode.appendChild(dropdown);
+
+  let currentDate = new Date();
+  let selectedStartDate = null;
+  let selectedEndDate = null;
+  let isSelecting = false;
+
+  function updateCalendar(date) {
+    const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+    const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    const monthYear = date.toLocaleString('default', { month: 'long', year: 'numeric' });
+    
+    dropdown.querySelector('.month-year').textContent = monthYear;
+    const calendarGrid = dropdown.querySelector('.calendar-grid');
+    calendarGrid.innerHTML = '';
+
+    // Add empty cells for days before the first day of the month
+    for (let i = 0; i < firstDay.getDay(); i++) {
+      const emptyCell = document.createElement('div');
+      emptyCell.className = 'calendar-day';
+      calendarGrid.appendChild(emptyCell);
+    }
+
+    // Add days of the month
+    for (let day = 1; day <= lastDay.getDate(); day++) {
+      const cell = document.createElement('div');
+      cell.className = 'calendar-day text-sm';
+      cell.textContent = day;
+      
+      const cellDate = new Date(date.getFullYear(), date.getMonth(), day);
+      
+      if (selectedStartDate && cellDate.getTime() === selectedStartDate.getTime()) {
+        cell.classList.add('selected');
+      }
+      
+      if (selectedEndDate && cellDate.getTime() === selectedEndDate.getTime()) {
+        cell.classList.add('selected');
+      }
+      
+      if (selectedStartDate && selectedEndDate && 
+          cellDate > selectedStartDate && cellDate < selectedEndDate) {
+        cell.classList.add('in-range');
+      }
+
+      cell.addEventListener('click', () => {
+        if (!isSelecting) {
+          selectedStartDate = cellDate;
+          selectedEndDate = null;
+          isSelecting = true;
+        } else {
+          if (cellDate < selectedStartDate) {
+            selectedEndDate = selectedStartDate;
+            selectedStartDate = cellDate;
+          } else {
+            selectedEndDate = cellDate;
+          }
+          isSelecting = false;
+        }
+        updateCalendar(currentDate);
+      });
+
+      calendarGrid.appendChild(cell);
+    }
+  }
+
+  // Notification panel toggle
+  notificationBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    // Toggle notification panel
+    console.log('Notification button clicked');
+  });
+
+  // Message panel toggle
+  messageBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    // Toggle message panel
+    console.log('Message button clicked');
+  });
+
+  // Date range button click handler
+  dateRangeBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    dropdown.classList.toggle('active');
+  });
+
+  // Handle preset range selections
+  dropdown.querySelectorAll('[data-range]').forEach(button => {
+    button.addEventListener('click', () => {
+      const range = button.dataset.range;
+      const end = new Date();
+      const start = new Date();
+
+      switch(range) {
+        case '7':
+          start.setDate(end.getDate() - 7);
+          break;
+        case '30':
+          start.setDate(end.getDate() - 30);
+          break;
+        case '90':
+          start.setDate(end.getDate() - 90);
+          break;
+        case 'this-month':
+          start.setDate(1);
+          break;
+        case 'last-month':
+          start.setMonth(start.getMonth() - 1);
+          start.setDate(1);
+          end.setDate(0);
+          break;
+      }
+
+      dateRangeBtn.querySelector('span').textContent = 
+        `${start.toLocaleDateString()} - ${end.toLocaleDateString()}`;
+      dropdown.classList.remove('active');
+    });
+  });
+
+  // Custom range picker
+  const customRangeBtn = dropdown.querySelector('.custom-range-btn');
+  const customRangePicker = dropdown.querySelector('.custom-range-picker');
+  const prevMonthBtn = dropdown.querySelector('.prev-month');
+  const nextMonthBtn = dropdown.querySelector('.next-month');
+  const applyBtn = dropdown.querySelector('.apply-btn');
+  const cancelBtn = dropdown.querySelector('.cancel-btn');
+
+  customRangeBtn.addEventListener('click', () => {
+    customRangePicker.classList.toggle('hidden');
+    updateCalendar(currentDate);
+  });
+
+  prevMonthBtn.addEventListener('click', () => {
+    currentDate.setMonth(currentDate.getMonth() - 1);
+    updateCalendar(currentDate);
+  });
+
+  nextMonthBtn.addEventListener('click', () => {
+    currentDate.setMonth(currentDate.getMonth() + 1);
+    updateCalendar(currentDate);
+  });
+
+  applyBtn.addEventListener('click', () => {
+    if (selectedStartDate && selectedEndDate) {
+      dateRangeBtn.querySelector('span').textContent = 
+        `${selectedStartDate.toLocaleDateString()} - ${selectedEndDate.toLocaleDateString()}`;
+      dropdown.classList.remove('active');
+      customRangePicker.classList.add('hidden');
+    }
+  });
+
+  cancelBtn.addEventListener('click', () => {
+    selectedStartDate = null;
+    selectedEndDate = null;
+    isSelecting = false;
+    customRangePicker.classList.add('hidden');
+  });
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!dropdown.contains(e.target) && !dateRangeBtn.contains(e.target)) {
+      dropdown.classList.remove('active');
+    }
+  });
+});
+</script>
+<script id="paginationScript">
+document.addEventListener('DOMContentLoaded', function() {
+const driverData = {
+page1: [
+{
+name: 'John Miller',
+initials: 'JM',
+district: 'North District',
+bgColor: 'bg-blue-100',
+textColor: 'text-blue-600',
+deliveries: 1245,
+avgTime: '26.2 min',
+onTime: '96.8%',
+rating: 4.9,
+efficiency: 94
+},
+{
+name: 'Kevin Lee',
+initials: 'KL',
+district: 'East District',
+bgColor: 'bg-green-100',
+textColor: 'text-green-600',
+deliveries: 1087,
+avgTime: '27.8 min',
+onTime: '95.2%',
+rating: 4.7,
+efficiency: 91
+},
+{
+name: 'Rachel Brown',
+initials: 'RB',
+district: 'South District',
+bgColor: 'bg-purple-100',
+textColor: 'text-purple-600',
+deliveries: 952,
+avgTime: '29.1 min',
+onTime: '93.7%',
+rating: 4.8,
+efficiency: 88
+},
+{
+name: 'Alex Hernandez',
+initials: 'AH',
+district: 'West District',
+bgColor: 'bg-yellow-100',
+textColor: 'text-yellow-600',
+deliveries: 1132,
+avgTime: '28.4 min',
+onTime: '94.5%',
+rating: 4.8,
+efficiency: 89
+},
+{
+name: 'Thomas Wilson',
+initials: 'TW',
+district: 'Central District',
+bgColor: 'bg-red-100',
+textColor: 'text-red-600',
+deliveries: 876,
+avgTime: '30.2 min',
+onTime: '92.1%',
+rating: 4.6,
+efficiency: 85
+}
+],
+page2: [
+{
+name: 'Sarah Chen',
+initials: 'SC',
+district: 'Northwest District',
+bgColor: 'bg-pink-100',
+textColor: 'text-pink-600',
+deliveries: 1156,
+avgTime: '27.5 min',
+onTime: '95.3%',
+rating: 4.8,
+efficiency: 92
+},
+{
+name: 'Michael Davis',
+initials: 'MD',
+district: 'Southeast District',
+bgColor: 'bg-indigo-100',
+textColor: 'text-indigo-600',
+deliveries: 987,
+avgTime: '28.9 min',
+onTime: '93.8%',
+rating: 4.7,
+efficiency: 89
+},
+{
+name: 'Emily Roberts',
+initials: 'ER',
+district: 'Southwest District',
+bgColor: 'bg-orange-100',
+textColor: 'text-orange-600',
+deliveries: 1042,
+avgTime: '28.1 min',
+onTime: '94.2%',
+rating: 4.9,
+efficiency: 91
+},
+{
+name: 'David Kim',
+initials: 'DK',
+district: 'West District',
+bgColor: 'bg-teal-100',
+textColor: 'text-teal-600',
+deliveries: 934,
+avgTime: '29.4 min',
+onTime: '92.7%',
+rating: 4.6,
+efficiency: 87
+},
+{
+name: 'Lisa Thompson',
+initials: 'LT',
+district: 'North Central District',
+bgColor: 'bg-cyan-100',
+textColor: 'text-cyan-600',
+deliveries: 1089,
+avgTime: '27.8 min',
+onTime: '94.9%',
+rating: 4.8,
+efficiency: 90
+}
+]
+};
+function updatePaginationButtons(activePage) {
+const pageBtn1 = document.querySelector('.pagination button:nth-child(2)');
+const pageBtn2 = document.getElementById('pageBtn2');
+if (activePage === 1) {
+pageBtn1.className = 'px-3 py-1 text-sm rounded-lg border border-primary bg-primary text-white';
+pageBtn2.className = 'px-3 py-1 text-sm rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-50';
+} else {
+pageBtn1.className = 'px-3 py-1 text-sm rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-50';
+pageBtn2.className = 'px-3 py-1 text-sm rounded-lg border border-primary bg-primary text-white';
+}
+}
+function generateStarRating(rating) {
+const fullStars = Math.floor(rating);
+const hasHalfStar = rating % 1 >= 0.5;
+let stars = '';
+for (let i = 0; i < fullStars; i++) {
+stars += '<i class="ri-star-fill"></i>';
+}
+if (hasHalfStar) {
+stars += '<i class="ri-star-half-fill"></i>';
+}
+const remainingStars = 5 - Math.ceil(rating);
+for (let i = 0; i < remainingStars; i++) {
+stars += '<i class="ri-star-line"></i>';
+}
+return `${stars}<span class="ml-1 text-gray-700 text-sm">${rating}</span>`;
+}
+function updateTableContent(pageData) {
+const tbody = document.querySelector('#driverAnalyticsTable tbody');
+tbody.style.opacity = '0';
+setTimeout(() => {
+tbody.innerHTML = pageData.map(driver => `
+<tr class="hover:bg-gray-50">
+<td class="px-4 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="w-8 h-8 rounded-full ${driver.bgColor} flex items-center justify-center ${driver.textColor} font-medium">${driver.initials}</div>
+<div class="ml-3">
+<p class="text-sm font-medium">${driver.name}</p>
+<p class="text-xs text-gray-500">${driver.district}</p>
+</div>
+</div>
+</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">${driver.deliveries}</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">${driver.avgTime}</td>
+<td class="px-4 py-4 whitespace-nowrap text-sm">${driver.onTime}</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<div class="flex text-yellow-400">
+${generateStarRating(driver.rating)}
+</div>
+</td>
+<td class="px-4 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="w-full bg-gray-200 rounded-full h-2 mr-2 w-16">
+<div class="bg-primary h-2 rounded-full" style="width: ${driver.efficiency}%"></div>
+</div>
+<span class="text-sm">${driver.efficiency}%</span>
+</div>
+</td>
+</tr>
+`).join('');
+tbody.style.opacity = '1';
+}, 150);
+}
+let currentPage = 1;
+const pageBtn2 = document.getElementById('pageBtn2');
+pageBtn2.addEventListener('click', function() {
+if (currentPage !== 2) {
+currentPage = 2;
+updatePaginationButtons(2);
+updateTableContent(driverData.page2);
+document.querySelector('#driverAnalyticsTable').scrollIntoView({ behavior: 'smooth' });
+}
+});
+document.querySelector('.pagination button:nth-child(2)').addEventListener('click', function() {
+if (currentPage !== 1) {
+currentPage = 1;
+updatePaginationButtons(1);
+updateTableContent(driverData.page1);
+document.querySelector('#driverAnalyticsTable').scrollIntoView({ behavior: 'smooth' });
+}
+});
+// Initialize with page 1 data
+updateTableContent(driverData.page1);
+});
+</script>
+</body>
+</html>

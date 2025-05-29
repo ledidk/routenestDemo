@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign Up - ParcelPilot</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>tailwind.config={theme:{extend:{colors:{primary:'#4f46e5',secondary:'#10b981'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+body {
+font-family: 'Inter', sans-serif;
+}
+.password-toggle:checked + .password-toggle-icon .show {
+display: none;
+}
+.password-toggle:not(:checked) + .password-toggle-icon .hide {
+display: none;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+-webkit-appearance: none;
+margin: 0;
+}
+input[type="number"] {
+-moz-appearance: textfield;
+}
+</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<!-- Header -->
+<header class="bg-white shadow-sm sticky top-0 z-50">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center py-4">
+<div class="flex items-center">
+<a href="https://readdy.ai/home/a4cb12ef-b4e2-415e-889e-29c37723d4f1/ec7200fe-6b6b-4bfc-9c6c-39a80d4bcc1c" data-readdy="true" class="text-2xl font-['Pacifico'] text-primary">ParcelPilot</a>
+</div>
+<div class="flex items-center space-x-4">
+<a href="https://readdy.ai/home/a4cb12ef-b4e2-415e-889e-29c37723d4f1/ec7200fe-6b6b-4bfc-9c6c-39a80d4bcc1c" data-readdy="true" class="text-gray-600 hover:text-primary font-medium whitespace-nowrap">Back to Home</a>
+</div>
+</div>
+</div>
+</header>
+<!-- Sign Up Section -->
+<section class="py-12 md:py-20">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+<div class="max-w-6xl mx-auto">
+<div class="flex flex-col lg:flex-row bg-white rounded-xl shadow-lg overflow-hidden">
+<!-- Form Section -->
+<div class="w-full lg:w-3/5 p-8 md:p-12">
+<div class="mb-8">
+<h1 class="text-3xl font-bold text-gray-900 mb-2">Create Your Account</h1>
+<p class="text-gray-600">Join ParcelPilot and transform your delivery operations today.</p>
+</div>
+<form id="signupForm" class="space-y-6">
+<div class="space-y-4">
+<div>
+<label for="businessName" class="block text-sm font-medium text-gray-700 mb-1">Business Name</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<i class="ri-building-line text-gray-400"></i>
+</div>
+<input type="text" id="businessName" name="businessName" class="pl-10 w-full border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none py-2.5 px-4 text-gray-900" placeholder="Your business name" required>
+</div>
+</div>
+<div>
+<label for="contactName" class="block text-sm font-medium text-gray-700 mb-1">Contact Person Name</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<i class="ri-user-line text-gray-400"></i>
+</div>
+<input type="text" id="contactName" name="contactName" class="pl-10 w-full border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none py-2.5 px-4 text-gray-900" placeholder="Full name" required>
+</div>
+</div>
+<div>
+<label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<i class="ri-mail-line text-gray-400"></i>
+</div>
+<input type="email" id="email" name="email" class="pl-10 w-full border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none py-2.5 px-4 text-gray-900" placeholder="your@email.com" required>
+</div>
+</div>
+<div>
+<label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<i class="ri-lock-line text-gray-400"></i>
+</div>
+<input type="password" id="password" name="password" class="pl-10 w-full border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none py-2.5 px-4 text-gray-900 pr-10" placeholder="Create a strong password" required>
+<div class="absolute inset-y-0 right-0 flex items-center pr-3">
+<input type="checkbox" id="passwordToggle" class="password-toggle hidden">
+<label for="passwordToggle" class="password-toggle-icon cursor-pointer">
+<i class="ri-eye-line show text-gray-400"></i>
+<i class="ri-eye-off-line hide text-gray-400"></i>
+</label>
+</div>
+</div>
+<div class="mt-1.5">
+<div class="w-full bg-gray-200 rounded-full h-1.5 mb-1">
+<div id="passwordStrength" class="h-1.5 rounded-full bg-gray-300 transition-all duration-300" style="width: 0%"></div>
+</div>
+<p id="passwordStrengthText" class="text-xs text-gray-500">Password strength</p>
+</div>
+</div>
+<div>
+<label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<i class="ri-lock-line text-gray-400"></i>
+</div>
+<input type="password" id="confirmPassword" name="confirmPassword" class="pl-10 w-full border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none py-2.5 px-4 text-gray-900" placeholder="Confirm your password" required>
+</div>
+</div>
+<div>
+<label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<i class="ri-phone-line text-gray-400"></i>
+</div>
+<input type="tel" id="phone" name="phone" class="pl-10 w-full border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none py-2.5 px-4 text-gray-900" placeholder="(123) 456-7890" required>
+</div>
+</div>
+<div>
+<label for="businessSize" class="block text-sm font-medium text-gray-700 mb-1">Business Size (Number of Drivers)</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<i class="ri-group-line text-gray-400"></i>
+</div>
+<div class="relative">
+<select id="businessSize" name="businessSize" class="pl-10 w-full border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none py-2.5 px-4 text-gray-900 appearance-none pr-8" required>
+<option value="" disabled selected>Select number of drivers</option>
+<option value="1-5">1-5 drivers</option>
+<option value="6-15">6-15 drivers</option>
+<option value="16-30">16-30 drivers</option>
+<option value="31+">31+ drivers</option>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+<i class="ri-arrow-down-s-line text-gray-400"></i>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="pt-2">
+<div class="flex items-start">
+<div class="flex items-center h-5">
+<div class="relative inline-block w-10 mr-2 align-middle select-none">
+<input type="checkbox" id="terms" name="terms" class="opacity-0 absolute block w-6 h-6 cursor-pointer" required>
+<div class="block bg-gray-300 w-6 h-6 rounded border border-gray-300 transition-colors"></div>
+<div class="dot absolute left-1 top-1 bg-white w-4 h-4 rounded transition hidden"></div>
+</div>
+</div>
+<div class="ml-2 text-sm">
+<label for="terms" class="font-medium text-gray-700 cursor-pointer">I agree to the <a href="#" class="text-primary hover:underline">Terms of Service</a> and <a href="#" class="text-primary hover:underline">Privacy Policy</a></label>
+</div>
+</div>
+</div>
+<div>
+    <a href="contractor/dashboard.html">
+<button type="submit" id="createAccountBtn" class="w-full bg-primary text-white py-3 !rounded-button font-medium hover:bg-primary/90 transition-colors flex items-center justify-center whitespace-nowrap">
+<span id="buttonText">Create Account</span>
+<span id="buttonLoader" class="hidden">
+<svg class="animate-spin ml-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+</svg>
+</span>
+</button></a>
+</div>
+<div class="text-center">
+<p class="text-sm text-gray-600">
+Already have an account? <a href="login.html" data-readdy="true" class="text-primary font-medium hover:underline">Log in</a>
+</p>
+</div>
+</form>
+</div>
+<!-- Benefits Section -->
+<div class="w-full lg:w-2/5 bg-gray-50 p-8 md:p-12 flex flex-col">
+<div class="mb-8">
+<h2 class="text-2xl font-bold text-gray-900 mb-4">Why Choose ParcelPilot</h2>
+<p class="text-gray-600">Join hundreds of contractors who have transformed their delivery operations.</p>
+</div>
+<div class="space-y-6 flex-grow">
+<div class="flex">
+<div class="flex-shrink-0">
+<div class="flex items-center justify-center h-12 w-12 rounded-md bg-primary/10 text-primary">
+<i class="ri-route-line ri-lg"></i>
+</div>
+</div>
+<div class="ml-4">
+<h3 class="text-lg font-medium text-gray-900">Route Management</h3>
+<p class="mt-1 text-gray-600">Create, optimize, and manage delivery routes efficiently to save time and fuel costs.</p>
+</div>
+</div>
+<div class="flex">
+<div class="flex-shrink-0">
+<div class="flex items-center justify-center h-12 w-12 rounded-md bg-primary/10 text-primary">
+<i class="ri-team-line ri-lg"></i>
+</div>
+</div>
+<div class="ml-4">
+<h3 class="text-lg font-medium text-gray-900">Team Management</h3>
+<p class="mt-1 text-gray-600">Easily manage your drivers, assign routes, and track performance in real-time.</p>
+</div>
+</div>
+<div class="flex">
+<div class="flex-shrink-0">
+<div class="flex items-center justify-center h-12 w-12 rounded-md bg-primary/10 text-primary">
+<i class="ri-line-chart-line ri-lg"></i>
+</div>
+</div>
+<div class="ml-4">
+<h3 class="text-lg font-medium text-gray-900">Performance Analytics</h3>
+<p class="mt-1 text-gray-600">Track key metrics and gain valuable insights to improve your delivery operations.</p>
+</div>
+</div>
+<div class="flex">
+<div class="flex-shrink-0">
+<div class="flex items-center justify-center h-12 w-12 rounded-md bg-primary/10 text-primary">
+<i class="ri-money-dollar-circle-line ri-lg"></i>
+</div>
+</div>
+<div class="ml-4">
+<h3 class="text-lg font-medium text-gray-900">Financial Tracking</h3>
+<p class="mt-1 text-gray-600">Manage payments, commissions, and financial records all in one secure platform.</p>
+</div>
+</div>
+</div>
+<div class="mt-8 pt-8 border-t border-gray-200">
+<div class="flex items-center">
+<div class="flex-shrink-0">
+<img src="https://readdy.ai/api/search-image?query=professional%2520headshot%2520of%2520a%2520middle-aged%2520caucasian%2520man%2520with%2520short%2520brown%2520hair%2520wearing%2520a%2520business%2520casual%2520outfit%252C%2520neutral%2520background%252C%2520high%2520quality%2520portrait&width=64&height=64&seq=testimonial1&orientation=squarish" alt="Customer" class="h-12 w-12 rounded-full object-cover">
+</div>
+<div class="ml-4">
+<div class="text-primary mb-1">
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+</div>
+<p class="text-sm text-gray-600 italic">"ParcelPilot has completely transformed how we manage our delivery operations. Highly recommended!"</p>
+<p class="text-sm font-medium text-gray-900 mt-1">Robert Anderson, Express Delivery Co.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-white py-8 border-t border-gray-200">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex flex-col md:flex-row justify-between items-center">
+<div class="mb-4 md:mb-0">
+<a href="https://readdy.ai/home/a4cb12ef-b4e2-415e-889e-29c37723d4f1/ec7200fe-6b6b-4bfc-9c6c-39a80d4bcc1c" data-readdy="true" class="text-xl font-['Pacifico'] text-primary">ParcelPilot</a>
+</div>
+<div class="flex space-x-6">
+<a href="#" class="text-gray-600 hover:text-primary">Privacy Policy</a>
+<a href="#" class="text-gray-600 hover:text-primary">Terms of Service</a>
+<a href="#" class="text-gray-600 hover:text-primary">Contact Us</a>
+</div>
+<div class="mt-4 md:mt-0 text-gray-500 text-sm">
+&copy; 2025 ParcelPilot. All rights reserved.
+</div>
+</div>
+</div>
+</footer>
+<script id="formValidation">
+document.addEventListener('DOMContentLoaded', function() {
+// Password toggle
+const passwordToggle = document.getElementById('passwordToggle');
+const passwordField = document.getElementById('password');
+passwordToggle.addEventListener('change', function() {
+passwordField.type = this.checked ? 'text' : 'password';
+});
+// Custom checkbox styling
+const termsCheckbox = document.getElementById('terms');
+const checkboxBlock = termsCheckbox.nextElementSibling;
+const checkboxDot = checkboxBlock.nextElementSibling;
+termsCheckbox.addEventListener('change', function() {
+if (this.checked) {
+checkboxBlock.classList.remove('bg-gray-300');
+checkboxBlock.classList.add('bg-primary');
+checkboxDot.classList.remove('hidden');
+} else {
+checkboxBlock.classList.add('bg-gray-300');
+checkboxBlock.classList.remove('bg-primary');
+checkboxDot.classList.add('hidden');
+}
+});
+// Password strength meter
+const passwordStrength = document.getElementById('passwordStrength');
+const passwordStrengthText = document.getElementById('passwordStrengthText');
+passwordField.addEventListener('input', function() {
+const password = this.value;
+let strength = 0;
+if (password.length >= 8) strength += 25;
+if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength += 25;
+if (password.match(/\d/)) strength += 25;
+if (password.match(/[^a-zA-Z\d]/)) strength += 25;
+passwordStrength.style.width = strength + '%';
+if (strength === 0) {
+passwordStrength.classList.remove('bg-red-500', 'bg-yellow-500', 'bg-green-500');
+passwordStrength.classList.add('bg-gray-300');
+passwordStrengthText.textContent = 'Password strength';
+passwordStrengthText.className = 'text-xs text-gray-500';
+} else if (strength <= 25) {
+passwordStrength.classList.remove('bg-gray-300', 'bg-yellow-500', 'bg-green-500');
+passwordStrength.classList.add('bg-red-500');
+passwordStrengthText.textContent = 'Weak';
+passwordStrengthText.className = 'text-xs text-red-500';
+} else if (strength <= 75) {
+passwordStrength.classList.remove('bg-gray-300', 'bg-red-500', 'bg-green-500');
+passwordStrength.classList.add('bg-yellow-500');
+passwordStrengthText.textContent = 'Medium';
+passwordStrengthText.className = 'text-xs text-yellow-600';
+} else {
+passwordStrength.classList.remove('bg-gray-300', 'bg-red-500', 'bg-yellow-500');
+passwordStrength.classList.add('bg-green-500');
+passwordStrengthText.textContent = 'Strong';
+passwordStrengthText.className = 'text-xs text-green-600';
+}
+});
+// Form submission
+const form = document.getElementById('signupForm');
+const createAccountBtn = document.getElementById('createAccountBtn');
+const buttonText = document.getElementById('buttonText');
+const buttonLoader = document.getElementById('buttonLoader');
+const confirmPasswordField = document.getElementById('confirmPassword');
+form.addEventListener('submit', function(e) {
+e.preventDefault();
+// Basic validation
+let isValid = true;
+const password = passwordField.value;
+const confirmPassword = confirmPasswordField.value;
+// Check if passwords match
+if (password !== confirmPassword) {
+alert('Passwords do not match');
+isValid = false;
+}
+// Check password strength
+if (password.length < 8) {
+alert('Password must be at least 8 characters long');
+isValid = false;
+}
+if (isValid) {
+// Show loading state
+buttonText.textContent = 'Creating Account...';
+buttonLoader.classList.remove('hidden');
+createAccountBtn.disabled = true;
+// Simulate API call
+setTimeout(function() {
+// Reset form after successful submission
+form.reset();
+// Reset button state
+buttonText.textContent = 'Create Account';
+buttonLoader.classList.add('hidden');
+createAccountBtn.disabled = false;
+// Reset password strength meter
+passwordStrength.style.width = '0%';
+passwordStrength.classList.remove('bg-red-500', 'bg-yellow-500', 'bg-green-500');
+passwordStrength.classList.add('bg-gray-300');
+passwordStrengthText.textContent = 'Password strength';
+passwordStrengthText.className = 'text-xs text-gray-500';
+// Reset custom checkbox
+checkboxBlock.classList.add('bg-gray-300');
+checkboxBlock.classList.remove('bg-primary');
+checkboxDot.classList.add('hidden');
+// Show success message
+alert('Account created successfully! You will be redirected to the login page.');
+}, 2000);
+}
+});
+});
+</script>
+</body>
+</html>

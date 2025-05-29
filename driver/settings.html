@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Profile Settings - ParcelPilot</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>tailwind.config={theme:{extend:{colors:{primary:'#4F46E5',secondary:'#818CF8'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f9fafb;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #e5e7eb;
+    transition: .4s;
+    border-radius: 24px;
+}
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+input:checked + .toggle-slider {
+    background-color: #4F46E5;
+}
+input:checked + .toggle-slider:before {
+    transform: translateX(26px);
+}
+.photo-upload-overlay {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 32px;
+    height: 32px;
+    background-color: #4F46E5;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    border: 2px solid white;
+}
+.custom-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    background-size: 1.5em 1.5em;
+}
+</style>
+</head>
+<body class="min-h-screen pb-20">
+<header class="bg-white shadow-sm">
+    <div class="container mx-auto px-4 py-4">
+        <div class="flex items-center">
+            <a href="https://readdy.ai/home/a4cb12ef-b4e2-415e-889e-29c37723d4f1/e690a3a9-b5d9-4fbb-b18c-081ec1ab5e1b" data-readdy="true" class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full mr-3">
+                <i class="ri-arrow-left-s-line text-gray-700"></i>
+            </a>
+            <h1 class="text-xl font-semibold text-gray-800">Profile Settings</h1>
+        </div>
+    </div>
+</header>
+
+<main class="container mx-auto px-4 py-6">
+    <form id="profile-form">
+        <!-- Profile Photo Section -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <div class="flex flex-col items-center">
+                <div class="relative mb-4">
+                    <div class="w-24 h-24 rounded-full bg-gray-200 overflow-hidden">
+                        <img src="https://readdy.ai/api/search-image?query=professional%2520portrait%2520of%2520a%2520delivery%2520driver%252C%2520male%252C%2520mid%252030s%252C%2520casual%2520uniform%252C%2520friendly%2520smile%252C%2520high%2520quality%252C%2520photorealistic%252C%2520front%2520facing%252C%2520clean%2520background&width=200&height=200&seq=5&orientation=squarish" alt="Profile photo" class="w-full h-full object-cover">
+                    </div>
+                    <label for="profile-photo" class="photo-upload-overlay">
+                        <i class="ri-camera-line"></i>
+                        <input type="file" id="profile-photo" class="hidden" accept="image/*">
+                    </label>
+                </div>
+                <h2 class="text-lg font-semibold text-gray-800 mb-1">Michael Rodriguez</h2>
+                <div class="flex items-center text-sm text-gray-500 mb-2">
+                    <span>Driver ID: PD-5892</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center">
+                        <i class="ri-star-fill text-yellow-400 mr-1"></i>
+                        <span class="text-sm text-gray-700">4.92</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="ri-checkbox-circle-fill text-green-500 mr-1"></i>
+                        <span class="text-sm text-gray-700">98% completion</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Personal Information -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Personal Information</h3>
+            
+            <div class="space-y-4">
+                <div>
+                    <label for="first-name" class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                    <input type="text" id="first-name" class="w-full px-4 py-2 bg-gray-50 rounded-lg text-sm text-gray-800" value="Michael">
+                </div>
+                
+                <div>
+                    <label for="last-name" class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                    <input type="text" id="last-name" class="w-full px-4 py-2 bg-gray-50 rounded-lg text-sm text-gray-800" value="Rodriguez">
+                </div>
+                
+                <div>
+                    <label for="date-of-birth" class="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
+                    <input type="date" id="date-of-birth" class="w-full px-4 py-2 bg-gray-50 rounded-lg text-sm text-gray-800" value="1988-07-15">
+                </div>
+                
+                <div>
+                    <label for="gender" class="block text-sm font-medium text-gray-700 mb-1">Gender</label>
+                    <div class="relative">
+                        <select id="gender" class="w-full px-4 py-2 bg-gray-50 rounded-lg text-sm text-gray-800 pr-8 custom-select">
+                            <option value="male" selected>Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                            <option value="prefer-not-to-say">Prefer not to say</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Information -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Contact Information</h3>
+            
+            <div class="space-y-4">
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                    <input type="email" id="email" class="w-full px-4 py-2 bg-gray-50 rounded-lg text-sm text-gray-800" value="michael.rodriguez@example.com">
+                </div>
+                
+                <div>
+                    <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                    <div class="flex">
+                        <div class="relative w-24 mr-2">
+                            <select id="country-code" class="w-full px-4 py-2 bg-gray-50 rounded-lg text-sm text-gray-800 pr-8 custom-select">
+                                <option value="+1" selected>+1</option>
+                                <option value="+44">+44</option>
+                                <option value="+61">+61</option>
+                                <option value="+86">+86</option>
+                            </select>
+                        </div>
+                        <input type="tel" id="phone" class="flex-1 px-4 py-2 bg-gray-50 rounded-lg text-sm text-gray-800" value="555-123-4567">
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="alt-phone" class="block text-sm font-medium text-gray-700 mb-1">Alternative Phone (Optional)</label>
+                    <div class="flex">
+                        <div class="relative w-24 mr-2">
+                            <select id="alt-country-code" class="w-full px-4 py-2 bg-gray-50 rounded-lg text-sm text-gray-800 pr-8 custom-select">
+                                <option value="+1" selected>+1</option>
+                                <option value="+44">+44</option>
+                                <option value="+61">+61</option>
+                                <option value="+86">+86</option>
+                            </select>
+                        </div>
+                        <input type="tel" id="alt-phone" class="flex-1 px-4 py-2 bg-gray-50 rounded-lg text-sm text-gray-800" placeholder="Enter alternative phone">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Address Information -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Address Information</h3>
+            
+            <div class="space-y-4">
+                <div>
+                    <label for="street-address" class="block text-sm font-medium text-gray-700 mb-1">Street Address</label>
+                    <input type="text" id="street-address" class="w-full px-4 py-2 bg-gray-50 rounded-lg text-sm text-gray-800" value="1234 Maple Avenue">
+                </div>
+                
+                <div>
+                    <label for="apt-suite" class="block text-sm font-medium text-gray-700 mb-1">Apt/Suite (Optional)</label>
+                    <input type="text" id="apt-suite" class="w-full px-4 py-2 bg-gray-50 rounded-lg text-sm text-gray-800" value="Apt 302">
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="city" class="block text-sm font-medium text-gray-700 mb-1">City</label>
+                        <input type="text" id="city" class="w-full px-4 py-2 bg-gray-50 rounded-lg text-sm text-gray-800" value="San Francisco">
+                    </div>
+                    
+                    <div>
+                        <label for="state" class="block text-sm font-medium text-gray-700 mb-1">State</label>
+                        <div class="relative">
+                            <select id="state" class="w-full px-4 py-2 bg-gray-50 rounded-lg text-sm text-gray-800 pr-8 custom-select">
+                                <option value="AL">Alabama</option>
+                                <option value="AK">Alaska</option>
+                                <option value="AZ">Arizona</option>
+                                <option value="CA" selected>California</option>
+                                <option value="CO">Colorado</option>
+                                <option value="CT">Connecticut</option>
+                                <option value="DE">Delaware</option>
+                                <option value="FL">Florida</option>
+                                <option value="GA">Georgia</option>
+                                <option value="HI">Hawaii</option>
+                                <option value="ID">Idaho</option>
+                                <option value="IL">Illinois</option>
+                                <!-- More states would be here -->
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="zip-code" class="block text-sm font-medium text-gray-700 mb-1">ZIP Code</label>
+                        <input type="text" id="zip-code" class="w-full px-4 py-2 bg-gray-50 rounded-lg text-sm text-gray-800" value="94107">
+                    </div>
+                    
+                    <div>
+                        <label for="country" class="block text-sm font-medium text-gray-700 mb-1">Country</label>
+                        <div class="relative">
+                            <select id="country" class="w-full px-4 py-2 bg-gray-50 rounded-lg text-sm text-gray-800 pr-8 custom-select">
+                                <option value="US" selected>United States</option>
+                                <option value="CA">Canada</option>
+                                <option value="UK">United Kingdom</option>
+                                <option value="AU">Australia</option>
+                                <!-- More countries would be here -->
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Current Location</label>
+                    <div class="h-48 bg-cover bg-center rounded-lg overflow-hidden relative" style="background-image: url('https://public.readdy.ai/gen_page/map_placeholder_1280x720.png')">
+                        <div class="absolute bottom-3 right-3">
+                            <button type="button" class="px-3 py-2 bg-white text-gray-700 text-sm font-medium rounded-button shadow-sm whitespace-nowrap">
+                                <i class="ri-map-pin-line mr-1"></i> Update Location
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vehicle Information -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Vehicle Information</h3>
+            
+            <div class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="vehicle-make" class="block text-sm font-medium text-gray-700 mb-1">Vehicle Make</label>
+                        <input type="text" id="vehicle-make" class="w-full px-4 py-2 bg-gray-50 rounded-lg text-sm text-gray-800" value="Toyota">
+                    </div>
+                    
+                    <div>
+                        <label for="vehicle-model" class="block text-sm font-medium text-gray-700 mb-1">Vehicle Model</label>
+                        <input type="text" id="vehicle-model" class="w-full px-4 py-2 bg-gray-50 rounded-lg text-sm text-gray-800" value="Corolla">
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="vehicle-year" class="block text-sm font-medium text-gray-700 mb-1">Year</label>
+                        <input type="number" id="vehicle-year" class="w-full px-4 py-2 bg-gray-50 rounded-lg text-sm text-gray-800" value="2020">
+                    </div>
+                    
+                    <div>
+                        <label for="license-plate" class="block text-sm font-medium text-gray-700 mb-1">License Plate</label>
+                        <input type="text" id="license-plate" class="w-full px-4 py-2 bg-gray-50 rounded-lg text-sm text-gray-800" value="ABC1234">
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="vehicle-color" class="block text-sm font-medium text-gray-700 mb-1">Vehicle Color</label>
+                        <div class="relative">
+                            <select id="vehicle-color" class="w-full px-4 py-2 bg-gray-50 rounded-lg text-sm text-gray-800 pr-8 custom-select">
+                                <option value="black">Black</option>
+                                <option value="white">White</option>
+                                <option value="silver" selected>Silver</option>
+                                <option value="gray">Gray</option>
+                                <option value="red">Red</option>
+                                <option value="blue">Blue</option>
+                                <option value="green">Green</option>
+                                <option value="yellow">Yellow</option>
+                                <option value="brown">Brown</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="vehicle-type" class="block text-sm font-medium text-gray-700 mb-1">Vehicle Type</label>
+                        <div class="relative">
+                            <select id="vehicle-type" class="w-full px-4 py-2 bg-gray-50 rounded-lg text-sm text-gray-800 pr-8 custom-select">
+                                <option value="sedan" selected>Sedan</option>
+                                <option value="suv">SUV</option>
+                                <option value="hatchback">Hatchback</option>
+                                <option value="van">Van</option>
+                                <option value="truck">Truck</option>
+                                <option value="motorcycle">Motorcycle</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Vehicle Photo</label>
+                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+                        <div class="mb-2">
+                            <div class="w-12 h-12 mx-auto flex items-center justify-center bg-gray-100 rounded-full text-gray-500">
+                                <i class="ri-car-line ri-lg"></i>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-2">Upload a photo of your vehicle</p>
+                        <label for="vehicle-photo" class="px-4 py-2 bg-primary text-white text-sm font-medium rounded-button inline-block cursor-pointer whitespace-nowrap">
+                            Upload Photo
+                            <input type="file" id="vehicle-photo" class="hidden" accept="image/*">
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Working Preferences -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Working Preferences</h3>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Working Hours</label>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="start-time" class="block text-sm text-gray-600 mb-1">Start Time</label>
+                            <input type="time" id="start-time" class="w-full px-4 py-2 bg-gray-50 rounded-lg text-sm text-gray-800" value="08:00">
+                        </div>
+                        
+                        <div>
+                            <label for="end-time" class="block text-sm text-gray-600 mb-1">End Time</label>
+                            <input type="time" id="end-time" class="w-full px-4 py-2 bg-gray-50 rounded-lg text-sm text-gray-800" value="18:00">
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Available Days</label>
+                    <div class="grid grid-cols-7 gap-2">
+                        <div class="day-selector">
+                            <input type="checkbox" id="day-mon" class="hidden" checked>
+                            <label for="day-mon" class="block w-full py-2 text-center text-xs bg-primary bg-opacity-10 text-primary font-medium rounded-lg cursor-pointer">Mon</label>
+                        </div>
+                        <div class="day-selector">
+                            <input type="checkbox" id="day-tue" class="hidden" checked>
+                            <label for="day-tue" class="block w-full py-2 text-center text-xs bg-primary bg-opacity-10 text-primary font-medium rounded-lg cursor-pointer">Tue</label>
+                        </div>
+                        <div class="day-selector">
+                            <input type="checkbox" id="day-wed" class="hidden" checked>
+                            <label for="day-wed" class="block w-full py-2 text-center text-xs bg-primary bg-opacity-10 text-primary font-medium rounded-lg cursor-pointer">Wed</label>
+                        </div>
+                        <div class="day-selector">
+                            <input type="checkbox" id="day-thu" class="hidden" checked>
+                            <label for="day-thu" class="block w-full py-2 text-center text-xs bg-primary bg-opacity-10 text-primary font-medium rounded-lg cursor-pointer">Thu</label>
+                        </div>
+                        <div class="day-selector">
+                            <input type="checkbox" id="day-fri" class="hidden" checked>
+                            <label for="day-fri" class="block w-full py-2 text-center text-xs bg-primary bg-opacity-10 text-primary font-medium rounded-lg cursor-pointer">Fri</label>
+                        </div>
+                        <div class="day-selector">
+                            <input type="checkbox" id="day-sat" class="hidden">
+                            <label for="day-sat" class="block w-full py-2 text-center text-xs bg-gray-100 text-gray-500 font-medium rounded-lg cursor-pointer">Sat</label>
+                        </div>
+                        <div class="day-selector">
+                            <input type="checkbox" id="day-sun" class="hidden">
+                            <label for="day-sun" class="block w-full py-2 text-center text-xs bg-gray-100 text-gray-500 font-medium rounded-lg cursor-pointer">Sun</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="max-deliveries" class="block text-sm font-medium text-gray-700 mb-1">Maximum Daily Deliveries</label>
+                    <input type="number" id="max-deliveries" class="w-full px-4 py-2 bg-gray-50 rounded-lg text-sm text-gray-800" value="15">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Preferred Delivery Zones</label>
+                    <div class="relative">
+                        <select id="delivery-zones" class="w-full px-4 py-2 bg-gray-50 rounded-lg text-sm text-gray-800 pr-8 custom-select" multiple size="3">
+                            <option value="downtown" selected>Downtown</option>
+                            <option value="north">North District</option>
+                            <option value="south" selected>South District</option>
+                            <option value="east">East District</option>
+                            <option value="west">West District</option>
+                            <option value="suburbs">Suburbs</option>
+                        </select>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1">Hold Ctrl/Cmd to select multiple zones</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notification Preferences -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Notification Preferences</h3>
+            
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-700">New Delivery Alerts</p>
+                        <p class="text-xs text-gray-500">Get notified when new deliveries are available</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-700">Message Notifications</p>
+                        <p class="text-xs text-gray-500">Get notified for new messages</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-700">Payment Alerts</p>
+                        <p class="text-xs text-gray-500">Get notified about payment updates</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-700">App Updates</p>
+                        <p class="text-xs text-gray-500">Get notified about app updates</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="pt-2">
+                    <p class="text-sm font-medium text-gray-700 mb-2">Sound & Vibration</p>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="notification-sound" class="block text-sm text-gray-600 mb-1">Notification Sound</label>
+                            <div class="relative">
+                                <select id="notification-sound" class="w-full px-4 py-2 bg-gray-50 rounded-lg text-sm text-gray-800 pr-8 custom-select">
+                                    <option value="default" selected>Default</option>
+                                    <option value="chime">Chime</option>
+                                    <option value="bell">Bell</option>
+                                    <option value="alert">Alert</option>
+                                    <option value="none">None</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label for="vibration" class="block text-sm text-gray-600 mb-1">Vibration</label>
+                            <div class="relative">
+                                <select id="vibration" class="w-full px-4 py-2 bg-gray-50 rounded-lg text-sm text-gray-800 pr-8 custom-select">
+                                    <option value="default" selected>Default</option>
+                                    <option value="short">Short</option>
+                                    <option value="long">Long</option>
+                                    <option value="none">None</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Emergency Contact -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Emergency Contact</h3>
+            
+            <div class="space-y-4">
+                <div>
+                    <label for="emergency-name" class="block text-sm font-medium text-gray-700 mb-1">Contact Name</label>
+                    <input type="text" id="emergency-name" class="w-full px-4 py-2 bg-gray-50 rounded-lg text-sm text-gray-800" value="Jennifer Rodriguez">
+                </div>
+                
+                <div>
+                    <label for="relationship" class="block text-sm font-medium text-gray-700 mb-1">Relationship</label>
+                    <div class="relative">
+                        <select id="relationship" class="w-full px-4 py-2 bg-gray-50 rounded-lg text-sm text-gray-800 pr-8 custom-select">
+                            <option value="spouse" selected>Spouse</option>
+                            <option value="parent">Parent</option>
+                            <option value="sibling">Sibling</option>
+                            <option value="child">Child</option>
+                            <option value="friend">Friend</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="emergency-phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                    <div class="flex">
+                        <div class="relative w-24 mr-2">
+                            <select id="emergency-country-code" class="w-full px-4 py-2 bg-gray-50 rounded-lg text-sm text-gray-800 pr-8 custom-select">
+                                <option value="+1" selected>+1</option>
+                                <option value="+44">+44</option>
+                                <option value="+61">+61</option>
+                                <option value="+86">+86</option>
+                            </select>
+                        </div>
+                        <input type="tel" id="emergency-phone" class="flex-1 px-4 py-2 bg-gray-50 rounded-lg text-sm text-gray-800" value="555-987-6543">
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="emergency-alt-phone" class="block text-sm font-medium text-gray-700 mb-1">Alternative Phone (Optional)</label>
+                    <div class="flex">
+                        <div class="relative w-24 mr-2">
+                            <select id="emergency-alt-country-code" class="w-full px-4 py-2 bg-gray-50 rounded-lg text-sm text-gray-800 pr-8 custom-select">
+                                <option value="+1" selected>+1</option>
+                                <option value="+44">+44</option>
+                                <option value="+61">+61</option>
+                                <option value="+86">+86</option>
+                            </select>
+                        </div>
+                        <input type="tel" id="emergency-alt-phone" class="flex-1 px-4 py-2 bg-gray-50 rounded-lg text-sm text-gray-800" placeholder="Enter alternative phone">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Save Button -->
+        <div class="fixed bottom-0 left-0 right-0 bg-white shadow-[0_-1px_3px_rgba(0,0,0,0.1)] p-4">
+            <button type="submit" id="save-button" class="w-full py-3 bg-primary text-white font-medium rounded-button whitespace-nowrap">
+                Save Changes
+            </button>
+        </div>
+    </form>
+</main>
+
+<div id="toast" class="fixed bottom-20 left-1/2 transform -translate-x-1/2 flex items-center bg-green-50 border border-green-100 px-4 py-3 rounded-lg shadow-lg z-50 transition-opacity duration-300 opacity-0 pointer-events-none">
+    <i class="ri-checkbox-circle-fill text-green-500 mr-2"></i>
+    <span class="text-sm text-green-800">Changes saved successfully</span>
+</div>
+
+<script id="profile-form-script">
+document.addEventListener('DOMContentLoaded', function() {
+    // Day selector functionality
+    const daySelectors = document.querySelectorAll('.day-selector input[type="checkbox"]');
+    daySelectors.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const label = this.nextElementSibling;
+            if (this.checked) {
+                label.classList.remove('bg-gray-100', 'text-gray-500');
+                label.classList.add('bg-primary', 'bg-opacity-10', 'text-primary');
+            } else {
+                label.classList.remove('bg-primary', 'bg-opacity-10', 'text-primary');
+                label.classList.add('bg-gray-100', 'text-gray-500');
+            }
+        });
+    });
+
+    // Profile photo upload preview
+    const profilePhotoInput = document.getElementById('profile-photo');
+    profilePhotoInput.addEventListener('change', function(e) {
+        if (e.target.files.length > 0) {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = profilePhotoInput.closest('.relative').querySelector('img');
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Vehicle photo upload preview
+    const vehiclePhotoInput = document.getElementById('vehicle-photo');
+    vehiclePhotoInput.addEventListener('change', function(e) {
+        if (e.target.files.length > 0) {
+            const uploadContainer = vehiclePhotoInput.closest('.border-dashed');
+            uploadContainer.innerHTML = '<div class="relative w-full h-48 rounded-lg overflow-hidden"><img src="" alt="Vehicle photo" class="w-full h-full object-cover"></div>';
+            
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = uploadContainer.querySelector('img');
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Form submission
+    const profileForm = document.getElementById('profile-form');
+    profileForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Show loading state
+        const saveButton = document.getElementById('save-button');
+        const originalText = saveButton.textContent;
+        saveButton.textContent = 'Saving...';
+        saveButton.disabled = true;
+        
+        // Simulate API call
+        setTimeout(() => {
+            saveButton.textContent = originalText;
+            saveButton.disabled = false;
+            
+            // Show success toast
+            const toast = document.getElementById('toast');
+            toast.classList.remove('opacity-0');
+            setTimeout(() => {
+                toast.classList.add('opacity-0');
+            }, 3000);
+        }, 1500);
+    });
+});
+</script>
+
+</body>
+</html>

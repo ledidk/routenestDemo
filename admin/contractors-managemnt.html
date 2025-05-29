@@ -1,0 +1,1839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contractors - ParcelPilot Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config={theme:{extend:{colors:{primary:'#4f46e5',secondary:'#6366f1'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <style>
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .sidebar-link.active {
+            background-color: rgba(79, 70, 229, 0.1);
+            color: #4f46e5;
+            border-left: 3px solid #4f46e5;
+        }
+        .sidebar-link:hover:not(.active) {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        th {
+            position: sticky;
+            top: 0;
+            background-color: #f9fafb;
+            z-index: 10;
+        }
+        th, td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        tr:hover {
+            background-color: #f9fafb;
+        }
+        .pagination-btn {
+            padding: 6px 12px;
+            border-radius: 6px;
+            background-color: #fff;
+            border: 1px solid #e5e7eb;
+        }
+        .pagination-btn.active {
+            background-color: #4f46e5;
+            color: white;
+            border-color: #4f46e5;
+        }
+        .custom-checkbox {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #d1d5db;
+            border-radius: 4px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .custom-checkbox:checked {
+            background-color: #4f46e5;
+            border-color: #4f46e5;
+        }
+        .custom-checkbox:checked::after {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 2px;
+            width: 6px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+        .custom-switch {
+            position: relative;
+            display: inline-block;
+            width: 36px;
+            height: 20px;
+        }
+        .custom-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .switch-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #e5e7eb;
+            transition: .4s;
+            border-radius: 20px;
+        }
+        .switch-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .switch-slider {
+            background-color: #4f46e5;
+        }
+        input:checked + .switch-slider:before {
+            transform: translateX(16px);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            width: 90%;
+            max-width: 800px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .tab-button {
+            padding: 10px 16px;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+        }
+        .tab-button.active {
+            color: #4f46e5;
+            border-bottom: 2px solid #4f46e5;
+            font-weight: 500;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .status-active {
+            background-color: #dcfce7;
+            color: #15803d;
+        }
+        .status-inactive {
+            background-color: #f3f4f6;
+            color: #6b7280;
+        }
+        .status-pending {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        .payment-paid {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+        .payment-overdue {
+            background-color: #fee2e2;
+            color: #b91c1c;
+        }
+        .payment-pending {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            min-width: 160px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            z-index: 20;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .dropdown-item {
+            padding: 10px 16px;
+            display: block;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+        .dropdown-item:hover {
+            background-color: #f9fafb;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <div class="w-64 bg-white border-r border-gray-200 flex-shrink-0 hidden md:block">
+            <div class="h-16 border-b border-gray-200 flex items-center px-6">
+                <a href="#" class="text-xl font-['Pacifico'] text-primary">ParcelPilot</a>
+            </div>
+            <div class="p-4">
+                <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Main</div>
+                <a href="#" class="sidebar-link flex items-center text-gray-600 py-2 px-3 rounded-md mb-1">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-dashboard-line"></i>
+                    </div>
+                    <span>Dashboard</span>
+                </a>
+                <a href="https://readdy.ai/home/a4cb12ef-b4e2-415e-889e-29c37723d4f1/41ab264b-bb86-481e-83ae-b07cb342ac75" data-readdy="true" class="sidebar-link flex items-center text-gray-600 py-2 px-3 rounded-md mb-1">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-file-list-line"></i>
+                    </div>
+                    <span>Activity Log</span>
+                </a>
+                <a href="#" class="sidebar-link active flex items-center text-gray-600 py-2 px-3 rounded-md mb-1">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-team-line"></i>
+                    </div>
+                    <span>Contractors</span>
+                </a>
+                <a href="#" class="sidebar-link flex items-center text-gray-600 py-2 px-3 rounded-md mb-1">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-truck-line"></i>
+                    </div>
+                    <span>Drivers</span>
+                </a>
+                <a href="#" class="sidebar-link flex items-center text-gray-600 py-2 px-3 rounded-md mb-1">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-route-line"></i>
+                    </div>
+                    <span>Routes</span>
+                </a>
+                <a href="#" class="sidebar-link flex items-center text-gray-600 py-2 px-3 rounded-md mb-1">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-box-3-line"></i>
+                    </div>
+                    <span>Packages</span>
+                </a>
+                
+                <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider mt-6 mb-2">Admin</div>
+                <a href="#" class="sidebar-link flex items-center text-gray-600 py-2 px-3 rounded-md mb-1">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-user-settings-line"></i>
+                    </div>
+                    <span>User Management</span>
+                </a>
+                <a href="#" class="sidebar-link flex items-center text-gray-600 py-2 px-3 rounded-md mb-1">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-settings-line"></i>
+                    </div>
+                    <span>Settings</span>
+                </a>
+                <a href="#" class="sidebar-link flex items-center text-gray-600 py-2 px-3 rounded-md mb-1">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-customer-service-2-line"></i>
+                    </div>
+                    <span>Support</span>
+                </a>
+            </div>
+            <div class="absolute bottom-0 w-64 border-t border-gray-200 p-4">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
+                        <i class="ri-user-line text-gray-600"></i>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm font-medium text-gray-700">Michael Anderson</p>
+                        <p class="text-xs text-gray-500">Admin</p>
+                    </div>
+                    <div class="ml-auto">
+                        <button class="text-gray-400 hover:text-gray-600">
+                            <div class="w-8 h-8 flex items-center justify-center">
+                                <i class="ri-logout-box-r-line"></i>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Top Header -->
+            <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6">
+                <div class="flex items-center">
+                    <button class="md:hidden mr-4 text-gray-600">
+                        <div class="w-6 h-6 flex items-center justify-center">
+                            <i class="ri-menu-line"></i>
+                        </div>
+                    </button>
+                    <a href="https://readdy.ai/home/a4cb12ef-b4e2-415e-889e-29c37723d4f1/41ab264b-bb86-481e-83ae-b07cb342ac75" data-readdy="true" class="flex items-center text-gray-600 hover:text-gray-900">
+                        <div class="w-5 h-5 flex items-center justify-center">
+                            <i class="ri-arrow-left-line"></i>
+                        </div>
+                        <span class="ml-1 text-sm">Back</span>
+                    </a>
+                    <div class="mx-4 text-gray-300">|</div>
+                    <nav class="flex">
+                        <a href="#" class="text-gray-600 hover:text-gray-900 text-sm">Dashboard</a>
+                        <span class="mx-2 text-gray-400">/</span>
+                        <span class="text-gray-900 text-sm font-medium">Contractors</span>
+                    </nav>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-600 hover:text-gray-900 relative">
+                        <div class="w-8 h-8 flex items-center justify-center">
+                            <i class="ri-notification-3-line"></i>
+                        </div>
+                        <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                    </button>
+                    <button class="text-gray-600 hover:text-gray-900">
+                        <div class="w-8 h-8 flex items-center justify-center">
+                            <i class="ri-settings-line"></i>
+                        </div>
+                    </button>
+                    <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+                        <i class="ri-user-line text-gray-600"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <main class="flex-1 overflow-y-auto bg-gray-50 p-6">
+                <!-- Page Header -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
+                    <div>
+                        <h1 class="text-2xl font-semibold text-gray-900">Contractors</h1>
+                        <p class="text-sm text-gray-500 mt-1">Last updated: May 27, 2025 at 10:45 AM</p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-3 mt-4 md:mt-0">
+                        <button class="bg-primary text-white px-4 py-2 rounded-button flex items-center !rounded-button whitespace-nowrap">
+                            <div class="w-5 h-5 flex items-center justify-center mr-1">
+                                <i class="ri-add-line"></i>
+                            </div>
+                            <span>Add Contractor</span>
+                        </button>
+                        <div class="dropdown">
+                            <button class="bg-white text-gray-700 border border-gray-300 px-4 py-2 rounded-button flex items-center !rounded-button whitespace-nowrap">
+                                <div class="w-5 h-5 flex items-center justify-center mr-1">
+                                    <i class="ri-download-line"></i>
+                                </div>
+                                <span>Export</span>
+                                <div class="w-5 h-5 flex items-center justify-center ml-1">
+                                    <i class="ri-arrow-down-s-line"></i>
+                                </div>
+                            </button>
+                            <div class="dropdown-content">
+                                <div class="dropdown-item flex items-center">
+                                    <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                        <i class="ri-file-excel-line"></i>
+                                    </div>
+                                    <span>Export as CSV</span>
+                                </div>
+                                <div class="dropdown-item flex items-center">
+                                    <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                        <i class="ri-file-pdf-line"></i>
+                                    </div>
+                                    <span>Export as PDF</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="bg-white text-gray-700 border border-gray-300 p-2 rounded-button flex items-center justify-center !rounded-button whitespace-nowrap">
+                            <div class="w-5 h-5 flex items-center justify-center">
+                                <i class="ri-refresh-line"></i>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Filters Section -->
+                <div class="bg-white rounded-lg shadow-sm mb-6 overflow-hidden">
+                    <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center cursor-pointer" id="filter-toggle">
+                        <h2 class="text-lg font-medium text-gray-900">Filters</h2>
+                        <div class="w-5 h-5 flex items-center justify-center text-gray-500">
+                            <i class="ri-arrow-down-s-line" id="filter-arrow"></i>
+                        </div>
+                    </div>
+                    <div class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="filter-content">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Search</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                        <i class="ri-search-line"></i>
+                                    </div>
+                                </div>
+                                <input type="text" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-sm" placeholder="Search by name or ID">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                            <select class="block w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-sm pr-8">
+                                <option value="">All Statuses</option>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                                <option value="pending">Pending</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Payment Status</label>
+                            <select class="block w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-sm pr-8">
+                                <option value="">All Payment Statuses</option>
+                                <option value="paid">Paid</option>
+                                <option value="overdue">Overdue</option>
+                                <option value="pending">Pending</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                            <select class="block w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-sm pr-8">
+                                <option value="">All Locations</option>
+                                <option value="new-york">New York</option>
+                                <option value="los-angeles">Los Angeles</option>
+                                <option value="chicago">Chicago</option>
+                                <option value="houston">Houston</option>
+                                <option value="miami">Miami</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Number of Drivers</label>
+                            <div class="flex items-center space-x-2">
+                                <input type="number" class="block w-full pl-3 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-sm" placeholder="Min">
+                                <span class="text-gray-500">-</span>
+                                <input type="number" class="block w-full pl-3 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-sm" placeholder="Max">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Date Range</label>
+                            <div class="flex items-center space-x-2">
+                                <input type="date" class="block w-full pl-3 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-sm">
+                                <span class="text-gray-500">-</span>
+                                <input type="date" class="block w-full pl-3 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-sm">
+                            </div>
+                        </div>
+                        <div class="md:col-span-2 lg:col-span-3 flex justify-end mt-2">
+                            <button class="bg-gray-100 text-gray-700 px-4 py-2 rounded-button mr-2 !rounded-button whitespace-nowrap">Reset Filters</button>
+                            <button class="bg-primary text-white px-4 py-2 rounded-button !rounded-button whitespace-nowrap">Apply Filters</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contractors Table -->
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                    <div class="px-6 py-4 border-b border-gray-200 flex flex-col md:flex-row md:items-center justify-between">
+                        <div class="flex items-center mb-4 md:mb-0">
+                            <input type="checkbox" class="custom-checkbox mr-4" id="select-all">
+                            <div class="dropdown">
+                                <button class="text-gray-700 text-sm flex items-center" id="bulk-actions-btn">
+                                    <span>Bulk Actions</span>
+                                    <div class="w-5 h-5 flex items-center justify-center ml-1">
+                                        <i class="ri-arrow-down-s-line"></i>
+                                    </div>
+                                </button>
+                                <div class="dropdown-content" id="bulk-actions-dropdown">
+                                    <div class="dropdown-item flex items-center">
+                                        <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                            <i class="ri-check-line"></i>
+                                        </div>
+                                        <span>Activate Selected</span>
+                                    </div>
+                                    <div class="dropdown-item flex items-center">
+                                        <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                            <i class="ri-close-line"></i>
+                                        </div>
+                                        <span>Deactivate Selected</span>
+                                    </div>
+                                    <div class="dropdown-item flex items-center">
+                                        <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                            <i class="ri-delete-bin-line"></i>
+                                        </div>
+                                        <span>Delete Selected</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-sm text-gray-600 mr-4">Show</span>
+                            <select class="text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary pr-8">
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                            <span class="text-sm text-gray-600 ml-4">entries</span>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr class="bg-gray-50">
+                                    <th class="w-10"></th>
+                                    <th class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <div class="flex items-center">
+                                            <span>Contractor</span>
+                                            <div class="w-5 h-5 flex items-center justify-center ml-1">
+                                                <i class="ri-arrow-down-s-line"></i>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <div class="flex items-center">
+                                            <span>Status</span>
+                                            <div class="w-5 h-5 flex items-center justify-center ml-1">
+                                                <i class="ri-arrow-down-s-line"></i>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <div class="flex items-center">
+                                            <span>Drivers</span>
+                                            <div class="w-5 h-5 flex items-center justify-center ml-1">
+                                                <i class="ri-arrow-down-s-line"></i>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <div class="flex items-center">
+                                            <span>Payment</span>
+                                            <div class="w-5 h-5 flex items-center justify-center ml-1">
+                                                <i class="ri-arrow-down-s-line"></i>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <div class="flex items-center">
+                                            <span>Last Payment</span>
+                                            <div class="w-5 h-5 flex items-center justify-center ml-1">
+                                                <i class="ri-arrow-down-s-line"></i>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact</th>
+                                    <th class="text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="checkbox" class="custom-checkbox"></td>
+                                    <td class="whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 flex-shrink-0 rounded-full bg-blue-100 flex items-center justify-center">
+                                                <span class="text-blue-800 font-medium">RS</span>
+                                            </div>
+                                            <div class="ml-3">
+                                                <p class="text-sm font-medium text-gray-900">Rapid Shipping LLC</p>
+                                                <p class="text-xs text-gray-500">ID: CON-7829</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="status-badge status-active">Active</span></td>
+                                    <td>
+                                        <div class="flex items-center">
+                                            <span class="text-sm text-gray-900 mr-2">24</span>
+                                            <div class="flex -space-x-1">
+                                                <div class="w-6 h-6 rounded-full bg-gray-200 border-2 border-white flex items-center justify-center text-xs">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                                <div class="w-6 h-6 rounded-full bg-blue-200 border-2 border-white flex items-center justify-center text-xs">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                                <div class="w-6 h-6 rounded-full bg-green-200 border-2 border-white flex items-center justify-center text-xs">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                                <div class="w-6 h-6 rounded-full bg-gray-300 border-2 border-white flex items-center justify-center text-xs">
+                                                    <span>+21</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="status-badge payment-paid">Paid</span></td>
+                                    <td class="text-sm text-gray-900">May 25, 2025</td>
+                                    <td>
+                                        <div>
+                                            <p class="text-sm text-gray-900">Robert Johnson</p>
+                                            <p class="text-xs text-gray-500">robert@rapidshipping.com</p>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="flex justify-end items-center space-x-2">
+                                            <button class="text-gray-600 hover:text-gray-900" onclick="openContractorModal('Rapid Shipping LLC')">
+                                                <div class="w-8 h-8 flex items-center justify-center">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-8 h-8 flex items-center justify-center">
+                                                    <i class="ri-edit-line"></i>
+                                                </div>
+                                            </button>
+                                            <div class="dropdown">
+                                                <button class="text-gray-600 hover:text-gray-900">
+                                                    <div class="w-8 h-8 flex items-center justify-center">
+                                                        <i class="ri-more-2-fill"></i>
+                                                    </div>
+                                                </button>
+                                                <div class="dropdown-content">
+                                                    <div class="dropdown-item flex items-center">
+                                                        <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                                            <i class="ri-user-settings-line"></i>
+                                                        </div>
+                                                        <span>Manage Access</span>
+                                                    </div>
+                                                    <div class="dropdown-item flex items-center">
+                                                        <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                                            <i class="ri-mail-send-line"></i>
+                                                        </div>
+                                                        <span>Send Message</span>
+                                                    </div>
+                                                    <div class="dropdown-item flex items-center">
+                                                        <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                                            <i class="ri-delete-bin-line"></i>
+                                                        </div>
+                                                        <span>Delete</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="custom-checkbox"></td>
+                                    <td class="whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 flex-shrink-0 rounded-full bg-green-100 flex items-center justify-center">
+                                                <span class="text-green-800 font-medium">EC</span>
+                                            </div>
+                                            <div class="ml-3">
+                                                <p class="text-sm font-medium text-gray-900">EcoDelivery Services</p>
+                                                <p class="text-xs text-gray-500">ID: CON-6543</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="status-badge status-active">Active</span></td>
+                                    <td>
+                                        <div class="flex items-center">
+                                            <span class="text-sm text-gray-900 mr-2">18</span>
+                                            <div class="flex -space-x-1">
+                                                <div class="w-6 h-6 rounded-full bg-gray-200 border-2 border-white flex items-center justify-center text-xs">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                                <div class="w-6 h-6 rounded-full bg-yellow-200 border-2 border-white flex items-center justify-center text-xs">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                                <div class="w-6 h-6 rounded-full bg-red-200 border-2 border-white flex items-center justify-center text-xs">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                                <div class="w-6 h-6 rounded-full bg-gray-300 border-2 border-white flex items-center justify-center text-xs">
+                                                    <span>+15</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="status-badge payment-overdue">Overdue</span></td>
+                                    <td class="text-sm text-gray-900">Apr 10, 2025</td>
+                                    <td>
+                                        <div>
+                                            <p class="text-sm text-gray-900">Sarah Miller</p>
+                                            <p class="text-xs text-gray-500">sarah@ecodelivery.com</p>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="flex justify-end items-center space-x-2">
+                                            <button class="text-gray-600 hover:text-gray-900" onclick="openContractorModal('EcoDelivery Services')">
+                                                <div class="w-8 h-8 flex items-center justify-center">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-8 h-8 flex items-center justify-center">
+                                                    <i class="ri-edit-line"></i>
+                                                </div>
+                                            </button>
+                                            <div class="dropdown">
+                                                <button class="text-gray-600 hover:text-gray-900">
+                                                    <div class="w-8 h-8 flex items-center justify-center">
+                                                        <i class="ri-more-2-fill"></i>
+                                                    </div>
+                                                </button>
+                                                <div class="dropdown-content">
+                                                    <div class="dropdown-item flex items-center">
+                                                        <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                                            <i class="ri-user-settings-line"></i>
+                                                        </div>
+                                                        <span>Manage Access</span>
+                                                    </div>
+                                                    <div class="dropdown-item flex items-center">
+                                                        <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                                            <i class="ri-mail-send-line"></i>
+                                                        </div>
+                                                        <span>Send Message</span>
+                                                    </div>
+                                                    <div class="dropdown-item flex items-center">
+                                                        <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                                            <i class="ri-delete-bin-line"></i>
+                                                        </div>
+                                                        <span>Delete</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="custom-checkbox"></td>
+                                    <td class="whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 flex-shrink-0 rounded-full bg-purple-100 flex items-center justify-center">
+                                                <span class="text-purple-800 font-medium">MP</span>
+                                            </div>
+                                            <div class="ml-3">
+                                                <p class="text-sm font-medium text-gray-900">MetroParcel Inc.</p>
+                                                <p class="text-xs text-gray-500">ID: CON-9012</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="status-badge status-inactive">Inactive</span></td>
+                                    <td>
+                                        <div class="flex items-center">
+                                            <span class="text-sm text-gray-900 mr-2">7</span>
+                                            <div class="flex -space-x-1">
+                                                <div class="w-6 h-6 rounded-full bg-gray-200 border-2 border-white flex items-center justify-center text-xs">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                                <div class="w-6 h-6 rounded-full bg-purple-200 border-2 border-white flex items-center justify-center text-xs">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                                <div class="w-6 h-6 rounded-full bg-pink-200 border-2 border-white flex items-center justify-center text-xs">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                                <div class="w-6 h-6 rounded-full bg-gray-300 border-2 border-white flex items-center justify-center text-xs">
+                                                    <span>+4</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="status-badge payment-pending">Pending</span></td>
+                                    <td class="text-sm text-gray-900">Mar 15, 2025</td>
+                                    <td>
+                                        <div>
+                                            <p class="text-sm text-gray-900">David Thompson</p>
+                                            <p class="text-xs text-gray-500">david@metroparcel.com</p>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="flex justify-end items-center space-x-2">
+                                            <button class="text-gray-600 hover:text-gray-900" onclick="openContractorModal('MetroParcel Inc.')">
+                                                <div class="w-8 h-8 flex items-center justify-center">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-8 h-8 flex items-center justify-center">
+                                                    <i class="ri-edit-line"></i>
+                                                </div>
+                                            </button>
+                                            <div class="dropdown">
+                                                <button class="text-gray-600 hover:text-gray-900">
+                                                    <div class="w-8 h-8 flex items-center justify-center">
+                                                        <i class="ri-more-2-fill"></i>
+                                                    </div>
+                                                </button>
+                                                <div class="dropdown-content">
+                                                    <div class="dropdown-item flex items-center">
+                                                        <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                                            <i class="ri-user-settings-line"></i>
+                                                        </div>
+                                                        <span>Manage Access</span>
+                                                    </div>
+                                                    <div class="dropdown-item flex items-center">
+                                                        <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                                            <i class="ri-mail-send-line"></i>
+                                                        </div>
+                                                        <span>Send Message</span>
+                                                    </div>
+                                                    <div class="dropdown-item flex items-center">
+                                                        <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                                            <i class="ri-delete-bin-line"></i>
+                                                        </div>
+                                                        <span>Delete</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="custom-checkbox"></td>
+                                    <td class="whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 flex-shrink-0 rounded-full bg-red-100 flex items-center justify-center">
+                                                <span class="text-red-800 font-medium">FD</span>
+                                            </div>
+                                            <div class="ml-3">
+                                                <p class="text-sm font-medium text-gray-900">FastDrop Logistics</p>
+                                                <p class="text-xs text-gray-500">ID: CON-3456</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="status-badge status-active">Active</span></td>
+                                    <td>
+                                        <div class="flex items-center">
+                                            <span class="text-sm text-gray-900 mr-2">32</span>
+                                            <div class="flex -space-x-1">
+                                                <div class="w-6 h-6 rounded-full bg-gray-200 border-2 border-white flex items-center justify-center text-xs">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                                <div class="w-6 h-6 rounded-full bg-red-200 border-2 border-white flex items-center justify-center text-xs">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                                <div class="w-6 h-6 rounded-full bg-orange-200 border-2 border-white flex items-center justify-center text-xs">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                                <div class="w-6 h-6 rounded-full bg-gray-300 border-2 border-white flex items-center justify-center text-xs">
+                                                    <span>+29</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="status-badge payment-paid">Paid</span></td>
+                                    <td class="text-sm text-gray-900">May 20, 2025</td>
+                                    <td>
+                                        <div>
+                                            <p class="text-sm text-gray-900">Jennifer Wilson</p>
+                                            <p class="text-xs text-gray-500">jennifer@fastdrop.com</p>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="flex justify-end items-center space-x-2">
+                                            <button class="text-gray-600 hover:text-gray-900" onclick="openContractorModal('FastDrop Logistics')">
+                                                <div class="w-8 h-8 flex items-center justify-center">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-8 h-8 flex items-center justify-center">
+                                                    <i class="ri-edit-line"></i>
+                                                </div>
+                                            </button>
+                                            <div class="dropdown">
+                                                <button class="text-gray-600 hover:text-gray-900">
+                                                    <div class="w-8 h-8 flex items-center justify-center">
+                                                        <i class="ri-more-2-fill"></i>
+                                                    </div>
+                                                </button>
+                                                <div class="dropdown-content">
+                                                    <div class="dropdown-item flex items-center">
+                                                        <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                                            <i class="ri-user-settings-line"></i>
+                                                        </div>
+                                                        <span>Manage Access</span>
+                                                    </div>
+                                                    <div class="dropdown-item flex items-center">
+                                                        <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                                            <i class="ri-mail-send-line"></i>
+                                                        </div>
+                                                        <span>Send Message</span>
+                                                    </div>
+                                                    <div class="dropdown-item flex items-center">
+                                                        <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                                            <i class="ri-delete-bin-line"></i>
+                                                        </div>
+                                                        <span>Delete</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="custom-checkbox"></td>
+                                    <td class="whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 flex-shrink-0 rounded-full bg-yellow-100 flex items-center justify-center">
+                                                <span class="text-yellow-800 font-medium">UE</span>
+                                            </div>
+                                            <div class="ml-3">
+                                                <p class="text-sm font-medium text-gray-900">Urban Express Co.</p>
+                                                <p class="text-xs text-gray-500">ID: CON-2187</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="status-badge status-pending">Pending</span></td>
+                                    <td>
+                                        <div class="flex items-center">
+                                            <span class="text-sm text-gray-900 mr-2">12</span>
+                                            <div class="flex -space-x-1">
+                                                <div class="w-6 h-6 rounded-full bg-gray-200 border-2 border-white flex items-center justify-center text-xs">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                                <div class="w-6 h-6 rounded-full bg-yellow-200 border-2 border-white flex items-center justify-center text-xs">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                                <div class="w-6 h-6 rounded-full bg-teal-200 border-2 border-white flex items-center justify-center text-xs">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                                <div class="w-6 h-6 rounded-full bg-gray-300 border-2 border-white flex items-center justify-center text-xs">
+                                                    <span>+9</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="status-badge payment-pending">Pending</span></td>
+                                    <td class="text-sm text-gray-900">N/A</td>
+                                    <td>
+                                        <div>
+                                            <p class="text-sm text-gray-900">Michael Chen</p>
+                                            <p class="text-xs text-gray-500">michael@urbanexpress.com</p>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="flex justify-end items-center space-x-2">
+                                            <button class="text-gray-600 hover:text-gray-900" onclick="openContractorModal('Urban Express Co.')">
+                                                <div class="w-8 h-8 flex items-center justify-center">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-8 h-8 flex items-center justify-center">
+                                                    <i class="ri-edit-line"></i>
+                                                </div>
+                                            </button>
+                                            <div class="dropdown">
+                                                <button class="text-gray-600 hover:text-gray-900">
+                                                    <div class="w-8 h-8 flex items-center justify-center">
+                                                        <i class="ri-more-2-fill"></i>
+                                                    </div>
+                                                </button>
+                                                <div class="dropdown-content">
+                                                    <div class="dropdown-item flex items-center">
+                                                        <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                                            <i class="ri-user-settings-line"></i>
+                                                        </div>
+                                                        <span>Manage Access</span>
+                                                    </div>
+                                                    <div class="dropdown-item flex items-center">
+                                                        <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                                            <i class="ri-mail-send-line"></i>
+                                                        </div>
+                                                        <span>Send Message</span>
+                                                    </div>
+                                                    <div class="dropdown-item flex items-center">
+                                                        <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                                            <i class="ri-delete-bin-line"></i>
+                                                        </div>
+                                                        <span>Delete</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="px-6 py-4 flex flex-col md:flex-row md:items-center justify-between border-t border-gray-200">
+                        <div class="text-sm text-gray-600 mb-4 md:mb-0">
+                            Showing 1 to 5 of 28 entries
+                        </div>
+                        <div class="flex items-center">
+                            <button class="pagination-btn mr-2">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-arrow-left-s-line"></i>
+                                </div>
+                            </button>
+                            <button class="pagination-btn active mr-2">1</button>
+                            <button class="pagination-btn mr-2">2</button>
+                            <button class="pagination-btn mr-2">3</button>
+                            <button class="pagination-btn mr-2">4</button>
+                            <button class="pagination-btn mr-2">5</button>
+                            <button class="pagination-btn">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-arrow-right-s-line"></i>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Contractor Details Modal -->
+    <div id="contractor-modal" class="modal">
+        <div class="modal-content">
+            <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                <h2 class="text-xl font-semibold text-gray-900" id="modal-title">Contractor Details</h2>
+                <button id="close-modal" class="text-gray-400 hover:text-gray-600">
+                    <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-close-line"></i>
+                    </div>
+                </button>
+            </div>
+            <div class="p-6">
+                <div class="flex flex-col md:flex-row mb-6">
+                    <div class="md:w-1/3 mb-4 md:mb-0">
+                        <div class="flex items-center">
+                            <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center">
+                                <span class="text-blue-800 text-xl font-medium" id="modal-initials">RS</span>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-medium text-gray-900" id="modal-name">Rapid Shipping LLC</h3>
+                                <p class="text-sm text-gray-500" id="modal-id">ID: CON-7829</p>
+                                <div class="mt-1" id="modal-status-badge">
+                                    <span class="status-badge status-active">Active</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="md:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-sm text-gray-500">Contact Person</p>
+                            <p class="text-sm font-medium text-gray-900" id="modal-contact">Robert Johnson</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Email</p>
+                            <p class="text-sm font-medium text-gray-900" id="modal-email">robert@rapidshipping.com</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Phone</p>
+                            <p class="text-sm font-medium text-gray-900" id="modal-phone">(555) 123-4567</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Location</p>
+                            <p class="text-sm font-medium text-gray-900" id="modal-location">New York, NY</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-b border-gray-200 mb-6">
+                    <div class="flex overflow-x-auto">
+                        <button class="tab-button active" data-tab="overview">Overview</button>
+                        <button class="tab-button" data-tab="drivers">Drivers</button>
+                        <button class="tab-button" data-tab="payments">Payments</button>
+                        <button class="tab-button" data-tab="documents">Documents</button>
+                        <button class="tab-button" data-tab="activity">Activity Log</button>
+                    </div>
+                </div>
+
+                <div id="overview" class="tab-content active">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <h4 class="text-sm font-medium text-gray-900 mb-4">Company Information</h4>
+                            <div class="space-y-3">
+                                <div class="flex justify-between">
+                                    <p class="text-sm text-gray-500">Business Type</p>
+                                    <p class="text-sm text-gray-900">LLC</p>
+                                </div>
+                                <div class="flex justify-between">
+                                    <p class="text-sm text-gray-500">Tax ID</p>
+                                    <p class="text-sm text-gray-900">XX-XXXXXXX</p>
+                                </div>
+                                <div class="flex justify-between">
+                                    <p class="text-sm text-gray-500">Year Established</p>
+                                    <p class="text-sm text-gray-900">2018</p>
+                                </div>
+                                <div class="flex justify-between">
+                                    <p class="text-sm text-gray-500">Website</p>
+                                    <p class="text-sm text-primary">www.rapidshipping.com</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <h4 class="text-sm font-medium text-gray-900 mb-4">Contract Details</h4>
+                            <div class="space-y-3">
+                                <div class="flex justify-between">
+                                    <p class="text-sm text-gray-500">Contract Start</p>
+                                    <p class="text-sm text-gray-900">Jan 15, 2023</p>
+                                </div>
+                                <div class="flex justify-between">
+                                    <p class="text-sm text-gray-500">Contract End</p>
+                                    <p class="text-sm text-gray-900">Jan 14, 2026</p>
+                                </div>
+                                <div class="flex justify-between">
+                                    <p class="text-sm text-gray-500">Payment Terms</p>
+                                    <p class="text-sm text-gray-900">Net 30</p>
+                                </div>
+                                <div class="flex justify-between">
+                                    <p class="text-sm text-gray-500">Service Areas</p>
+                                    <p class="text-sm text-gray-900">NY, NJ, CT, PA</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4 md:col-span-2">
+                            <h4 class="text-sm font-medium text-gray-900 mb-4">Performance Metrics</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                <div class="bg-white rounded-lg p-3 shadow-sm">
+                                    <p class="text-xs text-gray-500">On-Time Delivery</p>
+                                    <p class="text-xl font-semibold text-gray-900">94.8%</p>
+                                    <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
+                                        <div class="bg-green-500 h-2 rounded-full" style="width: 94.8%"></div>
+                                    </div>
+                                </div>
+                                <div class="bg-white rounded-lg p-3 shadow-sm">
+                                    <p class="text-xs text-gray-500">Customer Satisfaction</p>
+                                    <p class="text-xl font-semibold text-gray-900">4.7/5</p>
+                                    <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
+                                        <div class="bg-primary h-2 rounded-full" style="width: 94%"></div>
+                                    </div>
+                                </div>
+                                <div class="bg-white rounded-lg p-3 shadow-sm">
+                                    <p class="text-xs text-gray-500">Package Accuracy</p>
+                                    <p class="text-xl font-semibold text-gray-900">99.2%</p>
+                                    <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
+                                        <div class="bg-blue-500 h-2 rounded-full" style="width: 99.2%"></div>
+                                    </div>
+                                </div>
+                                <div class="bg-white rounded-lg p-3 shadow-sm">
+                                    <p class="text-xs text-gray-500">Driver Retention</p>
+                                    <p class="text-xl font-semibold text-gray-900">87.5%</p>
+                                    <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
+                                        <div class="bg-yellow-500 h-2 rounded-full" style="width: 87.5%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 flex justify-end space-x-3">
+                        <button class="bg-white text-gray-700 border border-gray-300 px-4 py-2 rounded-button !rounded-button whitespace-nowrap">
+                            <div class="w-5 h-5 flex items-center justify-center mr-1">
+                                <i class="ri-mail-line"></i>
+                            </div>
+                            <span>Contact</span>
+                        </button>
+                        <button class="bg-white text-gray-700 border border-gray-300 px-4 py-2 rounded-button !rounded-button whitespace-nowrap">
+                            <div class="w-5 h-5 flex items-center justify-center mr-1">
+                                <i class="ri-edit-line"></i>
+                            </div>
+                            <span>Edit</span>
+                        </button>
+                        <button class="bg-primary text-white px-4 py-2 rounded-button !rounded-button whitespace-nowrap">
+                            <div class="w-5 h-5 flex items-center justify-center mr-1">
+                                <i class="ri-user-settings-line"></i>
+                            </div>
+                            <span>Manage Access</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="drivers" class="tab-content">
+                    <div class="mb-4 flex flex-col md:flex-row md:items-center justify-between">
+                        <h4 class="text-lg font-medium text-gray-900 mb-2 md:mb-0">Drivers (24)</h4>
+                        <div class="flex items-center space-x-2">
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                        <i class="ri-search-line"></i>
+                                    </div>
+                                </div>
+                                <input type="text" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-sm" placeholder="Search drivers">
+                            </div>
+                            <button class="bg-primary text-white p-2 rounded-button flex items-center justify-center !rounded-button whitespace-nowrap">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-add-line"></i>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full">
+                            <thead>
+                                <tr class="bg-gray-50">
+                                    <th class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider py-3 px-4">Driver</th>
+                                    <th class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider py-3 px-4">Status</th>
+                                    <th class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider py-3 px-4">Vehicle</th>
+                                    <th class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider py-3 px-4">Routes</th>
+                                    <th class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider py-3 px-4">Rating</th>
+                                    <th class="text-right text-xs font-medium text-gray-500 uppercase tracking-wider py-3 px-4">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="py-3 px-4">
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+                                                <i class="ri-user-line text-gray-600"></i>
+                                            </div>
+                                            <div class="ml-3">
+                                                <p class="text-sm font-medium text-gray-900">James Wilson</p>
+                                                <p class="text-xs text-gray-500">ID: DRV-1234</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-3 px-4"><span class="status-badge status-active">Active</span></td>
+                                    <td class="py-3 px-4">
+                                        <p class="text-sm text-gray-900">Sprinter Van</p>
+                                        <p class="text-xs text-gray-500">License: ABC-1234</p>
+                                    </td>
+                                    <td class="py-3 px-4">
+                                        <p class="text-sm text-gray-900">128</p>
+                                        <p class="text-xs text-gray-500">This month: 24</p>
+                                    </td>
+                                    <td class="py-3 px-4">
+                                        <div class="flex items-center">
+                                            <div class="text-sm font-medium text-gray-900">4.8</div>
+                                            <div class="flex ml-1 text-yellow-400">
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-half-fill"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-3 px-4">
+                                        <div class="flex justify-end items-center space-x-2">
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-8 h-8 flex items-center justify-center">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-8 h-8 flex items-center justify-center">
+                                                    <i class="ri-more-2-fill"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4">
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+                                                <i class="ri-user-line text-gray-600"></i>
+                                            </div>
+                                            <div class="ml-3">
+                                                <p class="text-sm font-medium text-gray-900">Emily Rodriguez</p>
+                                                <p class="text-xs text-gray-500">ID: DRV-2345</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-3 px-4"><span class="status-badge status-active">Active</span></td>
+                                    <td class="py-3 px-4">
+                                        <p class="text-sm text-gray-900">Box Truck</p>
+                                        <p class="text-xs text-gray-500">License: XYZ-5678</p>
+                                    </td>
+                                    <td class="py-3 px-4">
+                                        <p class="text-sm text-gray-900">96</p>
+                                        <p class="text-xs text-gray-500">This month: 18</p>
+                                    </td>
+                                    <td class="py-3 px-4">
+                                        <div class="flex items-center">
+                                            <div class="text-sm font-medium text-gray-900">4.9</div>
+                                            <div class="flex ml-1 text-yellow-400">
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-fill"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-3 px-4">
+                                        <div class="flex justify-end items-center space-x-2">
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-8 h-8 flex items-center justify-center">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-8 h-8 flex items-center justify-center">
+                                                    <i class="ri-more-2-fill"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4">
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+                                                <i class="ri-user-line text-gray-600"></i>
+                                            </div>
+                                            <div class="ml-3">
+                                                <p class="text-sm font-medium text-gray-900">Marcus Thompson</p>
+                                                <p class="text-xs text-gray-500">ID: DRV-3456</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-3 px-4"><span class="status-badge status-inactive">Inactive</span></td>
+                                    <td class="py-3 px-4">
+                                        <p class="text-sm text-gray-900">Cargo Van</p>
+                                        <p class="text-xs text-gray-500">License: DEF-9012</p>
+                                    </td>
+                                    <td class="py-3 px-4">
+                                        <p class="text-sm text-gray-900">64</p>
+                                        <p class="text-xs text-gray-500">This month: 0</p>
+                                    </td>
+                                    <td class="py-3 px-4">
+                                        <div class="flex items-center">
+                                            <div class="text-sm font-medium text-gray-900">4.2</div>
+                                            <div class="flex ml-1 text-yellow-400">
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-line"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-3 px-4">
+                                        <div class="flex justify-end items-center space-x-2">
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-8 h-8 flex items-center justify-center">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-8 h-8 flex items-center justify-center">
+                                                    <i class="ri-more-2-fill"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-4 flex justify-center">
+                        <button class="text-primary text-sm font-medium">View All Drivers</button>
+                    </div>
+                </div>
+
+                <div id="payments" class="tab-content">
+                    <div class="mb-4 flex flex-col md:flex-row md:items-center justify-between">
+                        <h4 class="text-lg font-medium text-gray-900 mb-2 md:mb-0">Payment History</h4>
+                        <div class="flex items-center space-x-2">
+                            <button class="bg-white text-gray-700 border border-gray-300 px-4 py-2 rounded-button flex items-center !rounded-button whitespace-nowrap">
+                                <div class="w-5 h-5 flex items-center justify-center mr-1">
+                                    <i class="ri-download-line"></i>
+                                </div>
+                                <span>Export</span>
+                            </button>
+                            <button class="bg-primary text-white px-4 py-2 rounded-button flex items-center !rounded-button whitespace-nowrap">
+                                <div class="w-5 h-5 flex items-center justify-center mr-1">
+                                    <i class="ri-add-line"></i>
+                                </div>
+                                <span>New Payment</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full">
+                            <thead>
+                                <tr class="bg-gray-50">
+                                    <th class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider py-3 px-4">Invoice ID</th>
+                                    <th class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider py-3 px-4">Date</th>
+                                    <th class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider py-3 px-4">Amount</th>
+                                    <th class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider py-3 px-4">Status</th>
+                                    <th class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider py-3 px-4">Method</th>
+                                    <th class="text-right text-xs font-medium text-gray-500 uppercase tracking-wider py-3 px-4">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="py-3 px-4">
+                                        <p class="text-sm font-medium text-gray-900">INV-20250525</p>
+                                    </td>
+                                    <td class="py-3 px-4">
+                                        <p class="text-sm text-gray-900">May 25, 2025</p>
+                                    </td>
+                                    <td class="py-3 px-4">
+                                        <p class="text-sm font-medium text-gray-900">$12,450.00</p>
+                                    </td>
+                                    <td class="py-3 px-4"><span class="status-badge payment-paid">Paid</span></td>
+                                    <td class="py-3 px-4">
+                                        <div class="flex items-center">
+                                            <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                                <i class="ri-bank-card-fill"></i>
+                                            </div>
+                                            <p class="text-sm text-gray-900">Credit Card</p>
+                                        </div>
+                                    </td>
+                                    <td class="py-3 px-4">
+                                        <div class="flex justify-end items-center space-x-2">
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-8 h-8 flex items-center justify-center">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-8 h-8 flex items-center justify-center">
+                                                    <i class="ri-download-line"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4">
+                                        <p class="text-sm font-medium text-gray-900">INV-20250425</p>
+                                    </td>
+                                    <td class="py-3 px-4">
+                                        <p class="text-sm text-gray-900">Apr 25, 2025</p>
+                                    </td>
+                                    <td class="py-3 px-4">
+                                        <p class="text-sm font-medium text-gray-900">$11,875.50</p>
+                                    </td>
+                                    <td class="py-3 px-4"><span class="status-badge payment-paid">Paid</span></td>
+                                    <td class="py-3 px-4">
+                                        <div class="flex items-center">
+                                            <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                                <i class="ri-bank-fill"></i>
+                                            </div>
+                                            <p class="text-sm text-gray-900">Bank Transfer</p>
+                                        </div>
+                                    </td>
+                                    <td class="py-3 px-4">
+                                        <div class="flex justify-end items-center space-x-2">
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-8 h-8 flex items-center justify-center">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-8 h-8 flex items-center justify-center">
+                                                    <i class="ri-download-line"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4">
+                                        <p class="text-sm font-medium text-gray-900">INV-20250325</p>
+                                    </td>
+                                    <td class="py-3 px-4">
+                                        <p class="text-sm text-gray-900">Mar 25, 2025</p>
+                                    </td>
+                                    <td class="py-3 px-4">
+                                        <p class="text-sm font-medium text-gray-900">$13,210.75</p>
+                                    </td>
+                                    <td class="py-3 px-4"><span class="status-badge payment-paid">Paid</span></td>
+                                    <td class="py-3 px-4">
+                                        <div class="flex items-center">
+                                            <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                                <i class="ri-bank-card-fill"></i>
+                                            </div>
+                                            <p class="text-sm text-gray-900">Credit Card</p>
+                                        </div>
+                                    </td>
+                                    <td class="py-3 px-4">
+                                        <div class="flex justify-end items-center space-x-2">
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-8 h-8 flex items-center justify-center">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-8 h-8 flex items-center justify-center">
+                                                    <i class="ri-download-line"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-4 flex justify-center">
+                        <button class="text-primary text-sm font-medium">View All Payments</button>
+                    </div>
+                </div>
+
+                <div id="documents" class="tab-content">
+                    <div class="mb-4 flex flex-col md:flex-row md:items-center justify-between">
+                        <h4 class="text-lg font-medium text-gray-900 mb-2 md:mb-0">Documents</h4>
+                        <div class="flex items-center space-x-2">
+                            <button class="bg-primary text-white px-4 py-2 rounded-button flex items-center !rounded-button whitespace-nowrap">
+                                <div class="w-5 h-5 flex items-center justify-center mr-1">
+                                    <i class="ri-upload-line"></i>
+                                </div>
+                                <span>Upload Document</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="border border-gray-200 rounded-lg p-4 flex items-start">
+                            <div class="w-10 h-10 flex-shrink-0 rounded-lg bg-blue-100 flex items-center justify-center mr-3">
+                                <div class="w-6 h-6 flex items-center justify-center text-blue-600">
+                                    <i class="ri-file-pdf-line"></i>
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <h5 class="text-sm font-medium text-gray-900">Contract Agreement</h5>
+                                <p class="text-xs text-gray-500 mt-1">PDF • 2.4 MB • Uploaded May 15, 2023</p>
+                                <div class="flex items-center mt-2">
+                                    <span class="text-xs text-gray-500 mr-2">Expires: Jan 14, 2026</span>
+                                    <span class="status-badge status-active text-xs">Valid</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <button class="text-gray-600 hover:text-gray-900">
+                                    <div class="w-8 h-8 flex items-center justify-center">
+                                        <i class="ri-download-line"></i>
+                                    </div>
+                                </button>
+                                <button class="text-gray-600 hover:text-gray-900">
+                                    <div class="w-8 h-8 flex items-center justify-center">
+                                        <i class="ri-more-2-fill"></i>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="border border-gray-200 rounded-lg p-4 flex items-start">
+                            <div class="w-10 h-10 flex-shrink-0 rounded-lg bg-green-100 flex items-center justify-center mr-3">
+                                <div class="w-6 h-6 flex items-center justify-center text-green-600">
+                                    <i class="ri-file-pdf-line"></i>
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <h5 class="text-sm font-medium text-gray-900">Insurance Certificate</h5>
+                                <p class="text-xs text-gray-500 mt-1">PDF • 1.8 MB • Uploaded Jan 05, 2025</p>
+                                <div class="flex items-center mt-2">
+                                    <span class="text-xs text-gray-500 mr-2">Expires: Jan 05, 2026</span>
+                                    <span class="status-badge status-active text-xs">Valid</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <button class="text-gray-600 hover:text-gray-900">
+                                    <div class="w-8 h-8 flex items-center justify-center">
+                                        <i class="ri-download-line"></i>
+                                    </div>
+                                </button>
+                                <button class="text-gray-600 hover:text-gray-900">
+                                    <div class="w-8 h-8 flex items-center justify-center">
+                                        <i class="ri-more-2-fill"></i>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="border border-gray-200 rounded-lg p-4 flex items-start">
+                            <div class="w-10 h-10 flex-shrink-0 rounded-lg bg-yellow-100 flex items-center justify-center mr-3">
+                                <div class="w-6 h-6 flex items-center justify-center text-yellow-600">
+                                    <i class="ri-file-excel-line"></i>
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <h5 class="text-sm font-medium text-gray-900">Driver List</h5>
+                                <p class="text-xs text-gray-500 mt-1">XLSX • 0.5 MB • Uploaded May 10, 2025</p>
+                                <div class="flex items-center mt-2">
+                                    <span class="text-xs text-gray-500 mr-2">Last updated: May 10, 2025</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <button class="text-gray-600 hover:text-gray-900">
+                                    <div class="w-8 h-8 flex items-center justify-center">
+                                        <i class="ri-download-line"></i>
+                                    </div>
+                                </button>
+                                <button class="text-gray-600 hover:text-gray-900">
+                                    <div class="w-8 h-8 flex items-center justify-center">
+                                        <i class="ri-more-2-fill"></i>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="border border-gray-200 rounded-lg p-4 flex items-start">
+                            <div class="w-10 h-10 flex-shrink-0 rounded-lg bg-red-100 flex items-center justify-center mr-3">
+                                <div class="w-6 h-6 flex items-center justify-center text-red-600">
+                                    <i class="ri-file-pdf-line"></i>
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <h5 class="text-sm font-medium text-gray-900">Vehicle Registration</h5>
+                                <p class="text-xs text-gray-500 mt-1">PDF • 3.2 MB • Uploaded Feb 18, 2025</p>
+                                <div class="flex items-center mt-2">
+                                    <span class="text-xs text-gray-500 mr-2">Expires: Feb 18, 2026</span>
+                                    <span class="status-badge status-active text-xs">Valid</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <button class="text-gray-600 hover:text-gray-900">
+                                    <div class="w-8 h-8 flex items-center justify-center">
+                                        <i class="ri-download-line"></i>
+                                    </div>
+                                </button>
+                                <button class="text-gray-600 hover:text-gray-900">
+                                    <div class="w-8 h-8 flex items-center justify-center">
+                                        <i class="ri-more-2-fill"></i>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="activity" class="tab-content">
+                    <div class="mb-4 flex flex-col md:flex-row md:items-center justify-between">
+                        <h4 class="text-lg font-medium text-gray-900 mb-2 md:mb-0">Activity Log</h4>
+                        <div class="flex items-center space-x-2">
+                            <select class="text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary pr-8">
+                                <option value="all">All Activities</option>
+                                <option value="login">Login</option>
+                                <option value="document">Documents</option>
+                                <option value="payment">Payments</option>
+                                <option value="driver">Drivers</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute left-5 h-full w-px bg-gray-200"></div>
+                        <div class="space-y-6 pl-12">
+                            <div class="relative">
+                                <div class="absolute -left-7 w-3 h-3 rounded-full bg-primary border-2 border-white"></div>
+                                <div class="flex flex-col md:flex-row md:items-center justify-between">
+                                    <div>
+                                        <p class="text-sm text-gray-900">
+                                            <span class="font-medium">Robert Johnson</span> 
+                                            <span>logged into the contractor portal</span>
+                                        </p>
+                                        <p class="text-xs text-gray-500 mt-1">IP: 192.168.1.45 • Chrome on Windows</p>
+                                    </div>
+                                    <div class="text-xs text-gray-500 mt-1 md:mt-0">May 27, 2025 • 09:45 AM</div>
+                                </div>
+                            </div>
+                            <div class="relative">
+                                <div class="absolute -left-7 w-3 h-3 rounded-full bg-green-500 border-2 border-white"></div>
+                                <div class="flex flex-col md:flex-row md:items-center justify-between">
+                                    <div>
+                                        <p class="text-sm text-gray-900">
+                                            <span class="font-medium">Payment received</span> 
+                                            <span>for invoice INV-20250525</span>
+                                        </p>
+                                        <p class="text-xs text-gray-500 mt-1">Amount: $12,450.00 • Transaction ID: TXN-987654</p>
+                                    </div>
+                                    <div class="text-xs text-gray-500 mt-1 md:mt-0">May 25, 2025 • 02:30 PM</div>
+                                </div>
+                            </div>
+                            <div class="relative">
+                                <div class="absolute -left-7 w-3 h-3 rounded-full bg-blue-500 border-2 border-white"></div>
+                                <div class="flex flex-col md:flex-row md:items-center justify-between">
+                                    <div>
+                                        <p class="text-sm text-gray-900">
+                                            <span class="font-medium">New driver added</span> 
+                                            <span>to the contractor</span>
+                                        </p>
+                                        <p class="text-xs text-gray-500 mt-1">Driver: Emily Rodriguez • ID: DRV-2345</p>
+                                    </div>
+                                    <div class="text-xs text-gray-500 mt-1 md:mt-0">May 22, 2025 • 11:15 AM</div>
+                                </div>
+                            </div>
+                            <div class="relative">
+                                <div class="absolute -left-7 w-3 h-3 rounded-full bg-yellow-500 border-2 border-white"></div>
+                                <div class="flex flex-col md:flex-row md:items-center justify-between">
+                                    <div>
+                                        <p class="text-sm text-gray-900">
+                                            <span class="font-medium">Document uploaded</span> 
+                                            <span>by contractor</span>
+                                        </p>
+                                        <p class="text-xs text-gray-500 mt-1">Document: Driver List • Type: XLSX</p>
+                                    </div>
+                                    <div class="text-xs text-gray-500 mt-1 md:mt-0">May 10, 2025 • 04:20 PM</div>
+                                </div>
+                            </div>
+                            <div class="relative">
+                                <div class="absolute -left-7 w-3 h-3 rounded-full bg-red-500 border-2 border-white"></div>
+                                <div class="flex flex-col md:flex-row md:items-center justify-between">
+                                    <div>
+                                        <p class="text-sm text-gray-900">
+                                            <span class="font-medium">Driver removed</span> 
+                                            <span>from the contractor</span>
+                                        </p>
+                                        <p class="text-xs text-gray-500 mt-1">Driver: Marcus Thompson • ID: DRV-3456</p>
+                                    </div>
+                                    <div class="text-xs text-gray-500 mt-1 md:mt-0">May 05, 2025 • 10:30 AM</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 flex justify-center">
+                        <button class="text-primary text-sm font-medium">View Full Activity Log</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script id="filter-toggle-script">
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterToggle = document.getElementById('filter-toggle');
+            const filterContent = document.getElementById('filter-content');
+            const filterArrow = document.getElementById('filter-arrow');
+            
+            filterToggle.addEventListener('click', function() {
+                if (filterContent.style.display === 'none') {
+                    filterContent.style.display = 'grid';
+                    filterArrow.classList.remove('ri-arrow-down-s-line');
+                    filterArrow.classList.add('ri-arrow-up-s-line');
+                } else {
+                    filterContent.style.display = 'none';
+                    filterArrow.classList.remove('ri-arrow-up-s-line');
+                    filterArrow.classList.add('ri-arrow-down-s-line');
+                }
+            });
+        });
+    </script>
+
+    <script id="dropdown-script">
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdowns = document.querySelectorAll('.dropdown');
+            
+            dropdowns.forEach(dropdown => {
+                const button = dropdown.querySelector('button');
+                const content = dropdown.querySelector('.dropdown-content');
+                
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    
+                    // Close all other dropdowns
+                    dropdowns.forEach(otherDropdown => {
+                        if (otherDropdown !== dropdown) {
+                            const otherContent = otherDropdown.querySelector('.dropdown-content');
+                            if (otherContent) {
+                                otherContent.style.display = 'none';
+                            }
+                        }
+                    });
+                    
+                    // Toggle current dropdown
+                    if (content) {
+                        content.style.display = content.style.display === 'block' ? 'none' : 'block';
+                    }
+                });
+            });
+            
+            // Close all dropdowns when clicking outside
+            document.addEventListener('click', function() {
+                dropdowns.forEach(dropdown => {
+                    const content = dropdown.querySelector('.dropdown-content');
+                    if (content) {
+                        content.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script id="modal-script">
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('contractor-modal');
+            const closeModal = document.getElementById('close-modal');
+            
+            closeModal.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+            
+            window.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+            
+            // Tab switching
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabName = this.getAttribute('data-tab');
+                    
+                    // Deactivate all tabs
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // Activate selected tab
+                    this.classList.add('active');
+                    document.getElementById(tabName).classList.add('active');
+                });
+            });
+        });
+        
+        function openContractorModal(contractorName) {
+            const modal = document.getElementById('contractor-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalName = document.getElementById('modal-name');
+            const modalInitials = document.getElementById('modal-initials');
+            
+            modalTitle.textContent = contractorName + ' Details';
+            modalName.textContent = contractorName;
+            
+            // Generate initials from contractor name
+            const initials = contractorName
+                .split(' ')
+                .map(word => word[0])
+                .join('')
+                .substring(0, 2);
+            
+            modalInitials.textContent = initials;
+            
+            modal.style.display = 'block';
+        }
+    </script>
+
+    <script id="checkbox-script">
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectAll = document.getElementById('select-all');
+            const checkboxes = document.querySelectorAll('tbody .custom-checkbox');
+            
+            selectAll.addEventListener('change', function() {
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = selectAll.checked;
+                });
+            });
+            
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+                    const someChecked = Array.from(checkboxes).some(cb => cb.checked);
+                    
+                    selectAll.checked = allChecked;
+                    selectAll.indeterminate = someChecked && !allChecked;
+                });
+            });
+        });
+    </script>
+</body>
+</html>

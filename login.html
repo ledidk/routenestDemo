@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - ParcelPilot</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>tailwind.config={theme:{extend:{colors:{primary:'#4f46e5',secondary:'#10b981'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+body {
+font-family: 'Inter', sans-serif;
+}
+.password-toggle:checked + .password-toggle-icon .show {
+display: none;
+}
+.password-toggle:not(:checked) + .password-toggle-icon .hide {
+display: none;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+-webkit-appearance: none;
+margin: 0;
+}
+input[type="number"] {
+-moz-appearance: textfield;
+}
+.tab-content {
+display: none;
+}
+.tab-content.active {
+display: block;
+}
+.role-tab {
+position: relative;
+}
+.role-tab::after {
+content: '';
+position: absolute;
+bottom: 0;
+left: 0;
+width: 0;
+height: 2px;
+background-color: #4f46e5;
+transition: width 0.3s ease;
+}
+.role-tab.active::after {
+width: 100%;
+}
+</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<!-- Header -->
+<header class="bg-white shadow-sm sticky top-0 z-50">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center py-4">
+<div class="flex items-center">
+<a href="https://readdy.ai/home/a4cb12ef-b4e2-415e-889e-29c37723d4f1/fcdea6b1-4724-4eb1-8c03-c4a978ad7f54" data-readdy="true" class="text-2xl font-['Pacifico'] text-primary">ParcelPilot</a>
+</div>
+<div class="flex items-center space-x-4">
+<a href="https://readdy.ai/home/a4cb12ef-b4e2-415e-889e-29c37723d4f1/fcdea6b1-4724-4eb1-8c03-c4a978ad7f54" data-readdy="true" class="text-gray-600 hover:text-primary font-medium whitespace-nowrap">Back to Home</a>
+</div>
+</div>
+</div>
+</header>
+<!-- Login Section -->
+<section class="py-12 md:py-20">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+<div class="max-w-md mx-auto">
+<div class="text-center mb-8">
+<a href="https://readdy.ai/home/a4cb12ef-b4e2-415e-889e-29c37723d4f1/fcdea6b1-4724-4eb1-8c03-c4a978ad7f54" data-readdy="true" class="text-3xl font-['Pacifico'] text-primary inline-block">ParcelPilot</a>
+</div>
+<div class="bg-white rounded-xl shadow-lg overflow-hidden">
+<!-- Role Selection Tabs -->
+<div class="flex border-b border-gray-200">
+<button id="contractorTab" class="role-tab flex-1 py-4 px-4 text-center font-medium text-gray-700 hover:text-primary transition-colors active">
+<div class="flex flex-col items-center justify-center">
+<div class="w-6 h-6 flex items-center justify-center mb-1">
+<i class="ri-user-3-line"></i>
+</div>
+<span>Contractor</span>
+</div>
+</button>
+<button id="driverTab" class="role-tab flex-1 py-4 px-4 text-center font-medium text-gray-700 hover:text-primary transition-colors">
+<div class="flex flex-col items-center justify-center">
+<div class="w-6 h-6 flex items-center justify-center mb-1">
+<i class="ri-truck-line"></i>
+</div>
+<span>Driver</span>
+</div>
+</button>
+<button id="adminTab" class="role-tab flex-1 py-4 px-4 text-center font-medium text-gray-700 hover:text-primary transition-colors">
+<div class="flex flex-col items-center justify-center">
+<div class="w-6 h-6 flex items-center justify-center mb-1">
+<i class="ri-admin-line"></i>
+</div>
+<span>Admin</span>
+</div>
+</button>
+</div>
+<!-- Admin Login Form -->
+<div id="adminContent" class="tab-content p-8">
+<div class="text-center mb-6">
+<h2 class="text-2xl font-bold text-gray-900">Welcome Back, Admin</h2>
+<p class="text-gray-600 mt-1">Sign in to access the admin dashboard</p>
+</div>
+<form id="adminForm" class="space-y-5" action="https://readdy.ai/api/form/d0qhb1kpnu65t0ej9gc0" method="POST">
+<div>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<i class="ri-mail-line text-gray-400"></i>
+</div>
+<input type="email" id="adminEmail" name="adminEmail" class="pl-10 w-full border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none py-2.5 px-4 text-gray-900" placeholder="Email address" required maxlength="500">
+</div>
+</div>
+<div>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<i class="ri-lock-line text-gray-400"></i>
+</div>
+<input type="password" id="adminPassword" name="adminPassword" class="pl-10 w-full border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none py-2.5 px-4 text-gray-900 pr-10" placeholder="Password" required maxlength="500">
+<div class="absolute inset-y-0 right-0 flex items-center pr-3">
+<input type="checkbox" id="adminPasswordToggle" class="password-toggle hidden">
+<label for="adminPasswordToggle" class="password-toggle-icon cursor-pointer">
+<i class="ri-eye-line show text-gray-400"></i>
+<i class="ri-eye-off-line hide text-gray-400"></i>
+</label>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center">
+<input id="adminRemember" name="adminRemember" type="checkbox" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+<label for="adminRemember" class="ml-2 block text-sm text-gray-700">Remember me</label>
+</div>
+<a href="#" class="text-sm font-medium text-primary hover:text-primary/80">Forgot password?</a>
+</div>
+<div id="formMessage" class="hidden text-sm"></div>
+<div>
+<button type="submit" class="w-full bg-primary text-white py-3 !rounded-button font-medium hover:bg-primary/90 transition-colors flex items-center justify-center whitespace-nowrap">
+<span>Log In</span>
+</button>
+</div>
+</form>
+</div>
+<!-- Contractor Login Form -->
+<div id="contractorContent" class="tab-content active p-8">
+<div class="text-center mb-6">
+<h2 class="text-2xl font-bold text-gray-900">Welcome Back, Contractor</h2>
+<p class="text-gray-600 mt-1">Sign in to manage your business operations</p>
+</div>
+<form id="contractorForm" class="space-y-5">
+<div>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<i class="ri-user-line text-gray-400"></i>
+</div>
+<input type="text" id="contractorUsername" name="contractorUsername" class="pl-10 w-full border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none py-2.5 px-4 text-gray-900" placeholder="Username" required>
+</div>
+</div>
+<div>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<i class="ri-lock-line text-gray-400"></i>
+</div>
+<input type="password" id="contractorPassword" name="contractorPassword" class="pl-10 w-full border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none py-2.5 px-4 text-gray-900 pr-10" placeholder="Password" required>
+<div class="absolute inset-y-0 right-0 flex items-center pr-3">
+<input type="checkbox" id="contractorPasswordToggle" class="password-toggle hidden">
+<label for="contractorPasswordToggle" class="password-toggle-icon cursor-pointer">
+<i class="ri-eye-line show text-gray-400"></i>
+<i class="ri-eye-off-line hide text-gray-400"></i>
+</label>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center">
+<input id="contractorRemember" name="contractorRemember" type="checkbox" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+<label for="contractorRemember" class="ml-2 block text-sm text-gray-700">Remember me</label>
+</div>
+<a href="#" class="text-sm font-medium text-primary hover:text-primary/80">Forgot password?</a>
+</div>
+<div>
+<button type="submit" class="w-full bg-primary text-white py-3 !rounded-button font-medium hover:bg-primary/90 transition-colors flex items-center justify-center whitespace-nowrap">
+<span>Log In</span>
+</button>
+</div>
+</form>
+</div>
+<!-- Driver Login Form -->
+<div id="driverContent" class="tab-content p-8">
+<div class="text-center mb-6">
+<h2 class="text-2xl font-bold text-gray-900">Welcome Back, Driver</h2>
+<p class="text-gray-600 mt-1">Sign in to access your delivery routes</p>
+</div>
+<form id="driverForm" class="space-y-5">
+<div>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<i class="ri-id-card-line text-gray-400"></i>
+</div>
+<input type="text" id="driverId" name="driverId" class="pl-10 w-full border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none py-2.5 px-4 text-gray-900" placeholder="Driver ID" required>
+</div>
+</div>
+<div>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<i class="ri-lock-password-line text-gray-400"></i>
+</div>
+<input type="number" id="driverPin" name="driverPin" class="pl-10 w-full border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none py-2.5 px-4 text-gray-900" placeholder="PIN" required maxlength="6" inputmode="numeric" pattern="[0-9]*">
+</div>
+<p class="text-xs text-gray-500 mt-1">Enter your 4-6 digit PIN number</p>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center">
+<input id="driverRemember" name="driverRemember" type="checkbox" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+<label for="driverRemember" class="ml-2 block text-sm text-gray-700">Remember me</label>
+</div>
+<a href="#" class="text-sm font-medium text-primary hover:text-primary/80">Forgot PIN?</a>
+</div>
+<div>
+    <a href="contractor/dashboard.html">
+<button type="submit" class="w-full bg-primary text-white py-3 !rounded-button font-medium hover:bg-primary/90 transition-colors flex items-center justify-center whitespace-nowrap">
+<span>Log In</span>
+</button></a>
+</div>
+</form>
+</div>
+<div class="px-8 pb-8 pt-2 text-center">
+<p class="text-sm text-gray-600">
+New to ParcelPilot? <a href="https://readdy.ai/home/a4cb12ef-b4e2-415e-889e-29c37723d4f1/fcdea6b1-4724-4eb1-8c03-c4a978ad7f54" data-readdy="true" class="text-primary font-medium hover:underline">Sign up</a>
+</p>
+</div>
+</div>
+<div class="mt-8 text-center text-sm text-gray-500">
+<p>By logging in, you agree to our <a href="#" class="text-primary hover:underline">Terms of Service</a> and <a href="#" class="text-primary hover:underline">Privacy Policy</a>.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-white py-8 border-t border-gray-200">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex flex-col md:flex-row justify-between items-center">
+<div class="mb-4 md:mb-0">
+<a href="https://readdy.ai/home/a4cb12ef-b4e2-415e-889e-29c37723d4f1/fcdea6b1-4724-4eb1-8c03-c4a978ad7f54" data-readdy="true" class="text-xl font-['Pacifico'] text-primary">ParcelPilot</a>
+</div>
+<div class="flex space-x-6">
+<a href="#" class="text-gray-600 hover:text-primary">Privacy Policy</a>
+<a href="#" class="text-gray-600 hover:text-primary">Terms of Service</a>
+<a href="#" class="text-gray-600 hover:text-primary">Contact Us</a>
+</div>
+<div class="mt-4 md:mt-0 text-gray-500 text-sm">
+&copy; 2025 ParcelPilot. All rights reserved.
+</div>
+</div>
+</div>
+</footer>
+<script id="tabSwitching">
+document.addEventListener('DOMContentLoaded', function() {
+const tabs = document.querySelectorAll('.role-tab');
+const contents = document.querySelectorAll('.tab-content');
+function switchTab(tabId) {
+tabs.forEach(tab => {
+tab.classList.remove('active', 'text-primary');
+tab.classList.add('text-gray-700');
+});
+contents.forEach(content => {
+content.classList.remove('active');
+});
+const selectedTab = document.getElementById(tabId);
+const selectedContent = document.getElementById(tabId.replace('Tab', 'Content'));
+if (selectedTab && selectedContent) {
+selectedTab.classList.add('active', 'text-primary');
+selectedTab.classList.remove('text-gray-700');
+selectedContent.classList.add('active');
+}
+}
+document.getElementById('contractorTab').addEventListener('click', () => switchTab('contractorTab'));
+document.getElementById('driverTab').addEventListener('click', () => switchTab('driverTab'));
+document.getElementById('adminTab').addEventListener('click', () => switchTab('adminTab'));
+// Set initial active tab
+switchTab('contractorTab');
+});
+</script>
+<script id="passwordToggles">
+document.addEventListener('DOMContentLoaded', function() {
+// Password toggles
+const toggles = [
+{
+toggle: document.getElementById('adminPasswordToggle'),
+field: document.getElementById('adminPassword')
+},
+{
+toggle: document.getElementById('contractorPasswordToggle'),
+field: document.getElementById('contractorPassword')
+}
+];
+toggles.forEach(item => {
+if (item.toggle && item.field) {
+item.toggle.addEventListener('change', function() {
+item.field.type = this.checked ? 'text' : 'password';
+});
+}
+});
+});
+</script>
+<script id="formSubmission">
+document.addEventListener('DOMContentLoaded', function() {
+const adminForm = document.getElementById('adminForm');
+const contractorForm = document.getElementById('contractorForm');
+const driverForm = document.getElementById('driverForm');
+if (adminForm) {
+adminForm.addEventListener('submit', function(e) {
+e.preventDefault();
+const submitButton = this.querySelector('button[type="submit"]');
+const buttonText = submitButton.querySelector('span');
+const originalText = buttonText.textContent;
+const formMessage = document.getElementById('formMessage');
+buttonText.textContent = 'Logging in...';
+submitButton.disabled = true;
+formMessage.className = 'hidden';
+const formData = new FormData(this);
+fetch(this.action, {
+method: 'POST',
+body: new URLSearchParams(formData),
+headers: {
+'Content-Type': 'application/x-www-form-urlencoded'
+}
+})
+.then(response => {
+if (!response.ok) {
+throw new Error('Network response was not ok');
+}
+return response.json();
+})
+.then(data => {
+formMessage.textContent = 'Login successful! Redirecting to admin dashboard...';
+formMessage.className = 'text-green-600 text-sm mt-2';
+setTimeout(() => {
+window.location.href = '/admin-dashboard';
+}, 1500);
+})
+.catch(error => {
+formMessage.textContent = 'Login failed. Please try again.';
+formMessage.className = 'text-red-600 text-sm mt-2';
+})
+.finally(() => {
+buttonText.textContent = originalText;
+submitButton.disabled = false;
+});
+});
+}
+if (contractorForm) {
+contractorForm.addEventListener('submit', function(e) {
+e.preventDefault();
+const submitButton = this.querySelector('button[type="submit"]');
+const buttonText = submitButton.querySelector('span');
+const originalText = buttonText.textContent;
+buttonText.textContent = 'Logging in...';
+submitButton.disabled = true;
+setTimeout(function() {
+buttonText.textContent = originalText;
+submitButton.disabled = false;
+const formMessage = document.createElement('div');
+formMessage.textContent = 'Login successful! Redirecting to contractor dashboard...';
+formMessage.className = 'text-green-600 text-sm mt-2';
+contractorForm.appendChild(formMessage);
+setTimeout(() => {
+window.location.href = '/contractor-dashboard';
+}, 1500);
+}, 1500);
+});
+}
+if (driverForm) {
+driverForm.addEventListener('submit', function(e) {
+e.preventDefault();
+const submitButton = this.querySelector('button[type="submit"]');
+const buttonText = submitButton.querySelector('span');
+const originalText = buttonText.textContent;
+buttonText.textContent = 'Logging in...';
+submitButton.disabled = true;
+setTimeout(function() {
+buttonText.textContent = originalText;
+submitButton.disabled = false;
+const formMessage = document.createElement('div');
+formMessage.textContent = 'Login successful! Redirecting to driver dashboard...';
+formMessage.className = 'text-green-600 text-sm mt-2';
+driverForm.appendChild(formMessage);
+setTimeout(() => {
+window.location.href = '/driver-dashboard';
+}, 1500);
+}, 1500);
+});
+}
+});
+</script>
+<script id="driverPinValidation">
+document.addEventListener('DOMContentLoaded', function() {
+// Driver PIN validation
+const driverPin = document.getElementById('driverPin');
+if (driverPin) {
+driverPin.addEventListener('input', function() {
+// Limit to 6 digits
+if (this.value.length > 6) {
+this.value = this.value.slice(0, 6);
+}
+// Ensure only numbers
+this.value = this.value.replace(/[^0-9]/g, '');
+});
+}
+});
+</script>
+</body>
+</html>

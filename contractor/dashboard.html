@@ -1,0 +1,2463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ParcelPilot - Contractor Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+<script>tailwind.config={theme:{extend:{colors:{primary:'#4f46e5',secondary:'#10b981'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+.custom-scrollbar::-webkit-scrollbar {
+width: 6px;
+height: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+background: #f1f1f1;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+background: #d1d5db;
+border-radius: 3px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+background: #9ca3af;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+-webkit-appearance: none;
+margin: 0;
+}
+.custom-checkbox {
+position: relative;
+width: 18px;
+height: 18px;
+cursor: pointer;
+}
+.custom-checkbox input {
+position: absolute;
+opacity: 0;
+cursor: pointer;
+}
+.checkmark {
+position: absolute;
+top: 0;
+left: 0;
+height: 18px;
+width: 18px;
+background-color: #fff;
+border: 1.5px solid #d1d5db;
+border-radius: 4px;
+}
+.custom-checkbox input:checked ~ .checkmark {
+background-color: #4f46e5;
+border-color: #4f46e5;
+}
+.checkmark:after {
+content: "";
+position: absolute;
+display: none;
+}
+.custom-checkbox input:checked ~ .checkmark:after {
+display: block;
+}
+.custom-checkbox .checkmark:after {
+left: 6px;
+top: 2px;
+width: 5px;
+height: 10px;
+border: solid white;
+border-width: 0 2px 2px 0;
+transform: rotate(45deg);
+}
+.custom-switch {
+position: relative;
+display: inline-block;
+width: 44px;
+height: 24px;
+}
+.custom-switch input {
+opacity: 0;
+width: 0;
+height: 0;
+}
+.switch-slider {
+position: absolute;
+cursor: pointer;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: #e5e7eb;
+transition: .4s;
+border-radius: 34px;
+}
+.switch-slider:before {
+position: absolute;
+content: "";
+height: 18px;
+width: 18px;
+left: 3px;
+bottom: 3px;
+background-color: white;
+transition: .4s;
+border-radius: 50%;
+}
+input:checked + .switch-slider {
+background-color: #4f46e5;
+}
+input:checked + .switch-slider:before {
+transform: translateX(20px);
+}
+.custom-range {
+-webkit-appearance: none;
+width: 100%;
+height: 6px;
+border-radius: 5px;
+background: #e5e7eb;
+outline: none;
+}
+.custom-range::-webkit-slider-thumb {
+-webkit-appearance: none;
+appearance: none;
+width: 18px;
+height: 18px;
+border-radius: 50%;
+background: #4f46e5;
+cursor: pointer;
+}
+.custom-range::-moz-range-thumb {
+width: 18px;
+height: 18px;
+border-radius: 50%;
+background: #4f46e5;
+cursor: pointer;
+border: none;
+}
+.custom-radio {
+position: relative;
+padding-left: 28px;
+cursor: pointer;
+user-select: none;
+}
+.custom-radio input {
+position: absolute;
+opacity: 0;
+cursor: pointer;
+}
+.radio-mark {
+position: absolute;
+top: 0;
+left: 0;
+height: 20px;
+width: 20px;
+background-color: #fff;
+border: 1.5px solid #d1d5db;
+border-radius: 50%;
+}
+.custom-radio input:checked ~ .radio-mark {
+border-color: #4f46e5;
+}
+.radio-mark:after {
+content: "";
+position: absolute;
+display: none;
+top: 4px;
+left: 4px;
+width: 10px;
+height: 10px;
+border-radius: 50%;
+background: #4f46e5;
+}
+.custom-radio input:checked ~ .radio-mark:after {
+display: block;
+}
+</style>
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar -->
+<div class="w-64 bg-white shadow-lg z-20 flex flex-col">
+<div class="p-4 border-b flex items-center">
+<span class="text-2xl font-['Pacifico'] text-primary">logo</span>
+<span class="ml-2 text-lg font-semibold">ParcelPilot</span>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar">
+<nav class="p-4">
+<div class="mb-6">
+<p class="text-xs font-medium text-gray-400 uppercase mb-4 pl-2">Main</p>
+<a href="#" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg bg-primary bg-opacity-10 text-primary">
+<div class="w-5 h-5 flex items-center justify-center mr-3">
+<i class="ri-dashboard-line"></i>
+</div>
+<span>Dashboard</span>
+</a>
+<a href="route-management.html" data-readdy="true" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
+<div class="w-5 h-5 flex items-center justify-center mr-3">
+<i class="ri-route-line"></i>
+</div>
+<span>Route Management</span>
+</a>
+<a href="driver-management.html" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
+<div class="w-5 h-5 flex items-center justify-center mr-3">
+<i class="ri-team-line"></i>
+</div>
+<span>Driver Management</span>
+</a>
+
+<a href="team-management-dashboard.html" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
+<div class="w-5 h-5 flex items-center justify-center mr-3">
+<i class="ri-team-line"></i>
+</div>
+<span>Team Management</span>
+</a>
+<a href="financial-report.html" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
+<div class="w-5 h-5 flex items-center justify-center mr-3">
+<i class="ri-money-dollar-circle-line"></i>
+</div>
+<span>Financial Reports</span>
+</a>
+<a href="perfomance-report.html" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
+<div class="w-5 h-5 flex items-center justify-center mr-3">
+<i class="ri-line-chart-line"></i>
+</div>
+<span>Performance Tracking</span>
+</a>
+</div>
+<div class="mb-6">
+<p class="text-xs font-medium text-gray-400 uppercase mb-4 pl-2">Settings</p>
+<a href="#" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
+<div class="w-5 h-5 flex items-center justify-center mr-3">
+<i class="ri-settings-3-line"></i>
+</div>
+<span>General Settings</span>
+</a>
+<a href="#" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
+<div class="w-5 h-5 flex items-center justify-center mr-3">
+<i class="ri-user-settings-line"></i>
+</div>
+<span>Account Settings</span>
+</a>
+<a href="#" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
+<div class="w-5 h-5 flex items-center justify-center mr-3">
+<i class="ri-notification-2-line"></i>
+</div>
+<span>Notifications</span>
+</a>
+</div>
+</nav>
+</div>
+<div class="p-4 border-t">
+<div class="flex items-center">
+<div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
+<div class="w-5 h-5 flex items-center justify-center text-gray-600">
+<i class="ri-user-line"></i>
+</div>
+</div>
+<div class="ml-3">
+<p class="text-sm font-medium">James Wilson</p>
+<p class="text-xs text-gray-500">Regional Manager</p>
+</div>
+<button class="ml-auto p-1 text-gray-400 hover:text-gray-600">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-logout-box-r-line"></i>
+</div>
+</button>
+</div>
+</div>
+</div>
+<!-- Main Content -->
+<div class="flex-1 flex flex-col overflow-hidden">
+<!-- Top Navigation -->
+<header class="bg-white shadow-sm z-10">
+<div class="flex items-center justify-between px-6 py-3">
+<div class="flex items-center">
+<h1 class="text-xl font-semibold">Dashboard</h1>
+<span class="ml-4 text-sm text-gray-500">Tuesday, May 27, 2025</span>
+</div>
+<div class="flex items-center space-x-4">
+<div class="relative">
+<input type="text" placeholder="Search..." class="pl-9 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary w-64">
+<div class="absolute left-3 top-2.5 text-gray-400 w-4 h-4 flex items-center justify-center">
+<i class="ri-search-line"></i>
+</div>
+</div>
+<div class="flex items-center space-x-2 mr-2">
+<div class="w-5 h-5 flex items-center justify-center text-gray-500">
+<i class="ri-sun-line"></i>
+</div>
+<label class="custom-switch">
+<input type="checkbox" id="themeToggle">
+<span class="switch-slider"></span>
+</label>
+<div class="w-5 h-5 flex items-center justify-center text-gray-500">
+<i class="ri-moon-line"></i>
+</div>
+</div>
+<button class="relative p-2 text-gray-500 hover:text-gray-700 focus:outline-none">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-notification-3-line"></i>
+</div>
+<span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+</button>
+<button class="p-2 text-gray-500 hover:text-gray-700 focus:outline-none">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-message-2-line"></i>
+</div>
+</button>
+<button class="p-2 text-gray-500 hover:text-gray-700 focus:outline-none">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-settings-4-line"></i>
+</div>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto custom-scrollbar bg-gray-50 p-6">
+<!-- Key Metrics Section -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+<div class="bg-white rounded-lg shadow p-5">
+<div class="flex items-center justify-between">
+<div>
+<p class="text-sm font-medium text-gray-500">Active Routes Today</p>
+<h3 class="text-2xl font-bold mt-1">24</h3>
+</div>
+<div class="w-12 h-12 rounded-full bg-primary bg-opacity-10 flex items-center justify-center text-primary">
+<div class="w-6 h-6 flex items-center justify-center">
+<i class="ri-route-line"></i>
+</div>
+</div>
+</div>
+<div class="flex items-center mt-4">
+<span class="text-green-500 text-sm font-medium flex items-center">
+<div class="w-4 h-4 flex items-center justify-center mr-1">
+<i class="ri-arrow-up-line"></i>
+</div>
+8.2%
+</span>
+<span class="text-xs text-gray-500 ml-2">vs last week</span>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow p-5">
+<div class="flex items-center justify-between">
+<div>
+<p class="text-sm font-medium text-gray-500">Drivers On Duty</p>
+<h3 class="text-2xl font-bold mt-1">18</h3>
+</div>
+<div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+<div class="w-6 h-6 flex items-center justify-center">
+<i class="ri-user-star-line"></i>
+</div>
+</div>
+</div>
+<div class="flex items-center mt-4">
+<span class="text-green-500 text-sm font-medium flex items-center">
+<div class="w-4 h-4 flex items-center justify-center mr-1">
+<i class="ri-arrow-up-line"></i>
+</div>
+4.5%
+</span>
+<span class="text-xs text-gray-500 ml-2">vs last week</span>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow p-5">
+<div class="flex items-center justify-between">
+<div>
+<p class="text-sm font-medium text-gray-500">Today's Deliveries</p>
+<h3 class="text-2xl font-bold mt-1">452</h3>
+</div>
+<div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+<div class="w-6 h-6 flex items-center justify-center">
+<i class="ri-box-3-line"></i>
+</div>
+</div>
+</div>
+<div class="flex items-center mt-4">
+<span class="text-red-500 text-sm font-medium flex items-center">
+<div class="w-4 h-4 flex items-center justify-center mr-1">
+<i class="ri-arrow-down-line"></i>
+</div>
+2.1%
+</span>
+<span class="text-xs text-gray-500 ml-2">vs last week</span>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow p-5">
+<div class="flex items-center justify-between">
+<div>
+<p class="text-sm font-medium text-gray-500">Completion Rate</p>
+<h3 class="text-2xl font-bold mt-1">96.8%</h3>
+</div>
+<div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center text-purple-600">
+<div class="w-6 h-6 flex items-center justify-center">
+<i class="ri-check-double-line"></i>
+</div>
+</div>
+</div>
+<div class="flex items-center mt-4">
+<span class="text-green-500 text-sm font-medium flex items-center">
+<div class="w-4 h-4 flex items-center justify-center mr-1">
+<i class="ri-arrow-up-line"></i>
+</div>
+1.2%
+</span>
+<span class="text-xs text-gray-500 ml-2">vs last week</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+<!-- Route Management Section -->
+<div class="lg:col-span-2 bg-white rounded-lg shadow">
+<div class="p-5 border-b flex justify-between items-center">
+<h2 class="text-lg font-semibold">Route Management</h2>
+<button id="addRouteBtn" class="bg-primary text-white px-4 py-2 text-sm font-medium rounded-button flex items-center whitespace-nowrap">
+<div class="w-4 h-4 flex items-center justify-center mr-2">
+<i class="ri-add-line"></i>
+</div>
+Add New Route
+</button>
+<div id="addRouteModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+<div class="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
+<div class="p-6 border-b flex justify-between items-center">
+<h3 class="text-xl font-semibold">Create New Route</h3>
+<button id="closeRouteModal" class="text-gray-500 hover:text-gray-700">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="p-6 overflow-y-auto">
+<div class="grid grid-cols-2 gap-6">
+<div class="space-y-6">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Route ID</label>
+<input type="text" id="routeId" value="RT-2593" class="w-full px-3 py-2 bg-gray-100 border-none rounded-lg text-gray-500" readonly>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Area/District</label>
+<div class="relative">
+<select id="routeArea" class="w-full pl-3 pr-8 py-2 text-sm border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+<option value="">Select Area</option>
+<option value="north">North District</option>
+<option value="south">South District</option>
+<option value="east">East District</option>
+<option value="west">West District</option>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</div>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Number of Parcels</label>
+<input type="number" id="parcelCount" min="1" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Commission Rate (per parcel)</label>
+<div class="relative">
+<span class="absolute left-3 top-2 text-gray-500">$</span>
+<input type="number" id="commissionRate" min="0" step="0.05" class="w-full pl-7 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Assign Drivers</label>
+<div class="relative">
+<select id="routeDrivers" multiple class="w-full pl-3 pr-8 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary" size="4">
+<option value="jm">John Miller</option>
+<option value="rb">Rachel Brown</option>
+<option value="ah">Alex Hernandez</option>
+<option value="tw">Tina Wilson</option>
+<option value="kl">Kevin Lee</option>
+</select>
+</div>
+<p class="mt-1 text-xs text-gray-500">Hold Ctrl/Cmd to select multiple drivers</p>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Route Status</label>
+<div class="relative">
+<select id="routeStatus" class="w-full pl-3 pr-8 py-2 text-sm border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+<option value="active">Active</option>
+<option value="pending">Pending</option>
+<option value="completed">Completed</option>
+<option value="cancelled">Cancelled</option>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Route Preview</label>
+<div class="h-[400px] bg-cover bg-center rounded-lg overflow-hidden relative" style="background-image: url('https://public.readdy.ai/gen_page/map_placeholder_1280x720.png')">
+<div class="absolute inset-0 bg-black bg-opacity-10"></div>
+<div class="absolute top-4 left-4 bg-white rounded-lg shadow p-3">
+<div class="flex items-center space-x-4">
+<label class="flex items-center text-sm">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" checked>
+<span class="checkmark"></span>
+</div>
+Show Route
+</label>
+<label class="flex items-center text-sm">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" checked>
+<span class="checkmark"></span>
+</div>
+Show Stops
+</label>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-6 border-t bg-gray-50 flex justify-end space-x-3">
+<button id="cancelRouteBtn" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-button hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+<button id="createRouteBtn" class="bg-primary text-white px-4 py-2 text-sm font-medium rounded-button whitespace-nowrap">Create Route</button>
+</div>
+</div>
+</div>
+</div>
+<div class="p-5">
+<div class="mb-4 flex items-center justify-between flex-wrap gap-4">
+<div class="flex items-center space-x-4">
+<div class="relative w-64">
+<input type="text" placeholder="Search routes..." class="w-full pl-9 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+<div class="absolute left-3 top-2.5 text-gray-400 w-4 h-4 flex items-center justify-center">
+<i class="ri-search-line"></i>
+</div>
+</div>
+<div class="flex items-center space-x-2">
+<button id="dateRangeBtn" class="bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg text-gray-600 flex items-center whitespace-nowrap">
+<div class="w-4 h-4 flex items-center justify-center mr-2">
+<i class="ri-calendar-line"></i>
+</div>
+<span id="selectedDateRange">Today</span>
+</button>
+<button class="bg-gray-100 hover:bg-gray-200 p-2 rounded-lg text-gray-600">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-filter-3-line"></i>
+</div>
+</button>
+<button class="bg-gray-100 hover:bg-gray-200 p-2 rounded-lg text-gray-600">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-refresh-line"></i>
+</div>
+</button>
+</div>
+</div>
+<div id="dateRangeModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-start justify-center pt-20 z-50">
+<div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+<div class="p-6 border-b flex justify-between items-center">
+<h3 class="text-lg font-semibold">Select Date Range</h3>
+<button id="closeDateRangeModal" class="text-gray-500 hover:text-gray-700">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="p-6">
+<div class="grid grid-cols-2 gap-4 mb-6">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+<input type="date" id="startDate" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+<input type="date" id="endDate" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+</div>
+<div class="flex flex-wrap gap-2 mb-6">
+<button class="quick-date px-3 py-1 text-sm rounded-lg border border-gray-300 hover:bg-gray-50" data-days="0">Today</button>
+<button class="quick-date px-3 py-1 text-sm rounded-lg border border-gray-300 hover:bg-gray-50" data-days="1">Yesterday</button>
+<button class="quick-date px-3 py-1 text-sm rounded-lg border border-gray-300 hover:bg-gray-50" data-days="7">Last 7 days</button>
+<button class="quick-date px-3 py-1 text-sm rounded-lg border border-gray-300 hover:bg-gray-50" data-days="30">Last 30 days</button>
+<button class="quick-date px-3 py-1 text-sm rounded-lg border border-gray-300 hover:bg-gray-50" data-days="90">Last 90 days</button>
+</div>
+<div class="flex justify-end space-x-3">
+<button id="cancelDateRange" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-button hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+<button id="applyDateRange" class="bg-primary text-white px-4 py-2 text-sm font-medium rounded-button whitespace-nowrap">Apply</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="min-w-full">
+<thead>
+<tr class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+<th class="px-4 py-3">Route ID</th>
+<th class="px-4 py-3">Area</th>
+<th class="px-4 py-3">Parcels</th>
+<th class="px-4 py-3">Assigned</th>
+<th class="px-4 py-3">Commission</th>
+<th class="px-4 py-3">Status</th>
+<th class="px-4 py-3">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-200">
+<tr class="hover:bg-gray-50">
+<td class="px-4 py-3 text-sm font-medium">RT-2589</td>
+<td class="px-4 py-3 text-sm">North District</td>
+<td class="px-4 py-3 text-sm">87</td>
+<td class="px-4 py-3 text-sm">
+<div class="flex -space-x-2">
+<div class="w-7 h-7 rounded-full bg-blue-100 border-2 border-white flex items-center justify-center text-xs font-medium text-blue-600">JM</div>
+<div class="w-7 h-7 rounded-full bg-green-100 border-2 border-white flex items-center justify-center text-xs font-medium text-green-600">KL</div>
+</div>
+</td>
+<td class="px-4 py-3 text-sm">$1.45/parcel</td>
+<td class="px-4 py-3 text-sm">
+<span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">Active</span>
+</td>
+<td class="px-4 py-3 text-sm">
+<div class="flex space-x-2">
+<button class="text-gray-500 hover:text-primary edit-route-btn" data-route-id="RT-2589" data-area="north" data-parcels="87" data-commission="1.45" data-drivers="jm,kl" data-status="active">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-edit-line"></i>
+</div>
+</button>
+<button class="text-gray-500 hover:text-primary assign-driver-btn" data-route-id="RT-2589">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-user-add-line"></i>
+</div>
+</button>
+<div id="assignDriverModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+<div class="bg-white rounded-lg shadow-xl w-full max-w-2xl">
+<div class="p-6 border-b flex justify-between items-center">
+<h3 class="text-xl font-semibold">Assign Additional Drivers</h3>
+<button id="closeAssignModal" class="text-gray-500 hover:text-gray-700">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="p-6">
+<div class="mb-6">
+<div class="flex justify-between items-center mb-4">
+<div>
+<p class="text-sm text-gray-500">Route ID</p>
+<p id="assignRouteId" class="text-lg font-medium">RT-2589</p>
+</div>
+<div>
+<p class="text-sm text-gray-500">Current Drivers</p>
+<div id="currentDrivers" class="flex -space-x-2 mt-1">
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-4">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Total Parcels</label>
+<input type="number" id="totalParcels" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary" placeholder="Enter total parcels" min="1">
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Parcels Per Driver</label>
+<input type="number" id="parcelsPerDriver" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary" placeholder="Auto-calculated" readonly>
+</div>
+</div>
+<div class="relative mb-4">
+<input type="text" id="driverSearch" placeholder="Search drivers..." class="w-full pl-9 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+<div class="absolute left-3 top-2.5 text-gray-400 w-4 h-4 flex items-center justify-center">
+<i class="ri-search-line"></i>
+</div>
+</div>
+<div id="driverList" class="space-y-3 max-h-64 overflow-y-auto custom-scrollbar">
+</div>
+</div>
+</div>
+<div class="p-6 border-t bg-gray-50 flex justify-end space-x-3">
+<button id="cancelAssignBtn" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-button hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+<button id="assignDriversBtn" class="bg-primary text-white px-4 py-2 text-sm font-medium rounded-button whitespace-nowrap">Assign Drivers</button>
+</div>
+</div>
+</div>
+<button class="text-gray-500 hover:text-red-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-delete-bin-line"></i>
+</div>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-gray-50">
+<td class="px-4 py-3 text-sm font-medium">RT-2590</td>
+<td class="px-4 py-3 text-sm">East District</td>
+<td class="px-4 py-3 text-sm">64</td>
+<td class="px-4 py-3 text-sm">
+<div class="flex -space-x-2">
+<div class="w-7 h-7 rounded-full bg-purple-100 border-2 border-white flex items-center justify-center text-xs font-medium text-purple-600">RB</div>
+</div>
+</td>
+<td class="px-4 py-3 text-sm">$1.65/parcel</td>
+<td class="px-4 py-3 text-sm">
+<span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">Active</span>
+</td>
+<td class="px-4 py-3 text-sm">
+<div class="flex space-x-2">
+<button class="text-gray-500 hover:text-primary edit-route-btn" data-route-id="RT-2589" data-area="north" data-parcels="87" data-commission="1.45" data-drivers="jm,kl" data-status="active">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-edit-line"></i>
+</div>
+</button>
+<button class="text-gray-500 hover:text-primary assign-driver-btn" data-route-id="RT-2589">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-user-add-line"></i>
+</div>
+</button>
+<div id="assignDriverModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+<div class="bg-white rounded-lg shadow-xl w-full max-w-2xl">
+<div class="p-6 border-b flex justify-between items-center">
+<h3 class="text-xl font-semibold">Assign Additional Drivers</h3>
+<button id="closeAssignModal" class="text-gray-500 hover:text-gray-700">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="p-6">
+<div class="mb-6">
+<div class="flex justify-between items-center mb-4">
+<div>
+<p class="text-sm text-gray-500">Route ID</p>
+<p id="assignRouteId" class="text-lg font-medium">RT-2589</p>
+</div>
+<div>
+<p class="text-sm text-gray-500">Current Drivers</p>
+<div id="currentDrivers" class="flex -space-x-2 mt-1">
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-4">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Total Parcels</label>
+<input type="number" id="totalParcels" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary" placeholder="Enter total parcels" min="1">
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Parcels Per Driver</label>
+<input type="number" id="parcelsPerDriver" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary" placeholder="Auto-calculated" readonly>
+</div>
+</div>
+<div class="relative mb-4">
+<input type="text" id="driverSearch" placeholder="Search drivers..." class="w-full pl-9 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+<div class="absolute left-3 top-2.5 text-gray-400 w-4 h-4 flex items-center justify-center">
+<i class="ri-search-line"></i>
+</div>
+</div>
+<div id="driverList" class="space-y-3 max-h-64 overflow-y-auto custom-scrollbar">
+</div>
+</div>
+</div>
+<div class="p-6 border-t bg-gray-50 flex justify-end space-x-3">
+<button id="cancelAssignBtn" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-button hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+<button id="assignDriversBtn" class="bg-primary text-white px-4 py-2 text-sm font-medium rounded-button whitespace-nowrap">Assign Drivers</button>
+</div>
+</div>
+</div>
+<button class="text-gray-500 hover:text-red-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-delete-bin-line"></i>
+</div>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-gray-50">
+<td class="px-4 py-3 text-sm font-medium">RT-2591</td>
+<td class="px-4 py-3 text-sm">South District</td>
+<td class="px-4 py-3 text-sm">102</td>
+<td class="px-4 py-3 text-sm">
+<div class="flex -space-x-2">
+<div class="w-7 h-7 rounded-full bg-yellow-100 border-2 border-white flex items-center justify-center text-xs font-medium text-yellow-600">AH</div>
+<div class="w-7 h-7 rounded-full bg-red-100 border-2 border-white flex items-center justify-center text-xs font-medium text-red-600">TW</div>
+<div class="w-7 h-7 rounded-full bg-gray-100 border-2 border-white flex items-center justify-center text-xs font-medium text-gray-600">+1</div>
+</div>
+</td>
+<td class="px-4 py-3 text-sm">$1.35/parcel</td>
+<td class="px-4 py-3 text-sm">
+<span class="px-2 py-1 text-xs font-medium rounded-full bg-yellow-100 text-yellow-800">In Progress</span>
+</td>
+<td class="px-4 py-3 text-sm">
+<div class="flex space-x-2">
+<button class="text-gray-500 hover:text-primary edit-route-btn" data-route-id="RT-2589" data-area="north" data-parcels="87" data-commission="1.45" data-drivers="jm,kl" data-status="active">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-edit-line"></i>
+</div>
+</button>
+<button class="text-gray-500 hover:text-primary assign-driver-btn" data-route-id="RT-2589">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-user-add-line"></i>
+</div>
+</button>
+<div id="assignDriverModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+<div class="bg-white rounded-lg shadow-xl w-full max-w-2xl">
+<div class="p-6 border-b flex justify-between items-center">
+<h3 class="text-xl font-semibold">Assign Additional Drivers</h3>
+<button id="closeAssignModal" class="text-gray-500 hover:text-gray-700">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="p-6">
+<div class="mb-6">
+<div class="flex justify-between items-center mb-4">
+<div>
+<p class="text-sm text-gray-500">Route ID</p>
+<p id="assignRouteId" class="text-lg font-medium">RT-2589</p>
+</div>
+<div>
+<p class="text-sm text-gray-500">Current Drivers</p>
+<div id="currentDrivers" class="flex -space-x-2 mt-1">
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-4">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Total Parcels</label>
+<input type="number" id="totalParcels" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary" placeholder="Enter total parcels" min="1">
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Parcels Per Driver</label>
+<input type="number" id="parcelsPerDriver" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary" placeholder="Auto-calculated" readonly>
+</div>
+</div>
+<div class="relative mb-4">
+<input type="text" id="driverSearch" placeholder="Search drivers..." class="w-full pl-9 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+<div class="absolute left-3 top-2.5 text-gray-400 w-4 h-4 flex items-center justify-center">
+<i class="ri-search-line"></i>
+</div>
+</div>
+<div id="driverList" class="space-y-3 max-h-64 overflow-y-auto custom-scrollbar">
+</div>
+</div>
+</div>
+<div class="p-6 border-t bg-gray-50 flex justify-end space-x-3">
+<button id="cancelAssignBtn" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-button hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+<button id="assignDriversBtn" class="bg-primary text-white px-4 py-2 text-sm font-medium rounded-button whitespace-nowrap">Assign Drivers</button>
+</div>
+</div>
+</div>
+<button class="text-gray-500 hover:text-red-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-delete-bin-line"></i>
+</div>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-gray-50">
+<td class="px-4 py-3 text-sm font-medium">RT-2592</td>
+<td class="px-4 py-3 text-sm">West District</td>
+<td class="px-4 py-3 text-sm">56</td>
+<td class="px-4 py-3 text-sm">
+<span class="text-sm text-gray-500">Not assigned</span>
+</td>
+<td class="px-4 py-3 text-sm">$1.50/parcel</td>
+<td class="px-4 py-3 text-sm">
+<span class="px-2 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-800">Pending</span>
+</td>
+<td class="px-4 py-3 text-sm">
+<div class="flex space-x-2">
+<button class="text-gray-500 hover:text-primary edit-route-btn" data-route-id="RT-2589" data-area="north" data-parcels="87" data-commission="1.45" data-drivers="jm,kl" data-status="active">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-edit-line"></i>
+</div>
+</button>
+<button class="text-gray-500 hover:text-primary assign-driver-btn" data-route-id="RT-2589">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-user-add-line"></i>
+</div>
+</button>
+<div id="assignDriverModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+<div class="bg-white rounded-lg shadow-xl w-full max-w-2xl">
+<div class="p-6 border-b flex justify-between items-center">
+<h3 class="text-xl font-semibold">Assign Additional Drivers</h3>
+<button id="closeAssignModal" class="text-gray-500 hover:text-gray-700">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="p-6">
+<div class="mb-6">
+<div class="flex justify-between items-center mb-4">
+<div>
+<p class="text-sm text-gray-500">Route ID</p>
+<p id="assignRouteId" class="text-lg font-medium">RT-2589</p>
+</div>
+<div>
+<p class="text-sm text-gray-500">Current Drivers</p>
+<div id="currentDrivers" class="flex -space-x-2 mt-1">
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-4">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Total Parcels</label>
+<input type="number" id="totalParcels" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary" placeholder="Enter total parcels" min="1">
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Parcels Per Driver</label>
+<input type="number" id="parcelsPerDriver" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary" placeholder="Auto-calculated" readonly>
+</div>
+</div>
+<div class="relative mb-4">
+<input type="text" id="driverSearch" placeholder="Search drivers..." class="w-full pl-9 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+<div class="absolute left-3 top-2.5 text-gray-400 w-4 h-4 flex items-center justify-center">
+<i class="ri-search-line"></i>
+</div>
+</div>
+<div id="driverList" class="space-y-3 max-h-64 overflow-y-auto custom-scrollbar">
+</div>
+</div>
+</div>
+<div class="p-6 border-t bg-gray-50 flex justify-end space-x-3">
+<button id="cancelAssignBtn" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-button hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+<button id="assignDriversBtn" class="bg-primary text-white px-4 py-2 text-sm font-medium rounded-button whitespace-nowrap">Assign Drivers</button>
+</div>
+</div>
+</div>
+<button class="text-gray-500 hover:text-red-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-delete-bin-line"></i>
+</div>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="mt-4 flex justify-between items-center">
+<p class="text-sm text-gray-500">Showing 4 of 24 routes</p>
+<div class="flex space-x-1">
+<button class="px-3 py-1 text-sm rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-50">Previous</button>
+<button class="px-3 py-1 text-sm rounded-lg border border-gray-300 bg-primary text-white">1</button>
+<button class="px-3 py-1 text-sm rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-50">2</button>
+<button class="px-3 py-1 text-sm rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-50">3</button>
+<button class="px-3 py-1 text-sm rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-50">Next</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Commission Structure -->
+<div class="bg-white rounded-lg shadow">
+<div class="p-5 border-b">
+<h2 class="text-lg font-semibold">Commission Structure</h2>
+</div>
+<div class="p-5">
+<div class="mb-6">
+<h3 class="text-sm font-medium text-gray-700 mb-2">Default Commission Rates</h3>
+<div class="space-y-3">
+<div class="flex justify-between items-center">
+<span class="text-sm">Standard Parcel</span>
+<span class="text-sm font-medium">$1.45/parcel</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-sm">Express Delivery</span>
+<span class="text-sm font-medium">$2.25/parcel</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-sm">Heavy Package</span>
+<span class="text-sm font-medium">$3.00/parcel</span>
+</div>
+</div>
+</div>
+<div class="mb-6">
+<h3 class="text-sm font-medium text-gray-700 mb-2">Driver Bonuses</h3>
+<div class="space-y-3">
+<div class="flex justify-between items-center">
+<span class="text-sm">Perfect Completion</span>
+<span class="text-sm font-medium">+10%</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-sm">Early Completion</span>
+<span class="text-sm font-medium">+5%</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-sm">Customer Rating Bonus</span>
+<span class="text-sm font-medium">+$0.25/parcel</span>
+</div>
+</div>
+</div>
+<div>
+<h3 class="text-sm font-medium text-gray-700 mb-2">Custom Rate Settings</h3>
+<div class="mb-4">
+<label class="block text-sm text-gray-600 mb-1">Route Type</label>
+<div class="relative">
+<select class="w-full pl-3 pr-8 py-2 text-sm border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+<option>All Routes</option>
+<option>Urban Routes</option>
+<option>Suburban Routes</option>
+<option>Rural Routes</option>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</div>
+</div>
+</div>
+<div class="mb-4">
+<label class="block text-sm text-gray-600 mb-1">Base Rate Per Parcel</label>
+<div class="relative">
+<span class="absolute left-3 top-2 text-gray-500">$</span>
+<input type="number" value="1.45" step="0.05" class="w-full pl-7 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+</div>
+<button class="w-full bg-primary text-white px-4 py-2 text-sm font-medium rounded-button whitespace-nowrap">
+Update Commission Rates
+</button>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+<!-- Live Tracking Map -->
+<div class="lg:col-span-2 bg-white rounded-lg shadow">
+<div class="p-5 border-b flex justify-between items-center">
+<h2 class="text-lg font-semibold">Live Tracking</h2>
+<div class="flex items-center space-x-2">
+<button class="bg-gray-100 hover:bg-gray-200 px-3 py-1.5 text-sm font-medium rounded-lg text-gray-600 flex items-center whitespace-nowrap">
+<div class="w-4 h-4 flex items-center justify-center mr-1.5">
+<i class="ri-refresh-line"></i>
+</div>
+Refresh
+</button>
+<button class="bg-gray-100 hover:bg-gray-200 px-3 py-1.5 text-sm font-medium rounded-lg text-gray-600 flex items-center whitespace-nowrap">
+<div class="w-4 h-4 flex items-center justify-center mr-1.5">
+<i class="ri-filter-3-line"></i>
+</div>
+Filter
+</button>
+</div>
+</div>
+<div class="p-5">
+<div class="h-80 rounded-lg overflow-hidden relative" style="background-image: url('https://public.readdy.ai/gen_page/map_placeholder_1280x720.png'); background-size: cover; background-position: center;">
+<div class="absolute top-4 left-4 bg-white rounded-lg shadow p-3 z-10">
+<div class="flex items-center space-x-4">
+<label class="flex items-center text-sm">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" checked>
+<span class="checkmark"></span>
+</div>
+Active Drivers
+</label>
+<label class="flex items-center text-sm">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" checked>
+<span class="checkmark"></span>
+</div>
+Completed Deliveries
+</label>
+<label class="flex items-center text-sm">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" checked>
+<span class="checkmark"></span>
+</div>
+Pending Deliveries
+</label>
+</div>
+</div>
+<!-- Driver Markers -->
+<div class="absolute top-1/3 left-1/4 flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center shadow-lg">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-user-location-fill"></i>
+</div>
+</div>
+<div class="mt-1 bg-white text-xs px-2 py-0.5 rounded shadow">
+John M.
+</div>
+</div>
+<div class="absolute top-1/2 right-1/3 flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-green-500 text-white flex items-center justify-center shadow-lg">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-user-location-fill"></i>
+</div>
+</div>
+<div class="mt-1 bg-white text-xs px-2 py-0.5 rounded shadow">
+Rachel B.
+</div>
+</div>
+<div class="absolute bottom-1/4 left-1/2 flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-purple-500 text-white flex items-center justify-center shadow-lg">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-user-location-fill"></i>
+</div>
+</div>
+<div class="mt-1 bg-white text-xs px-2 py-0.5 rounded shadow">
+Alex H.
+</div>
+</div>
+<!-- Delivery Markers -->
+<div class="absolute top-1/4 right-1/4 w-6 h-6 rounded-full bg-red-500 text-white flex items-center justify-center shadow-lg">
+<div class="w-3 h-3 flex items-center justify-center">
+<i class="ri-map-pin-fill"></i>
+</div>
+</div>
+<div class="absolute bottom-1/3 left-1/3 w-6 h-6 rounded-full bg-blue-500 text-white flex items-center justify-center shadow-lg">
+<div class="w-3 h-3 flex items-center justify-center">
+<i class="ri-map-pin-fill"></i>
+</div>
+</div>
+</div>
+<div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="bg-gray-50 rounded-lg p-3">
+<div class="flex justify-between items-center mb-2">
+<h3 class="text-sm font-medium">North District</h3>
+<span class="text-xs text-gray-500">2 drivers</span>
+</div>
+<div class="flex items-center">
+<div class="w-full bg-gray-200 rounded-full h-2.5">
+<div class="bg-primary h-2.5 rounded-full" style="width: 75%"></div>
+</div>
+<span class="ml-2 text-xs font-medium">75%</span>
+</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-3">
+<div class="flex justify-between items-center mb-2">
+<h3 class="text-sm font-medium">East District</h3>
+<span class="text-xs text-gray-500">1 driver</span>
+</div>
+<div class="flex items-center">
+<div class="w-full bg-gray-200 rounded-full h-2.5">
+<div class="bg-green-500 h-2.5 rounded-full" style="width: 92%"></div>
+</div>
+<span class="ml-2 text-xs font-medium">92%</span>
+</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-3">
+<div class="flex justify-between items-center mb-2">
+<h3 class="text-sm font-medium">South District</h3>
+<span class="text-xs text-gray-500">3 drivers</span>
+</div>
+<div class="flex items-center">
+<div class="w-full bg-gray-200 rounded-full h-2.5">
+<div class="bg-purple-500 h-2.5 rounded-full" style="width: 45%"></div>
+</div>
+<span class="ml-2 text-xs font-medium">45%</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Team Performance -->
+<div class="bg-white rounded-lg shadow">
+<div class="p-5 border-b flex justify-between items-center">
+<h2 class="text-lg font-semibold">Team Performance</h2>
+<button class="text-primary hover:text-primary-dark text-sm font-medium">
+View All
+</button>
+</div>
+<div class="p-5">
+<div class="space-y-4">
+<div class="bg-gray-50 rounded-lg p-3 flex items-center">
+<div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-medium">JM</div>
+<div class="ml-3">
+<p class="text-sm font-medium">John Miller</p>
+<p class="text-xs text-gray-500">42 deliveries today</p>
+</div>
+<div class="ml-auto flex flex-col items-end">
+<div class="flex items-center">
+<div class="w-3 h-3 flex items-center justify-center text-yellow-500 mr-1">
+<i class="ri-star-fill"></i>
+</div>
+<span class="text-sm font-medium">4.9</span>
+</div>
+<span class="text-xs text-green-500">98% on time</span>
+</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-3 flex items-center">
+<div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-medium">RB</div>
+<div class="ml-3">
+<p class="text-sm font-medium">Rachel Brown</p>
+<p class="text-xs text-gray-500">38 deliveries today</p>
+</div>
+<div class="ml-auto flex flex-col items-end">
+<div class="flex items-center">
+<div class="w-3 h-3 flex items-center justify-center text-yellow-500 mr-1">
+<i class="ri-star-fill"></i>
+</div>
+<span class="text-sm font-medium">4.8</span>
+</div>
+<span class="text-xs text-green-500">96% on time</span>
+</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-3 flex items-center">
+<div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-medium">AH</div>
+<div class="ml-3">
+<p class="text-sm font-medium">Alex Hernandez</p>
+<p class="text-xs text-gray-500">35 deliveries today</p>
+</div>
+<div class="ml-auto flex flex-col items-end">
+<div class="flex items-center">
+<div class="w-3 h-3 flex items-center justify-center text-yellow-500 mr-1">
+<i class="ri-star-fill"></i>
+</div>
+<span class="text-sm font-medium">4.7</span>
+</div>
+<span class="text-xs text-green-500">95% on time</span>
+</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-3 flex items-center">
+<div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-600 font-medium">TW</div>
+<div class="ml-3">
+<p class="text-sm font-medium">Tina Wilson</p>
+<p class="text-xs text-gray-500">29 deliveries today</p>
+</div>
+<div class="ml-auto flex flex-col items-end">
+<div class="flex items-center">
+<div class="w-3 h-3 flex items-center justify-center text-yellow-500 mr-1">
+<i class="ri-star-fill"></i>
+</div>
+<span class="text-sm font-medium">4.5</span>
+</div>
+<span class="text-xs text-yellow-500">92% on time</span>
+</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-3 flex items-center">
+<div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600 font-medium">KL</div>
+<div class="ml-3">
+<p class="text-sm font-medium">Kevin Lee</p>
+<p class="text-xs text-gray-500">26 deliveries today</p>
+</div>
+<div class="ml-auto flex flex-col items-end">
+<div class="flex items-center">
+<div class="w-3 h-3 flex items-center justify-center text-yellow-500 mr-1">
+<i class="ri-star-fill"></i>
+</div>
+<span class="text-sm font-medium">4.4</span>
+</div>
+<span class="text-xs text-yellow-500">90% on time</span>
+</div>
+</div>
+</div>
+<div class="mt-4">
+<a href="team-management-dashboard.html" data-readdy="true" class="block">
+<button class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 text-sm font-medium rounded-button whitespace-nowrap">
+Manage Team
+</button>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+<!-- Delivery Performance Chart -->
+<div class="bg-white rounded-lg shadow">
+<div class="p-5 border-b flex justify-between items-center">
+<h2 class="text-lg font-semibold">Delivery Performance</h2>
+<div class="flex items-center space-x-2">
+<button id="weekBtn" class="bg-gray-100 hover:bg-gray-200 px-3 py-1 text-sm font-medium rounded-lg text-gray-600">Week</button>
+<button id="monthBtn" class="bg-primary text-white px-3 py-1 text-sm font-medium rounded-lg">Month</button>
+<button id="yearBtn" class="bg-gray-100 hover:bg-gray-200 px-3 py-1 text-sm font-medium rounded-lg text-gray-600">Year</button>
+</div>
+</div>
+<div class="p-5">
+<div id="deliveryChart" class="h-80"></div>
+</div>
+</div>
+<!-- Financial Summary -->
+<div class="bg-white rounded-lg shadow">
+<div class="p-5 border-b flex justify-between items-center">
+<h2 class="text-lg font-semibold">Financial Summary</h2>
+<button class="text-primary hover:text-primary-dark text-sm font-medium flex items-center">
+<div class="w-4 h-4 flex items-center justify-center mr-1">
+<i class="ri-download-line"></i>
+</div>
+Export
+</button>
+</div>
+<div class="p-5">
+<div class="grid grid-cols-2 gap-4 mb-6">
+<div class="bg-gray-50 rounded-lg p-4">
+<p class="text-sm text-gray-500">Total Earnings (MTD)</p>
+<h3 class="text-xl font-bold mt-1">$24,856.45</h3>
+<div class="flex items-center mt-2">
+<span class="text-green-500 text-xs font-medium flex items-center">
+<div class="w-3 h-3 flex items-center justify-center mr-1">
+<i class="ri-arrow-up-line"></i>
+</div>
+12.5%
+</span>
+<span class="text-xs text-gray-500 ml-1">vs last month</span>
+</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-4">
+<p class="text-sm text-gray-500">Commission Paid (MTD)</p>
+<h3 class="text-xl font-bold mt-1">$14,328.90</h3>
+<div class="flex items-center mt-2">
+<span class="text-green-500 text-xs font-medium flex items-center">
+<div class="w-3 h-3 flex items-center justify-center mr-1">
+<i class="ri-arrow-up-line"></i>
+</div>
+8.3%
+</span>
+<span class="text-xs text-gray-500 ml-1">vs last month</span>
+</div>
+</div>
+</div>
+<div id="financialChart" class="h-64 mb-4"></div>
+<div class="mt-4">
+<h3 class="text-sm font-medium text-gray-700 mb-3">Recent Transactions</h3>
+<div class="space-y-3">
+<div class="flex justify-between items-center">
+<div class="flex items-center">
+<div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-money-dollar-circle-line"></i>
+</div>
+</div>
+<div class="ml-3">
+<p class="text-sm font-medium">Weekly Driver Payout</p>
+<p class="text-xs text-gray-500">May 25, 2025</p>
+</div>
+</div>
+<span class="text-sm font-medium text-red-500">-$4,256.78</span>
+</div>
+<div class="flex justify-between items-center">
+<div class="flex items-center">
+<div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-bank-card-line"></i>
+</div>
+</div>
+<div class="ml-3">
+<p class="text-sm font-medium">Service Payment</p>
+<p class="text-xs text-gray-500">May 24, 2025</p>
+</div>
+</div>
+<span class="text-sm font-medium text-green-500">+$8,742.50</span>
+</div>
+<div class="flex justify-between items-center">
+<div class="flex items-center">
+<div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-600">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-refund-2-line"></i>
+</div>
+</div>
+<div class="ml-3">
+<p class="text-sm font-medium">Performance Bonus</p>
+<p class="text-xs text-gray-500">May 22, 2025</p>
+</div>
+</div>
+<span class="text-sm font-medium text-green-500">+$1,250.00</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+<script id="deliveryChartScript">
+document.addEventListener('DOMContentLoaded', function() {
+const addRouteBtn = document.getElementById('addRouteBtn');
+const assignDriverModal = document.getElementById('assignDriverModal');
+const dateRangeBtn = document.getElementById('dateRangeBtn');
+const dateRangeModal = document.getElementById('dateRangeModal');
+const closeDateRangeModal = document.getElementById('closeDateRangeModal');
+const cancelDateRange = document.getElementById('cancelDateRange');
+const applyDateRange = document.getElementById('applyDateRange');
+const startDate = document.getElementById('startDate');
+const endDate = document.getElementById('endDate');
+const selectedDateRange = document.getElementById('selectedDateRange');
+const toggleDateRangeModal = (show) => {
+dateRangeModal.style.display = show ? 'flex' : 'none';
+if (show) {
+document.body.style.overflow = 'hidden';
+} else {
+document.body.style.overflow = '';
+}
+};
+dateRangeBtn.addEventListener('click', () => toggleDateRangeModal(true));
+closeDateRangeModal.addEventListener('click', () => toggleDateRangeModal(false));
+cancelDateRange.addEventListener('click', () => toggleDateRangeModal(false));
+const formatDate = (date) => {
+return new Date(date).toLocaleDateString('en-US', {
+month: 'short',
+day: 'numeric',
+year: 'numeric'
+});
+};
+document.querySelectorAll('.quick-date').forEach(button => {
+button.addEventListener('click', () => {
+const days = parseInt(button.dataset.days);
+const end = new Date();
+const start = new Date();
+start.setDate(end.getDate() - days);
+startDate.value = start.toISOString().split('T')[0];
+endDate.value = end.toISOString().split('T')[0];
+});
+});
+applyDateRange.addEventListener('click', () => {
+if (!startDate.value || !endDate.value) {
+const errorDialog = document.createElement('div');
+errorDialog.className = 'fixed top-4 right-4 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-lg z-50';
+errorDialog.innerHTML = `
+<div class="flex items-center">
+<div class="w-5 h-5 flex items-center justify-center mr-2">
+<i class="ri-error-warning-line"></i>
+</div>
+<p>Please select both start and end dates</p>
+</div>
+`;
+document.body.appendChild(errorDialog);
+setTimeout(() => errorDialog.remove(), 3000);
+return;
+}
+const start = new Date(startDate.value);
+const end = new Date(endDate.value);
+if (end < start) {
+const errorDialog = document.createElement('div');
+errorDialog.className = 'fixed top-4 right-4 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-lg z-50';
+errorDialog.innerHTML = `
+<div class="flex items-center">
+<div class="w-5 h-5 flex items-center justify-center mr-2">
+<i class="ri-error-warning-line"></i>
+</div>
+<p>End date cannot be earlier than start date</p>
+</div>
+`;
+document.body.appendChild(errorDialog);
+setTimeout(() => errorDialog.remove(), 3000);
+return;
+}
+selectedDateRange.textContent = `${formatDate(start)} - ${formatDate(end)}`;
+toggleDateRangeModal(false);
+const successDialog = document.createElement('div');
+successDialog.className = 'fixed top-4 right-4 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded shadow-lg z-50';
+successDialog.innerHTML = `
+<div class="flex items-center">
+<div class="w-5 h-5 flex items-center justify-center mr-2">
+<i class="ri-checkbox-circle-line"></i>
+</div>
+<p>Date range updated successfully</p>
+</div>
+`;
+document.body.appendChild(successDialog);
+setTimeout(() => successDialog.remove(), 3000);
+});
+window.addEventListener('click', (e) => {
+if (e.target === dateRangeModal) {
+toggleDateRangeModal(false);
+}
+});
+const today = new Date();
+startDate.value = today.toISOString().split('T')[0];
+endDate.value = today.toISOString().split('T')[0];
+const closeAssignModal = document.getElementById('closeAssignModal');
+const cancelAssignBtn = document.getElementById('cancelAssignBtn');
+const assignDriversBtn = document.getElementById('assignDriversBtn');
+const driverSearch = document.getElementById('driverSearch');
+const availableDrivers = [
+{ id: 'jm', name: 'John Miller', rating: 4.9, availability: 'Available', avatar: 'JM', avatarBg: 'bg-blue-100', avatarText: 'text-blue-600' },
+{ id: 'rb', name: 'Rachel Brown', rating: 4.8, availability: 'Available', avatar: 'RB', avatarBg: 'bg-green-100', avatarText: 'text-green-600' },
+{ id: 'ah', name: 'Alex Hernandez', rating: 4.7, availability: 'On Route', avatar: 'AH', avatarBg: 'bg-yellow-100', avatarText: 'text-yellow-600' },
+{ id: 'tw', name: 'Tina Wilson', rating: 4.5, availability: 'Available', avatar: 'TW', avatarBg: 'bg-red-100', avatarText: 'text-red-600' },
+{ id: 'kl', name: 'Kevin Lee', rating: 4.4, availability: 'On Break', avatar: 'KL', avatarBg: 'bg-purple-100', avatarText: 'text-purple-600' }
+];
+let selectedDrivers = new Set();
+const toggleAssignModal = (show, routeId = '') => {
+assignDriverModal.style.display = show ? 'flex' : 'none';
+if (show) {
+document.getElementById('assignRouteId').textContent = routeId;
+renderDriverList();
+document.body.style.overflow = 'hidden';
+} else {
+document.body.style.overflow = '';
+selectedDrivers.clear();
+}
+};
+const renderDriverList = (searchTerm = '') => {
+const driverList = document.getElementById('driverList');
+const filteredDrivers = availableDrivers.filter(driver =>
+driver.name.toLowerCase().includes(searchTerm.toLowerCase())
+);
+driverList.innerHTML = filteredDrivers.map(driver => `
+<div class="flex items-center justify-between bg-gray-50 rounded-lg p-3">
+<label class="flex items-center flex-1 cursor-pointer">
+<div class="custom-checkbox mr-3">
+<input type="checkbox" value="${driver.id}" ${selectedDrivers.has(driver.id) ? 'checked' : ''}>
+<span class="checkmark"></span>
+</div>
+<div class="flex items-center flex-1">
+<div class="w-8 h-8 rounded-full ${driver.avatarBg} flex items-center justify-center ${driver.avatarText} text-sm font-medium">
+${driver.avatar}
+</div>
+<div class="ml-3">
+<p class="text-sm font-medium">${driver.name}</p>
+<div class="flex items-center mt-0.5">
+<div class="flex items-center text-yellow-400">
+<div class="w-3 h-3 flex items-center justify-center mr-1">
+<i class="ri-star-fill"></i>
+</div>
+<span class="text-xs text-gray-600">${driver.rating}</span>
+</div>
+<span class="text-xs text-gray-500 ml-2">${driver.availability}</span>
+</div>
+</div>
+</div>
+</label>
+</div>
+`).join('');
+driverList.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+checkbox.addEventListener('change', function() {
+if (this.checked) {
+selectedDrivers.add(this.value);
+} else {
+selectedDrivers.delete(this.value);
+}
+const totalParcels = document.getElementById('totalParcels').value;
+const parcelsPerDriver = document.getElementById('parcelsPerDriver');
+if (totalParcels && selectedDrivers.size > 0) {
+parcelsPerDriver.value = Math.floor(totalParcels / selectedDrivers.size);
+} else {
+parcelsPerDriver.value = '';
+}
+});
+});
+document.getElementById('totalParcels').addEventListener('input', function() {
+const parcelsPerDriver = document.getElementById('parcelsPerDriver');
+if (this.value && selectedDrivers.size > 0) {
+parcelsPerDriver.value = Math.floor(this.value / selectedDrivers.size);
+} else {
+parcelsPerDriver.value = '';
+}
+});
+};
+document.querySelectorAll('.assign-driver-btn').forEach(btn => {
+btn.addEventListener('click', () => {
+const routeId = btn.dataset.routeId;
+toggleAssignModal(true, routeId);
+});
+});
+closeAssignModal.addEventListener('click', () => toggleAssignModal(false));
+cancelAssignBtn.addEventListener('click', () => toggleAssignModal(false));
+driverSearch.addEventListener('input', (e) => {
+renderDriverList(e.target.value);
+});
+assignDriversBtn.addEventListener('click', () => {
+const totalParcels = document.getElementById('totalParcels').value;
+if (!totalParcels || totalParcels <= 0) {
+const errorDialog = document.createElement('div');
+errorDialog.className = 'fixed top-4 right-4 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-lg z-50';
+errorDialog.innerHTML = `
+<div class="flex items-center">
+<div class="w-5 h-5 flex items-center justify-center mr-2">
+<i class="ri-error-warning-line"></i>
+</div>
+<p>Please enter the number of parcels</p>
+</div>
+`;
+document.body.appendChild(errorDialog);
+setTimeout(() => errorDialog.remove(), 3000);
+return;
+}
+if (selectedDrivers.size === 0) {
+const errorDialog = document.createElement('div');
+errorDialog.className = 'fixed top-4 right-4 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-lg z-50';
+errorDialog.innerHTML = `
+<div class="flex items-center">
+<div class="w-5 h-5 flex items-center justify-center mr-2">
+<i class="ri-error-warning-line"></i>
+</div>
+<p>Please select at least one driver</p>
+</div>
+`;
+document.body.appendChild(errorDialog);
+setTimeout(() => errorDialog.remove(), 3000);
+return;
+}
+const successDialog = document.createElement('div');
+successDialog.className = 'fixed top-4 right-4 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded shadow-lg z-50';
+successDialog.innerHTML = `
+<div class="flex items-center">
+<div class="w-5 h-5 flex items-center justify-center mr-2">
+<i class="ri-checkbox-circle-line"></i>
+</div>
+<p>Drivers assigned successfully</p>
+</div>
+`;
+document.body.appendChild(successDialog);
+setTimeout(() => successDialog.remove(), 3000);
+toggleAssignModal(false);
+});
+const addRouteModal = document.getElementById('addRouteModal');
+const closeRouteModal = document.getElementById('closeRouteModal');
+const cancelRouteBtn = document.getElementById('cancelRouteBtn');
+const createRouteBtn = document.getElementById('createRouteBtn');
+const modalTitle = document.querySelector('#addRouteModal .text-xl');
+const submitBtn = document.getElementById('createRouteBtn');
+document.querySelectorAll('.edit-route-btn').forEach(btn => {
+btn.addEventListener('click', () => {
+const routeData = btn.dataset;
+document.getElementById('routeId').value = routeData.routeId;
+document.getElementById('routeArea').value = routeData.area;
+document.getElementById('parcelCount').value = routeData.parcels;
+document.getElementById('commissionRate').value = routeData.commission;
+const driverSelect = document.getElementById('routeDrivers');
+const selectedDrivers = routeData.drivers.split(',');
+Array.from(driverSelect.options).forEach(option => {
+option.selected = selectedDrivers.includes(option.value);
+});
+document.getElementById('routeStatus').value = routeData.status;
+modalTitle.textContent = 'Edit Route';
+submitBtn.textContent = 'Update Route';
+toggleModal(true);
+const originalSubmitHandler = submitBtn.onclick;
+submitBtn.onclick = () => {
+const successDialog = document.createElement('div');
+successDialog.className = 'fixed top-4 right-4 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded shadow-lg z-50';
+successDialog.innerHTML = `
+<div class="flex items-center">
+<div class="w-5 h-5 flex items-center justify-center mr-2">
+<i class="ri-checkbox-circle-line"></i>
+</div>
+<p>Route updated successfully</p>
+</div>
+`;
+document.body.appendChild(successDialog);
+setTimeout(() => successDialog.remove(), 3000);
+toggleModal(false);
+submitBtn.onclick = originalSubmitHandler;
+modalTitle.textContent = 'Create New Route';
+submitBtn.textContent = 'Create Route';
+};
+});
+});
+const toggleModal = (show) => {
+addRouteModal.style.display = show ? 'flex' : 'none';
+if (show) {
+document.body.style.overflow = 'hidden';
+} else {
+document.body.style.overflow = '';
+}
+};
+addRouteBtn.addEventListener('click', () => toggleModal(true));
+closeRouteModal.addEventListener('click', () => toggleModal(false));
+cancelRouteBtn.addEventListener('click', () => toggleModal(false));
+createRouteBtn.addEventListener('click', () => {
+const routeId = document.getElementById('routeId').value;
+const routeArea = document.getElementById('routeArea').value;
+const parcelCount = document.getElementById('parcelCount').value;
+const commissionRate = document.getElementById('commissionRate').value;
+const routeDrivers = Array.from(document.getElementById('routeDrivers').selectedOptions).map(option => option.value);
+const routeStatus = document.getElementById('routeStatus').value;
+if (!routeArea || !parcelCount || !commissionRate) {
+const errorDialog = document.createElement('div');
+errorDialog.className = 'fixed top-4 right-4 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-lg z-50';
+errorDialog.innerHTML = `
+<div class="flex items-center">
+<div class="w-5 h-5 flex items-center justify-center mr-2">
+<i class="ri-error-warning-line"></i>
+</div>
+<p>Please fill in all required fields</p>
+</div>
+`;
+document.body.appendChild(errorDialog);
+setTimeout(() => errorDialog.remove(), 3000);
+return;
+}
+const successDialog = document.createElement('div');
+successDialog.className = 'fixed top-4 right-4 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded shadow-lg z-50';
+successDialog.innerHTML = `
+<div class="flex items-center">
+<div class="w-5 h-5 flex items-center justify-center mr-2">
+<i class="ri-checkbox-circle-line"></i>
+</div>
+<p>Route created successfully</p>
+</div>
+`;
+document.body.appendChild(successDialog);
+setTimeout(() => successDialog.remove(), 3000);
+toggleModal(false);
+});
+window.addEventListener('click', (e) => {
+if (e.target === addRouteModal) {
+toggleModal(false);
+}
+});
+const deliveryChart = echarts.init(document.getElementById('deliveryChart'));
+const weekBtn = document.getElementById('weekBtn');
+const monthBtn = document.getElementById('monthBtn');
+const yearBtn = document.getElementById('yearBtn');
+let data = {
+week: {
+xAxis: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+deliveries: [120, 132, 145, 135, 142, 138, 128],
+onTimeRate: [96.5, 97.2, 95.8, 96.9, 97.5, 96.2, 97.8]
+},
+month: {
+xAxis: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+deliveries: [850, 920, 880, 940],
+onTimeRate: [96.8, 97.1, 96.5, 97.4]
+},
+year: {
+xAxis: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+deliveries: [3200, 3400, 3600, 3500, 3800, 3700, 3900, 3850, 3950, 4000, 4100, 4200],
+onTimeRate: [96.2, 96.5, 96.8, 97.0, 97.2, 96.9, 97.4, 97.1, 97.5, 97.3, 97.6, 97.8]
+}
+};
+let currentView = 'month';
+const updateChartData = (view) => {
+option.xAxis.data = data[view].xAxis;
+option.series[0].data = data[view].deliveries;
+option.series[1].data = data[view].onTimeRate;
+deliveryChart.setOption(option);
+};
+deliveryChart.on('click', function(params) {
+const dialogHtml = `
+<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" id="detailDialog">
+<div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[80vh] overflow-hidden">
+<div class="p-5 border-b flex justify-between items-center">
+<h3 class="text-lg font-semibold">Detailed Statistics - ${params.name}</h3>
+<button class="text-gray-500 hover:text-gray-700" onclick="document.getElementById('detailDialog').remove()">
+<i class="ri-close-line text-xl"></i>
+</button>
+</div>
+<div class="p-5 overflow-y-auto">
+<div class="mb-6">
+<h4 class="text-sm font-medium text-gray-700 mb-3">Performance Summary</h4>
+<div class="grid grid-cols-3 gap-4">
+<div class="bg-gray-50 rounded-lg p-3">
+<p class="text-sm text-gray-500">Total Deliveries</p>
+<p class="text-xl font-bold mt-1">${params.value}</p>
+</div>
+<div class="bg-gray-50 rounded-lg p-3">
+<p class="text-sm text-gray-500">On-Time Rate</p>
+<p class="text-xl font-bold mt-1">${data[currentView].onTimeRate[params.dataIndex]}%</p>
+</div>
+<div class="bg-gray-50 rounded-lg p-3">
+<p class="text-sm text-gray-500">Efficiency Score</p>
+<p class="text-xl font-bold mt-1">${(Math.random() * 2 + 8).toFixed(1)}</p>
+</div>
+</div>
+</div>
+<div class="mb-6">
+<h4 class="text-sm font-medium text-gray-700 mb-3">Top Performing Drivers</h4>
+<div class="space-y-3">
+${generateTopDriversHtml()}
+</div>
+</div>
+<div>
+<h4 class="text-sm font-medium text-gray-700 mb-3">Export Options</h4>
+<div class="flex space-x-3">
+<button onclick="exportData('csv')" class="flex items-center px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium">
+<i class="ri-file-excel-line mr-2"></i> Export CSV
+</button>
+<button onclick="exportData('pdf')" class="flex items-center px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium">
+<i class="ri-file-pdf-line mr-2"></i> Export PDF
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+`;
+document.body.insertAdjacentHTML('beforeend', dialogHtml);
+});
+function generateTopDriversHtml() {
+const drivers = [
+{ name: 'John Miller', deliveries: Math.floor(Math.random() * 20 + 30), rating: (Math.random() * 0.5 + 4.5).toFixed(1) },
+{ name: 'Rachel Brown', deliveries: Math.floor(Math.random() * 20 + 30), rating: (Math.random() * 0.5 + 4.5).toFixed(1) },
+{ name: 'Alex Hernandez', deliveries: Math.floor(Math.random() * 20 + 30), rating: (Math.random() * 0.5 + 4.5).toFixed(1) }
+];
+return drivers.map(driver => `
+<div class="flex items-center justify-between bg-gray-50 rounded-lg p-3">
+<div class="flex items-center">
+<div class="w-8 h-8 rounded-full bg-primary bg-opacity-10 flex items-center justify-center text-primary text-sm font-medium">
+${driver.name.split(' ').map(n => n[0]).join('')}
+</div>
+<div class="ml-3">
+<p class="text-sm font-medium">${driver.name}</p>
+<p class="text-xs text-gray-500">${driver.deliveries} deliveries</p>
+</div>
+</div>
+<div class="flex items-center">
+<div class="flex items-center mr-3">
+<i class="ri-star-fill text-yellow-400 mr-1"></i>
+<span class="text-sm font-medium">${driver.rating}</span>
+</div>
+</div>
+</div>
+`).join('');
+}
+window.exportData = function(type) {
+const data = {
+date: new Date().toLocaleDateString(),
+deliveries: option.series[0].data,
+onTimeRate: option.series[1].data
+};
+if (type === 'csv') {
+const csv = `Date,Deliveries,On-Time Rate\n${data.date},${data.deliveries},${data.onTimeRate}`;
+const blob = new Blob([csv], { type: 'text/csv' });
+const url = window.URL.createObjectURL(blob);
+const a = document.createElement('a');
+a.href = url;
+a.download = 'delivery-performance.csv';
+a.click();
+} else if (type === 'pdf') {
+alert('PDF export functionality would be implemented here');
+}
+};
+const switchView = (view) => {
+currentView = view;
+weekBtn.className = view === 'week' ?
+'bg-primary text-white px-3 py-1 text-sm font-medium rounded-lg' :
+'bg-gray-100 hover:bg-gray-200 px-3 py-1 text-sm font-medium rounded-lg text-gray-600';
+monthBtn.className = view === 'month' ?
+'bg-primary text-white px-3 py-1 text-sm font-medium rounded-lg' :
+'bg-gray-100 hover:bg-gray-200 px-3 py-1 text-sm font-medium rounded-lg text-gray-600';
+yearBtn.className = view === 'year' ?
+'bg-primary text-white px-3 py-1 text-sm font-medium rounded-lg' :
+'bg-gray-100 hover:bg-gray-200 px-3 py-1 text-sm font-medium rounded-lg text-gray-600';
+updateChartData(view);
+deliveryChart.setOption(option);
+};
+weekBtn.addEventListener('click', () => switchView('week'));
+monthBtn.addEventListener('click', () => switchView('month'));
+yearBtn.addEventListener('click', () => switchView('year'));
+const option = {
+animation: false,
+tooltip: {
+trigger: 'axis',
+backgroundColor: 'rgba(255, 255, 255, 0.95)',
+borderColor: '#e5e7eb',
+padding: [8, 12],
+textStyle: {
+color: '#1f2937',
+fontSize: 12
+},
+formatter: function(params) {
+const date = params[0].axisValue;
+const deliveries = params[0].value;
+const onTimeRate = params[1].value;
+const onTimeCount = Math.round(deliveries * onTimeRate / 100);
+return `<div class="font-medium">${date}</div>
+<div class="flex justify-between mt-2">
+<span class="text-gray-600">Total Deliveries:</span>
+<span class="font-medium">${deliveries}</span>
+</div>
+<div class="flex justify-between mt-1">
+<span class="text-gray-600">On-Time Rate:</span>
+<span class="font-medium">${onTimeRate}%</span>
+</div>
+<div class="flex justify-between mt-1">
+<span class="text-gray-600">On-Time Count:</span>
+<span class="font-medium">${onTimeCount}</span>
+</div>`;
+}
+},
+dataZoom: [
+{
+type: 'inside',
+start: 0,
+end: 100,
+zoomLock: false
+},
+{
+type: 'slider',
+show: true,
+bottom: 50,
+start: 0,
+end: 100,
+height: 20,
+borderColor: '#e5e7eb',
+fillerColor: 'rgba(79, 70, 229, 0.1)',
+handleStyle: {
+color: '#4f46e5'
+},
+textStyle: {
+color: '#1f2937'
+},
+brushSelect: false
+}
+],
+toolbox: {
+show: true,
+right: 20,
+top: 0,
+feature: {
+dataZoom: {
+yAxisIndex: 'none',
+icon: {
+zoom: 'path://M0,0 L1,1',
+back: 'path://M0,1 L1,0'
+}
+},
+dataView: {
+show: true,
+readOnly: true,
+title: 'Data View',
+lang: ['Data View', 'Close', 'Export']
+},
+saveAsImage: {
+show: true,
+title: 'Save as Image',
+type: 'png',
+name: 'delivery-performance'
+},
+restore: {
+show: true,
+title: 'Reset'
+}
+}
+},
+legend: {
+data: ['Deliveries', 'On-Time Rate'],
+bottom: 60,
+textStyle: {
+color: '#1f2937'
+}
+},
+grid: {
+left: '3%',
+right: '4%',
+bottom: '25%',
+top: '15%',
+containLabel: true
+},
+xAxis: {
+type: 'category',
+boundaryGap: false,
+data: data.month.xAxis,
+axisLine: {
+lineStyle: {
+color: '#e5e7eb'
+}
+},
+axisLabel: {
+color: '#1f2937'
+}
+},
+yAxis: [
+{
+type: 'value',
+name: 'Deliveries',
+position: 'left',
+axisLine: {
+lineStyle: {
+color: '#e5e7eb'
+}
+},
+axisLabel: {
+color: '#1f2937',
+formatter: '{value}'
+},
+splitLine: {
+lineStyle: {
+color: '#f3f4f6'
+}
+}
+},
+{
+type: 'value',
+name: 'On-Time %',
+min: 80,
+max: 100,
+position: 'right',
+axisLine: {
+lineStyle: {
+color: '#e5e7eb'
+}
+},
+axisLabel: {
+color: '#1f2937',
+formatter: '{value}%'
+},
+splitLine: {
+show: false
+}
+}
+],
+series: [
+{
+name: 'Deliveries',
+type: 'line',
+smooth: true,
+data: data.deliveries,
+itemStyle: {
+color: 'rgba(87, 181, 231, 1)'
+},
+lineStyle: {
+width: 3
+},
+symbolSize: 0,
+areaStyle: {
+color: {
+type: 'linear',
+x: 0,
+y: 0,
+x2: 0,
+y2: 1,
+colorStops: [
+{
+offset: 0,
+color: 'rgba(87, 181, 231, 0.2)'
+},
+{
+offset: 1,
+color: 'rgba(87, 181, 231, 0.05)'
+}
+]
+}
+}
+},
+{
+name: 'On-Time Rate',
+type: 'line',
+yAxisIndex: 1,
+smooth: true,
+data: data.onTimeRate,
+itemStyle: {
+color: 'rgba(141, 211, 199, 1)'
+},
+lineStyle: {
+width: 3
+},
+symbolSize: 0
+}
+]
+};
+deliveryChart.setOption(option);
+window.addEventListener('resize', function() {
+deliveryChart.resize();
+});
+});
+</script>
+<script id="financialChartScript">
+document.addEventListener('DOMContentLoaded', function() {
+const financialChart = echarts.init(document.getElementById('financialChart'));
+const option = {
+animation: false,
+tooltip: {
+trigger: 'axis',
+backgroundColor: 'rgba(255, 255, 255, 0.95)',
+borderColor: '#e5e7eb',
+padding: [8, 12],
+textStyle: {
+color: '#1f2937',
+fontSize: 12
+},
+formatter: function(params) {
+const date = params[0].axisValue;
+const deliveries = params[0].value;
+const onTimeRate = params[1].value;
+const onTimeCount = Math.round(deliveries * onTimeRate / 100);
+return `<div class="font-medium">${date}</div>
+<div class="flex justify-between mt-2">
+<span class="text-gray-600">Total Deliveries:</span>
+<span class="font-medium">${deliveries}</span>
+</div>
+<div class="flex justify-between mt-1">
+<span class="text-gray-600">On-Time Rate:</span>
+<span class="font-medium">${onTimeRate}%</span>
+</div>
+<div class="flex justify-between mt-1">
+<span class="text-gray-600">On-Time Count:</span>
+<span class="font-medium">${onTimeCount}</span>
+</div>`;
+}
+},
+dataZoom: [
+{
+type: 'inside',
+start: 0,
+end: 100,
+zoomLock: false
+},
+{
+type: 'slider',
+show: true,
+bottom: 50,
+start: 0,
+end: 100,
+height: 20,
+borderColor: '#e5e7eb',
+fillerColor: 'rgba(79, 70, 229, 0.1)',
+handleStyle: {
+color: '#4f46e5'
+},
+textStyle: {
+color: '#1f2937'
+},
+brushSelect: false
+}
+],
+toolbox: {
+show: true,
+right: 20,
+top: 0,
+feature: {
+dataZoom: {
+yAxisIndex: 'none',
+icon: {
+zoom: 'path://M0,0 L1,1',
+back: 'path://M0,1 L1,0'
+}
+},
+dataView: {
+show: true,
+readOnly: true,
+title: 'Data View',
+lang: ['Data View', 'Close', 'Export']
+},
+saveAsImage: {
+show: true,
+title: 'Save as Image',
+type: 'png',
+name: 'delivery-performance'
+},
+restore: {
+show: true,
+title: 'Reset'
+}
+}
+},
+legend: {
+data: ['Revenue', 'Commissions'],
+top: 0,
+textStyle: {
+color: '#1f2937'
+}
+},
+grid: {
+left: '3%',
+right: '4%',
+bottom: '3%',
+top: '15%',
+containLabel: true
+},
+xAxis: {
+type: 'category',
+data: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+axisLine: {
+lineStyle: {
+color: '#e5e7eb'
+}
+},
+axisLabel: {
+color: '#1f2937'
+}
+},
+yAxis: {
+type: 'value',
+axisLine: {
+lineStyle: {
+color: '#e5e7eb'
+}
+},
+axisLabel: {
+color: '#1f2937',
+formatter: '${value}k'
+},
+splitLine: {
+lineStyle: {
+color: '#f3f4f6'
+}
+}
+},
+series: [
+{
+name: 'Revenue',
+type: 'bar',
+data: [18.2, 20.5, 23.4, 21.8, 24.9],
+itemStyle: {
+color: 'rgba(87, 181, 231, 1)',
+borderRadius: [4, 4, 0, 0]
+},
+barWidth: '40%'
+},
+{
+name: 'Commissions',
+type: 'bar',
+data: [10.4, 12.2, 13.8, 12.5, 14.3],
+itemStyle: {
+color: 'rgba(251, 191, 114, 1)',
+borderRadius: [4, 4, 0, 0]
+},
+barWidth: '40%'
+}
+]
+};
+financialChart.setOption(option);
+window.addEventListener('resize', function() {
+financialChart.resize();
+});
+});
+</script>
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+.custom-scrollbar::-webkit-scrollbar {
+width: 6px;
+height: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+background: #f1f1f1;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+background: #d1d5db;
+border-radius: 3px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+background: #9ca3af;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+-webkit-appearance: none;
+margin: 0;
+}
+.custom-checkbox {
+position: relative;
+width: 18px;
+height: 18px;
+cursor: pointer;
+}
+.custom-checkbox input {
+position: absolute;
+opacity: 0;
+cursor: pointer;
+}
+.checkmark {
+position: absolute;
+top: 0;
+left: 0;
+height: 18px;
+width: 18px;
+background-color: #fff;
+border: 1.5px solid #d1d5db;
+border-radius: 4px;
+}
+.custom-checkbox input:checked ~ .checkmark {
+background-color: #4f46e5;
+border-color: #4f46e5;
+}
+.checkmark:after {
+content: "";
+position: absolute;
+display: none;
+}
+.custom-checkbox input:checked ~ .checkmark:after {
+display: block;
+}
+.custom-checkbox .checkmark:after {
+left: 6px;
+top: 2px;
+width: 5px;
+height: 10px;
+border: solid white;
+border-width: 0 2px 2px 0;
+transform: rotate(45deg);
+}
+.custom-switch {
+position: relative;
+display: inline-block;
+width: 44px;
+height: 24px;
+}
+.custom-switch input {
+opacity: 0;
+width: 0;
+height: 0;
+}
+.switch-slider {
+position: absolute;
+cursor: pointer;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: #e5e7eb;
+transition: .4s;
+border-radius: 34px;
+}
+.switch-slider:before {
+position: absolute;
+content: "";
+height: 18px;
+width: 18px;
+left: 3px;
+bottom: 3px;
+background-color: white;
+transition: .4s;
+border-radius: 50%;
+}
+input:checked + .switch-slider {
+background-color: #4f46e5;
+}
+input:checked + .switch-slider:before {
+transform: translateX(20px);
+}
+.custom-range {
+-webkit-appearance: none;
+width: 100%;
+height: 6px;
+border-radius: 5px;
+background: #e5e7eb;
+outline: none;
+}
+.custom-range::-webkit-slider-thumb {
+-webkit-appearance: none;
+appearance: none;
+width: 18px;
+height: 18px;
+border-radius: 50%;
+background: #4f46e5;
+cursor: pointer;
+}
+.custom-range::-moz-range-thumb {
+width: 18px;
+height: 18px;
+border-radius: 50%;
+background: #4f46e5;
+cursor: pointer;
+border: none;
+}
+.custom-radio {
+position: relative;
+padding-left: 28px;
+cursor: pointer;
+user-select: none;
+}
+.custom-radio input {
+position: absolute;
+opacity: 0;
+cursor: pointer;
+}
+.radio-mark {
+position: absolute;
+top: 0;
+left: 0;
+height: 20px;
+width: 20px;
+background-color: #fff;
+border: 1.5px solid #d1d5db;
+border-radius: 50%;
+}
+.custom-radio input:checked ~ .radio-mark {
+border-color: #4f46e5;
+}
+.radio-mark:after {
+content: "";
+position: absolute;
+display: none;
+top: 4px;
+left: 4px;
+width: 10px;
+height: 10px;
+border-radius: 50%;
+background: #4f46e5;
+}
+.custom-radio input:checked ~ .radio-mark:after {
+display: block;
+}
+.dark {
+color-scheme: dark;
+}
+.dark body {
+background-color: #111827;
+color: #f3f4f6;
+}
+.dark .bg-white {
+background-color: #1f2937;
+}
+.dark .bg-gray-50 {
+background-color: #374151;
+}
+.dark .text-gray-500 {
+color: #9ca3af;
+}
+.dark .text-gray-600 {
+color: #d1d5db;
+}
+.dark .text-gray-700 {
+color: #e5e7eb;
+}
+.dark .text-gray-800 {
+color: #f3f4f6;
+}
+.dark .border-gray-300 {
+border-color: #4b5563;
+}
+.dark .border {
+border-color: #374151;
+}
+.dark .border-b {
+border-color: #374151;
+}
+.dark .border-t {
+border-color: #374151;
+}
+.dark .shadow {
+box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+}
+.dark .shadow-lg {
+box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+}
+.dark .hover\:bg-gray-100:hover {
+background-color: #374151;
+}
+.dark .bg-gray-100 {
+background-color: #374151;
+}
+.dark .hover\:bg-gray-200:hover {
+background-color: #4b5563;
+}
+.dark input,
+.dark select {
+background-color: #374151;
+color: #f3f4f6;
+border-color: #4b5563;
+}
+.dark input::placeholder {
+color: #9ca3af;
+}
+.dark .custom-scrollbar::-webkit-scrollbar-track {
+background: #374151;
+}
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+background: #4b5563;
+}
+.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+background: #6b7280;
+}
+</style>
+<script id="themeScript">
+document.addEventListener('DOMContentLoaded', function() {
+const themeToggle = document.getElementById('themeToggle');
+const html = document.documentElement;
+const setTheme = (isDark) => {
+if (isDark) {
+html.classList.add('dark');
+localStorage.setItem('theme', 'dark');
+} else {
+html.classList.remove('dark');
+localStorage.setItem('theme', 'light');
+}
+};
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme) {
+themeToggle.checked = savedTheme === 'dark';
+setTheme(savedTheme === 'dark');
+}
+themeToggle.addEventListener('change', function() {
+setTheme(this.checked);
+});
+});
+</script>
+</body>
+</html>
