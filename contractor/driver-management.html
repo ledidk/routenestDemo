@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ParcelPilot - Team Management</title>
+<title>Driver Management</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
@@ -239,8 +239,14 @@ color: rgb(156, 163, 175);
 </head>
 <body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100 min-h-screen">
 <div class="flex h-screen overflow-hidden">
+<!-- Mobile Menu Button -->
+<button id="mobileMenuBtn" class="lg:hidden fixed top-4 left-4 z-30 p-2 rounded-lg bg-white shadow-lg text-gray-500 hover:text-gray-700">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-menu-line"></i>
+</div>
+</button>
 <!-- Sidebar -->
-<div class="w-64 bg-white dark:bg-gray-800 shadow-lg z-20 flex flex-col">
+<div id="sidebar" class="fixed inset-y-0 left-0 transform -translate-x-full lg:relative lg:translate-x-0 w-64 bg-white dark:bg-gray-800 shadow-lg z-20 flex flex-col transition-transform duration-300 ease-in-out">
 <div class="p-4 border-b flex items-center">
 <span class="text-2xl font-['Pacifico'] text-primary">logo</span>
 <span class="ml-2 text-lg font-semibold">ParcelPilot</span>
@@ -249,37 +255,31 @@ color: rgb(156, 163, 175);
 <nav class="p-4">
 <div class="mb-6">
 <p class="text-xs font-medium text-gray-400 uppercase mb-4 pl-2">Main</p>
-<a href="dashboard.html" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
+<a href="#" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
 <div class="w-5 h-5 flex items-center justify-center mr-3">
 <i class="ri-dashboard-line"></i>
 </div>
 <span>Dashboard</span>
 </a>
-<a href="route-management.html" data-readdy="true" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
+<a href="https://readdy.ai/home/a4cb12ef-b4e2-415e-889e-29c37723d4f1/e215091a-de30-4f9f-b74c-68f1bd624d39" data-readdy="true" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
 <div class="w-5 h-5 flex items-center justify-center mr-3">
 <i class="ri-route-line"></i>
 </div>
 <span>Route Management</span>
 </a>
-<a href="driver-management.html" data-readdy="true" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg bg-primary bg-opacity-10 text-primary">
-<div class="w-5 h-5 flex items-center justify-center mr-3">
-<i class="ri-team-line"></i>
-</div>
-<span>Driver Management</span>
-</a>
-<a href="team-management-dashboard.html" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg bg-primary bg-opacity-10 text-primary">
+<a href="#" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg bg-primary bg-opacity-10 text-primary">
 <div class="w-5 h-5 flex items-center justify-center mr-3">
 <i class="ri-team-line"></i>
 </div>
 <span>Team Management</span>
 </a>
-<a href="financial-report.html" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
+<a href="#" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
 <div class="w-5 h-5 flex items-center justify-center mr-3">
 <i class="ri-money-dollar-circle-line"></i>
 </div>
 <span>Financial Reports</span>
 </a>
-<a href="financial-report.html" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
+<a href="#" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
 <div class="w-5 h-5 flex items-center justify-center mr-3">
 <i class="ri-line-chart-line"></i>
 </div>
@@ -332,7 +332,7 @@ color: rgb(156, 163, 175);
 <div class="flex-1 flex flex-col overflow-hidden">
 <!-- Top Navigation -->
 <header class="bg-white dark:bg-gray-800 shadow-sm z-10">
-<div class="flex items-center justify-between px-6 py-3">
+<div class="flex items-center justify-between px-4 lg:px-6 py-3">
 <div class="flex items-center">
 <a href="https://readdy.ai/home/a4cb12ef-b4e2-415e-889e-29c37723d4f1/e80499b6-2a92-4e39-befa-9e0714cfd966" data-readdy="true" class="mr-4 text-gray-500 hover:text-gray-700">
 <div class="w-5 h-5 flex items-center justify-center">
@@ -342,9 +342,9 @@ color: rgb(156, 163, 175);
 <h1 class="text-xl font-semibold">Team Management</h1>
 <span class="ml-4 text-sm text-gray-500">Thursday, May 29, 2025</span>
 </div>
-<div class="flex items-center space-x-4">
-<div class="relative">
-<input type="text" placeholder="Search team members..." class="pl-9 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary w-64">
+<div class="flex items-center space-x-2 lg:space-x-4">
+<div class="relative hidden md:block">
+<input type="text" placeholder="Search team members..." class="pl-9 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary w-48 lg:w-64">
 <div class="absolute left-3 top-2.5 text-gray-400 w-4 h-4 flex items-center justify-center">
 <i class="ri-search-line"></i>
 </div>
@@ -361,17 +361,182 @@ color: rgb(156, 163, 175);
 <i class="ri-moon-line"></i>
 </div>
 </div>
-<button class="relative p-2 text-gray-500 hover:text-gray-700 focus:outline-none">
+<div class="relative">
+<button id="notificationBtn" class="relative p-2 text-gray-500 hover:text-gray-700 focus:outline-none">
 <div class="w-5 h-5 flex items-center justify-center">
 <i class="ri-notification-3-line"></i>
 </div>
 <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
 </button>
-<button class="p-2 text-gray-500 hover:text-gray-700 focus:outline-none">
+<div id="notificationPanel" class="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg overflow-hidden hidden">
+<div class="p-4 border-b">
+<div class="flex justify-between items-center">
+<h3 class="text-sm font-semibold">Notifications</h3>
+<button id="markAllReadBtn" class="text-xs text-primary hover:text-primary/80">Mark all as read</button>
+</div>
+</div>
+<div class="max-h-96 overflow-y-auto">
+<div class="divide-y">
+<!-- High Priority -->
+<div class="p-4 bg-red-50 hover:bg-red-50/80 cursor-pointer">
+<div class="flex items-start">
+<div class="w-2 h-2 mt-2 bg-red-500 rounded-full"></div>
+<div class="ml-3 flex-1">
+<p class="text-sm text-gray-800">Driver Alex Hernandez has reported an emergency delay</p>
+<p class="text-xs text-gray-500 mt-1">2 minutes ago</p>
+</div>
+<button class="text-gray-400 hover:text-gray-600">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-check-line"></i>
+</div>
+</button>
+</div>
+</div>
+<!-- Normal Priority -->
+<div class="p-4 hover:bg-gray-50">
+<div class="flex items-start">
+<div class="w-2 h-2 mt-2 bg-primary rounded-full"></div>
+<div class="ml-3 flex-1">
+<p class="text-sm text-gray-800">Route RT-2594 has been assigned to John Miller</p>
+<p class="text-xs text-gray-500 mt-1">15 minutes ago</p>
+</div>
+<button class="text-gray-400 hover:text-gray-600">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-check-line"></i>
+</div>
+</button>
+</div>
+</div>
+<div class="p-4 hover:bg-gray-50">
+<div class="flex items-start">
+<div class="w-2 h-2 mt-2 bg-primary rounded-full"></div>
+<div class="ml-3 flex-1">
+<p class="text-sm text-gray-800">Rachel Brown has completed all deliveries for RT-2590</p>
+<p class="text-xs text-gray-500 mt-1">30 minutes ago</p>
+</div>
+<button class="text-gray-400 hover:text-gray-600">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-check-line"></i>
+</div>
+</button>
+</div>
+</div>
+<!-- System Alert -->
+<div class="p-4 bg-yellow-50 hover:bg-yellow-50/80">
+<div class="flex items-start">
+<div class="w-2 h-2 mt-2 bg-yellow-500 rounded-full"></div>
+<div class="ml-3 flex-1">
+<p class="text-sm text-gray-800">System maintenance scheduled for tonight at 2 AM</p>
+<p class="text-xs text-gray-500 mt-1">1 hour ago</p>
+</div>
+<button class="text-gray-400 hover:text-gray-600">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-check-line"></i>
+</div>
+</button>
+</div>
+</div>
+<!-- Read Notifications -->
+<div class="p-4 text-gray-500 hover:bg-gray-50">
+<div class="flex items-start">
+<div class="ml-5 flex-1">
+<p class="text-sm">Kevin Lee has changed status to "On Break"</p>
+<p class="text-xs mt-1">2 hours ago</p>
+</div>
+</div>
+</div>
+<div class="p-4 text-gray-500 hover:bg-gray-50">
+<div class="flex items-start">
+<div class="ml-5 flex-1">
+<p class="text-sm">New driver application received</p>
+<p class="text-xs mt-1">3 hours ago</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-3 border-t bg-gray-50 text-center">
+<a href="#" class="text-sm text-primary hover:text-primary/80">View All Notifications</a>
+</div>
+</div>
+</div>
+<button id="messageBtn" class="p-2 text-gray-500 hover:text-gray-700 focus:outline-none relative">
 <div class="w-5 h-5 flex items-center justify-center">
 <i class="ri-message-2-line"></i>
 </div>
+<span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
 </button>
+<div id="messagePanel" class="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg overflow-hidden hidden">
+<div class="p-4 border-b">
+<div class="flex justify-between items-center mb-4">
+<h3 class="text-sm font-semibold">Messages</h3>
+<button id="newMessageBtn" class="text-xs text-primary hover:text-primary/80">New Message</button>
+</div>
+<div class="relative">
+<input type="text" placeholder="Search contacts..." class="w-full pl-9 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+<div class="absolute left-3 top-2.5 text-gray-400 w-4 h-4 flex items-center justify-center">
+<i class="ri-search-line"></i>
+</div>
+</div>
+</div>
+<div class="max-h-96 overflow-y-auto">
+<div class="divide-y">
+<div class="p-4 hover:bg-gray-50 cursor-pointer">
+<div class="flex items-start">
+<div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-xs font-medium">JM</div>
+<div class="ml-3 flex-1">
+<div class="flex justify-between items-start">
+<p class="text-sm font-medium">John Miller</p>
+<span class="text-xs text-gray-500">2m ago</span>
+</div>
+<p class="text-xs text-gray-500 mt-1 line-clamp-1">Route RT-2594 completed successfully</p>
+</div>
+</div>
+</div>
+<div class="p-4 hover:bg-gray-50 cursor-pointer">
+<div class="flex items-start">
+<div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-xs font-medium">RB</div>
+<div class="ml-3 flex-1">
+<div class="flex justify-between items-start">
+<p class="text-sm font-medium">Rachel Brown</p>
+<span class="text-xs text-gray-500">15m ago</span>
+</div>
+<p class="text-xs text-gray-500 mt-1 line-clamp-1">Will be 10 minutes late for pickup</p>
+</div>
+<div class="w-2 h-2 bg-primary rounded-full mt-2"></div>
+</div>
+</div>
+<div class="p-4 hover:bg-gray-50 cursor-pointer">
+<div class="flex items-start">
+<div class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600 text-xs font-medium">AH</div>
+<div class="ml-3 flex-1">
+<div class="flex justify-between items-start">
+<p class="text-sm font-medium">Alex Hernandez</p>
+<span class="text-xs text-gray-500">1h ago</span>
+</div>
+<p class="text-xs text-gray-500 mt-1 line-clamp-1">Vehicle maintenance completed</p>
+</div>
+<div class="w-2 h-2 bg-primary rounded-full mt-2"></div>
+</div>
+</div>
+<div class="p-4 hover:bg-gray-50 cursor-pointer">
+<div class="flex items-start">
+<div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-600 text-xs font-medium">TW</div>
+<div class="ml-3 flex-1">
+<div class="flex justify-between items-start">
+<p class="text-sm font-medium">Tina Wilson</p>
+<span class="text-xs text-gray-500">2h ago</span>
+</div>
+<p class="text-xs text-gray-500 mt-1 line-clamp-1">Thanks for the schedule update</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-3 border-t bg-gray-50 text-center">
+<a href="#" class="text-sm text-primary hover:text-primary/80">View All Messages</a>
+</div>
+</div>
 <button class="p-2 text-gray-500 hover:text-gray-700 focus:outline-none">
 <div class="w-5 h-5 flex items-center justify-center">
 <i class="ri-settings-4-line"></i>
@@ -381,9 +546,9 @@ color: rgb(156, 163, 175);
 </div>
 </header>
 <!-- Main Content Area -->
-<main class="flex-1 overflow-y-auto custom-scrollbar bg-gray-50 p-6">
+<main class="flex-1 overflow-y-auto custom-scrollbar bg-gray-50 p-4 lg:p-6">
 <!-- Filter and Action Bar -->
-<div class="flex flex-wrap justify-between items-center mb-6 gap-4">
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
 <div class="flex flex-wrap items-center gap-3">
 <div class="relative">
 <input type="text" placeholder="Search by name or ID..." class="pl-9 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary w-64">
@@ -654,16 +819,94 @@ Urgent
 </div>
 </div>
 </div>
-<button class="flex items-center px-4 py-2 text-sm border border-gray-300 rounded-lg bg-white hover:bg-gray-50 whitespace-nowrap">
+<div class="relative">
+<button id="exportBtn" class="flex items-center px-4 py-2 text-sm border border-gray-300 rounded-lg bg-white hover:bg-gray-50 whitespace-nowrap">
 <div class="w-4 h-4 flex items-center justify-center mr-2">
 <i class="ri-download-line"></i>
 </div>
 Export
 </button>
+<div id="exportDropdown" class="absolute right-0 mt-1 w-64 bg-white rounded-lg shadow-lg z-10 hidden">
+<div class="p-3 border-b">
+<h3 class="text-sm font-medium text-gray-700">Export Options</h3>
+</div>
+<div class="p-3">
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-2">Export Format</label>
+<div class="space-y-2">
+<label class="flex items-center">
+<div class="custom-radio">
+<input type="radio" name="exportFormat" value="csv" checked>
+<span class="radio-mark"></span>
+</div>
+<span class="ml-2 text-sm">Export as CSV</span>
+</label>
+<label class="flex items-center">
+<div class="custom-radio">
+<input type="radio" name="exportFormat" value="excel">
+<span class="radio-mark"></span>
+</div>
+<span class="ml-2 text-sm">Export as Excel</span>
+</label>
+<label class="flex items-center">
+<div class="custom-radio">
+<input type="radio" name="exportFormat" value="pdf">
+<span class="radio-mark"></span>
+</div>
+<span class="ml-2 text-sm">Export as PDF</span>
+</label>
+<label class="flex items-center">
+<div class="custom-radio">
+<input type="radio" name="exportFormat" value="print">
+<span class="radio-mark"></span>
+</div>
+<span class="ml-2 text-sm">Print</span>
+</label>
+</div>
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-2">Data Selection</label>
+<div class="space-y-2">
+<label class="flex items-center">
+<div class="custom-radio">
+<input type="radio" name="exportData" value="all" checked>
+<span class="radio-mark"></span>
+</div>
+<span class="ml-2 text-sm">All Drivers</span>
+</label>
+<label class="flex items-center">
+<div class="custom-radio">
+<input type="radio" name="exportData" value="selected">
+<span class="radio-mark"></span>
+</div>
+<span class="ml-2 text-sm">Selected Drivers</span>
+</label>
+<label class="flex items-center">
+<div class="custom-radio">
+<input type="radio" name="exportData" value="current">
+<span class="radio-mark"></span>
+</div>
+<span class="ml-2 text-sm">Current View Only</span>
+</label>
+<label class="flex items-center">
+<div class="custom-radio">
+<input type="radio" name="exportData" value="custom">
+<span class="radio-mark"></span>
+</div>
+<span class="ml-2 text-sm">Custom Selection</span>
+</label>
+</div>
+</div>
+<button id="startExportBtn" class="w-full bg-primary text-white px-4 py-2 text-sm font-medium rounded-button whitespace-nowrap">
+Start Export
+</button>
+</div>
+</div>
+</div>
 </div>
 </div>
 <!-- Team Performance KPIs -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-6">
 <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-5">
 <div class="flex items-center justify-between">
 <div>
@@ -758,21 +1001,102 @@ Export
 <div class="flex justify-between items-center mb-4">
 <h2 class="text-lg font-semibold">Driver Roster</h2>
 <div class="flex items-center space-x-3">
-<button class="flex items-center px-3 py-1.5 text-sm border border-gray-300 rounded-lg bg-white hover:bg-gray-50 whitespace-nowrap">
+<button id="listViewBtn" class="flex items-center px-3 py-1.5 text-sm border border-gray-300 rounded-lg bg-white hover:bg-gray-50 whitespace-nowrap">
 <div class="w-4 h-4 flex items-center justify-center mr-2">
 <i class="ri-list-check"></i>
 </div>
 List View
 </button>
-<button class="flex items-center px-3 py-1.5 text-sm border border-gray-300 rounded-lg bg-primary text-white whitespace-nowrap">
+<button id="gridViewBtn" class="flex items-center px-3 py-1.5 text-sm border border-gray-300 rounded-lg bg-primary text-white whitespace-nowrap">
 <div class="w-4 h-4 flex items-center justify-center mr-2">
 <i class="ri-grid-line"></i>
 </div>
 Grid View
 </button>
 </div>
+<div id="driverListView" class="hidden">
+<div class="overflow-x-auto">
+<table class="min-w-full">
+<thead>
+<tr class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+<th class="px-4 py-3">Driver</th>
+<th class="px-4 py-3">Status</th>
+<th class="px-4 py-3">Performance</th>
+<th class="px-4 py-3">Deliveries</th>
+<th class="px-4 py-3">On-time Rate</th>
+<th class="px-4 py-3">Commission</th>
+<th class="px-4 py-3">Actions</th>
+</tr>
+</thead>
+<tbody class="bg-white divide-y divide-gray-200">
+<tr class="hover:bg-gray-50">
+<td class="px-4 py-3">
+<div class="flex items-center">
+<div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-sm font-medium">JM</div>
+<div class="ml-3">
+<p class="text-sm font-medium">John Miller</p>
+<p class="text-xs text-gray-500">DRV-2845</p>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+</div>
+</td>
+<td class="px-4 py-3">
+<span class="px-2 py-1 text-xs font-medium rounded-full status-active">Active</span>
+</td>
+<td class="px-4 py-3">
+<div class="flex items-center">
+<div class="flex">
+<div class="w-3 h-3 flex items-center justify-center text-yellow-400">
+<i class="ri-star-fill"></i>
+</div>
+<div class="w-3 h-3 flex items-center justify-center text-yellow-400">
+<i class="ri-star-fill"></i>
+</div>
+<div class="w-3 h-3 flex items-center justify-center text-yellow-400">
+<i class="ri-star-fill"></i>
+</div>
+<div class="w-3 h-3 flex items-center justify-center text-yellow-400">
+<i class="ri-star-fill"></i>
+</div>
+<div class="w-3 h-3 flex items-center justify-center text-yellow-400">
+<i class="ri-star-half-fill"></i>
+</div>
+</div>
+<span class="ml-1 text-xs font-medium">4.9</span>
+</div>
+</td>
+<td class="px-4 py-3 text-sm">1,248</td>
+<td class="px-4 py-3 text-sm text-green-500">98%</td>
+<td class="px-4 py-3 text-sm">$1.45/delivery</td>
+<td class="px-4 py-3">
+<div class="flex space-x-2">
+<button class="text-xs text-primary font-medium flex items-center">
+<div class="w-3.5 h-3.5 flex items-center justify-center mr-1">
+<i class="ri-eye-line"></i>
+</div>
+View
+</button>
+<button class="text-xs text-primary font-medium flex items-center edit-driver-btn" data-driver-id="DRV-2845">
+<div class="w-3.5 h-3.5 flex items-center justify-center mr-1">
+<i class="ri-edit-line"></i>
+</div>
+Edit
+</button>
+<button class="text-xs text-primary font-medium flex items-center assign-route-btn" data-driver-id="DRV-2845">
+<div class="w-3.5 h-3.5 flex items-center justify-center mr-1">
+<i class="ri-route-line"></i>
+</div>
+Assign
+</button>
+</div>
+</td>
+</tr>
+<!-- Add more driver rows here -->
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
 <!-- Driver Card 1 -->
 <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
 <div class="p-5">
@@ -831,18 +1155,224 @@ Grid View
 </div>
 View Details
 </a>
-<button class="text-xs text-primary font-medium flex items-center">
+<button class="text-xs text-primary font-medium flex items-center edit-driver-btn" data-driver-id="DRV-2845">
 <div class="w-3.5 h-3.5 flex items-center justify-center mr-1">
 <i class="ri-edit-line"></i>
 </div>
 Edit
 </button>
-<button class="text-xs text-primary font-medium flex items-center">
+<!-- Edit Driver Modal -->
+<div id="editDriverModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
+<div class="p-6 border-b flex justify-between items-center">
+<h3 class="text-xl font-semibold">Edit Driver Information</h3>
+<button id="closeEditDriverModal" class="text-gray-500 hover:text-gray-700">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+<input type="text" id="editFirstName" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+<input type="text" id="editLastName" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+<input type="email" id="editEmail" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+<input type="tel" id="editPhone" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
+<input type="date" id="editDob" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+</div>
+<div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Driver ID</label>
+<input type="text" id="editDriverId" class="w-full px-3 py-2 text-sm bg-gray-100 border-none rounded-lg text-gray-500" readonly>
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Preferred Area</label>
+<div class="relative">
+<select id="editArea" class="w-full pl-3 pr-8 py-2 text-sm border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+<option>Select Area</option>
+<option>North District</option>
+<option>South District</option>
+<option>East District</option>
+<option>West District</option>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</div>
+</div>
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Commission Rate</label>
+<div class="relative">
+<span class="absolute left-3 top-2 text-gray-500">$</span>
+<input type="number" id="editCommissionRate" step="0.05" class="w-full pl-7 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Vehicle Type</label>
+<div class="relative">
+<select id="editVehicleType" class="w-full pl-3 pr-8 py-2 text-sm border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+<option>Select Vehicle Type</option>
+<option>Car</option>
+<option>Van</option>
+<option>Motorcycle</option>
+<option>Bicycle</option>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</div>
+</div>
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+<div class="flex space-x-4">
+<label class="custom-radio">
+<input type="radio" name="editDriverStatus" value="active" checked>
+<span class="radio-mark"></span>
+Active
+</label>
+<label class="custom-radio">
+<input type="radio" name="editDriverStatus" value="break">
+<span class="radio-mark"></span>
+On Break
+</label>
+<label class="custom-radio">
+<input type="radio" name="editDriverStatus" value="off">
+<span class="radio-mark"></span>
+Off Duty
+</label>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Additional Notes</label>
+<textarea id="editNotes" rows="3" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary"></textarea>
+</div>
+</div>
+<div class="p-6 border-t bg-gray-50 flex justify-end space-x-3">
+<button id="cancelEditDriverBtn" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-button hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+<button id="saveDriverChangesBtn" class="bg-primary text-white px-4 py-2 text-sm font-medium rounded-button whitespace-nowrap">Save Changes</button>
+</div>
+</div>
+</div>
+<button class="text-xs text-primary font-medium flex items-center assign-route-btn" data-driver-id="${driverId}" data-driver-name="${driverName}">
 <div class="w-3.5 h-3.5 flex items-center justify-center mr-1">
 <i class="ri-route-line"></i>
 </div>
 Assign
 </button>
+<!-- Individual Route Assignment Modal -->
+<div id="individualRouteModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+<div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
+<div class="p-6 border-b flex justify-between items-center">
+<h3 class="text-xl font-semibold">Assign Routes - <span id="selectedDriverInfo"></span></h3>
+<button id="closeIndividualRouteModal" class="text-gray-500 hover:text-gray-700">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
+<div class="space-y-6">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Available Routes</label>
+<div class="border border-gray-300 rounded-lg p-3 max-h-48 overflow-y-auto">
+<div class="space-y-2">
+<label class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" name="individualRoutes" value="RT-2594">
+<span class="checkmark"></span>
+</div>
+<div>
+<p class="text-sm font-medium">RT-2594 - North District</p>
+<p class="text-xs text-gray-500">32 parcels • 4.2 km</p>
+</div>
+</label>
+<label class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" name="individualRoutes" value="RT-2595">
+<span class="checkmark"></span>
+</div>
+<div>
+<p class="text-sm font-medium">RT-2595 - East District</p>
+<p class="text-xs text-gray-500">28 parcels • 3.8 km</p>
+</div>
+</label>
+<label class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" name="individualRoutes" value="RT-2596">
+<span class="checkmark"></span>
+</div>
+<div>
+<p class="text-sm font-medium">RT-2596 - South District</p>
+<p class="text-xs text-gray-500">35 parcels • 5.1 km</p>
+</div>
+</label>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+<input type="date" id="individualRouteStartDate" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Start Time</label>
+<input type="time" id="individualRouteStartTime" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Priority Level</label>
+<div class="flex space-x-4">
+<label class="custom-radio">
+<input type="radio" name="individualRoutePriority" value="normal" checked>
+<span class="radio-mark"></span>
+Normal
+</label>
+<label class="custom-radio">
+<input type="radio" name="individualRoutePriority" value="high">
+<span class="radio-mark"></span>
+High
+</label>
+<label class="custom-radio">
+<input type="radio" name="individualRoutePriority" value="urgent">
+<span class="radio-mark"></span>
+Urgent
+</label>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+<textarea id="individualRouteNotes" rows="2" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary" placeholder="Add any special instructions or notes..."></textarea>
+</div>
+</div>
+</div>
+<div class="p-6 border-t bg-gray-50 flex justify-end space-x-3">
+<button id="cancelIndividualRouteBtn" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-button hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+<button id="assignIndividualRouteBtn" class="bg-primary text-white px-4 py-2 text-sm font-medium rounded-button whitespace-nowrap">Assign Routes</button>
+</div>
+</div>
+</div>
 </div>
 </div>
 <!-- Driver Card 2 -->
@@ -903,18 +1433,224 @@ Assign
 </div>
 View Details
 </a>
-<button class="text-xs text-primary font-medium flex items-center">
+<button class="text-xs text-primary font-medium flex items-center edit-driver-btn" data-driver-id="DRV-2845">
 <div class="w-3.5 h-3.5 flex items-center justify-center mr-1">
 <i class="ri-edit-line"></i>
 </div>
 Edit
 </button>
-<button class="text-xs text-primary font-medium flex items-center">
+<!-- Edit Driver Modal -->
+<div id="editDriverModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
+<div class="p-6 border-b flex justify-between items-center">
+<h3 class="text-xl font-semibold">Edit Driver Information</h3>
+<button id="closeEditDriverModal" class="text-gray-500 hover:text-gray-700">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+<input type="text" id="editFirstName" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+<input type="text" id="editLastName" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+<input type="email" id="editEmail" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+<input type="tel" id="editPhone" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
+<input type="date" id="editDob" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+</div>
+<div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Driver ID</label>
+<input type="text" id="editDriverId" class="w-full px-3 py-2 text-sm bg-gray-100 border-none rounded-lg text-gray-500" readonly>
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Preferred Area</label>
+<div class="relative">
+<select id="editArea" class="w-full pl-3 pr-8 py-2 text-sm border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+<option>Select Area</option>
+<option>North District</option>
+<option>South District</option>
+<option>East District</option>
+<option>West District</option>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</div>
+</div>
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Commission Rate</label>
+<div class="relative">
+<span class="absolute left-3 top-2 text-gray-500">$</span>
+<input type="number" id="editCommissionRate" step="0.05" class="w-full pl-7 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Vehicle Type</label>
+<div class="relative">
+<select id="editVehicleType" class="w-full pl-3 pr-8 py-2 text-sm border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+<option>Select Vehicle Type</option>
+<option>Car</option>
+<option>Van</option>
+<option>Motorcycle</option>
+<option>Bicycle</option>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</div>
+</div>
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+<div class="flex space-x-4">
+<label class="custom-radio">
+<input type="radio" name="editDriverStatus" value="active" checked>
+<span class="radio-mark"></span>
+Active
+</label>
+<label class="custom-radio">
+<input type="radio" name="editDriverStatus" value="break">
+<span class="radio-mark"></span>
+On Break
+</label>
+<label class="custom-radio">
+<input type="radio" name="editDriverStatus" value="off">
+<span class="radio-mark"></span>
+Off Duty
+</label>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Additional Notes</label>
+<textarea id="editNotes" rows="3" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary"></textarea>
+</div>
+</div>
+<div class="p-6 border-t bg-gray-50 flex justify-end space-x-3">
+<button id="cancelEditDriverBtn" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-button hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+<button id="saveDriverChangesBtn" class="bg-primary text-white px-4 py-2 text-sm font-medium rounded-button whitespace-nowrap">Save Changes</button>
+</div>
+</div>
+</div>
+<button class="text-xs text-primary font-medium flex items-center assign-route-btn" data-driver-id="${driverId}" data-driver-name="${driverName}">
 <div class="w-3.5 h-3.5 flex items-center justify-center mr-1">
 <i class="ri-route-line"></i>
 </div>
 Assign
 </button>
+<!-- Individual Route Assignment Modal -->
+<div id="individualRouteModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+<div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
+<div class="p-6 border-b flex justify-between items-center">
+<h3 class="text-xl font-semibold">Assign Routes - <span id="selectedDriverInfo"></span></h3>
+<button id="closeIndividualRouteModal" class="text-gray-500 hover:text-gray-700">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
+<div class="space-y-6">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Available Routes</label>
+<div class="border border-gray-300 rounded-lg p-3 max-h-48 overflow-y-auto">
+<div class="space-y-2">
+<label class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" name="individualRoutes" value="RT-2594">
+<span class="checkmark"></span>
+</div>
+<div>
+<p class="text-sm font-medium">RT-2594 - North District</p>
+<p class="text-xs text-gray-500">32 parcels • 4.2 km</p>
+</div>
+</label>
+<label class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" name="individualRoutes" value="RT-2595">
+<span class="checkmark"></span>
+</div>
+<div>
+<p class="text-sm font-medium">RT-2595 - East District</p>
+<p class="text-xs text-gray-500">28 parcels • 3.8 km</p>
+</div>
+</label>
+<label class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" name="individualRoutes" value="RT-2596">
+<span class="checkmark"></span>
+</div>
+<div>
+<p class="text-sm font-medium">RT-2596 - South District</p>
+<p class="text-xs text-gray-500">35 parcels • 5.1 km</p>
+</div>
+</label>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+<input type="date" id="individualRouteStartDate" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Start Time</label>
+<input type="time" id="individualRouteStartTime" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Priority Level</label>
+<div class="flex space-x-4">
+<label class="custom-radio">
+<input type="radio" name="individualRoutePriority" value="normal" checked>
+<span class="radio-mark"></span>
+Normal
+</label>
+<label class="custom-radio">
+<input type="radio" name="individualRoutePriority" value="high">
+<span class="radio-mark"></span>
+High
+</label>
+<label class="custom-radio">
+<input type="radio" name="individualRoutePriority" value="urgent">
+<span class="radio-mark"></span>
+Urgent
+</label>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+<textarea id="individualRouteNotes" rows="2" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary" placeholder="Add any special instructions or notes..."></textarea>
+</div>
+</div>
+</div>
+<div class="p-6 border-t bg-gray-50 flex justify-end space-x-3">
+<button id="cancelIndividualRouteBtn" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-button hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+<button id="assignIndividualRouteBtn" class="bg-primary text-white px-4 py-2 text-sm font-medium rounded-button whitespace-nowrap">Assign Routes</button>
+</div>
+</div>
+</div>
 </div>
 </div>
 <!-- Driver Card 3 -->
@@ -975,18 +1711,224 @@ Assign
 </div>
 View Details
 </a>
-<button class="text-xs text-primary font-medium flex items-center">
+<button class="text-xs text-primary font-medium flex items-center edit-driver-btn" data-driver-id="DRV-2845">
 <div class="w-3.5 h-3.5 flex items-center justify-center mr-1">
 <i class="ri-edit-line"></i>
 </div>
 Edit
 </button>
-<button class="text-xs text-primary font-medium flex items-center">
+<!-- Edit Driver Modal -->
+<div id="editDriverModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
+<div class="p-6 border-b flex justify-between items-center">
+<h3 class="text-xl font-semibold">Edit Driver Information</h3>
+<button id="closeEditDriverModal" class="text-gray-500 hover:text-gray-700">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+<input type="text" id="editFirstName" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+<input type="text" id="editLastName" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+<input type="email" id="editEmail" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+<input type="tel" id="editPhone" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
+<input type="date" id="editDob" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+</div>
+<div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Driver ID</label>
+<input type="text" id="editDriverId" class="w-full px-3 py-2 text-sm bg-gray-100 border-none rounded-lg text-gray-500" readonly>
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Preferred Area</label>
+<div class="relative">
+<select id="editArea" class="w-full pl-3 pr-8 py-2 text-sm border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+<option>Select Area</option>
+<option>North District</option>
+<option>South District</option>
+<option>East District</option>
+<option>West District</option>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</div>
+</div>
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Commission Rate</label>
+<div class="relative">
+<span class="absolute left-3 top-2 text-gray-500">$</span>
+<input type="number" id="editCommissionRate" step="0.05" class="w-full pl-7 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Vehicle Type</label>
+<div class="relative">
+<select id="editVehicleType" class="w-full pl-3 pr-8 py-2 text-sm border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+<option>Select Vehicle Type</option>
+<option>Car</option>
+<option>Van</option>
+<option>Motorcycle</option>
+<option>Bicycle</option>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</div>
+</div>
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+<div class="flex space-x-4">
+<label class="custom-radio">
+<input type="radio" name="editDriverStatus" value="active" checked>
+<span class="radio-mark"></span>
+Active
+</label>
+<label class="custom-radio">
+<input type="radio" name="editDriverStatus" value="break">
+<span class="radio-mark"></span>
+On Break
+</label>
+<label class="custom-radio">
+<input type="radio" name="editDriverStatus" value="off">
+<span class="radio-mark"></span>
+Off Duty
+</label>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Additional Notes</label>
+<textarea id="editNotes" rows="3" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary"></textarea>
+</div>
+</div>
+<div class="p-6 border-t bg-gray-50 flex justify-end space-x-3">
+<button id="cancelEditDriverBtn" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-button hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+<button id="saveDriverChangesBtn" class="bg-primary text-white px-4 py-2 text-sm font-medium rounded-button whitespace-nowrap">Save Changes</button>
+</div>
+</div>
+</div>
+<button class="text-xs text-primary font-medium flex items-center assign-route-btn" data-driver-id="${driverId}" data-driver-name="${driverName}">
 <div class="w-3.5 h-3.5 flex items-center justify-center mr-1">
 <i class="ri-route-line"></i>
 </div>
 Assign
 </button>
+<!-- Individual Route Assignment Modal -->
+<div id="individualRouteModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+<div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
+<div class="p-6 border-b flex justify-between items-center">
+<h3 class="text-xl font-semibold">Assign Routes - <span id="selectedDriverInfo"></span></h3>
+<button id="closeIndividualRouteModal" class="text-gray-500 hover:text-gray-700">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
+<div class="space-y-6">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Available Routes</label>
+<div class="border border-gray-300 rounded-lg p-3 max-h-48 overflow-y-auto">
+<div class="space-y-2">
+<label class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" name="individualRoutes" value="RT-2594">
+<span class="checkmark"></span>
+</div>
+<div>
+<p class="text-sm font-medium">RT-2594 - North District</p>
+<p class="text-xs text-gray-500">32 parcels • 4.2 km</p>
+</div>
+</label>
+<label class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" name="individualRoutes" value="RT-2595">
+<span class="checkmark"></span>
+</div>
+<div>
+<p class="text-sm font-medium">RT-2595 - East District</p>
+<p class="text-xs text-gray-500">28 parcels • 3.8 km</p>
+</div>
+</label>
+<label class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" name="individualRoutes" value="RT-2596">
+<span class="checkmark"></span>
+</div>
+<div>
+<p class="text-sm font-medium">RT-2596 - South District</p>
+<p class="text-xs text-gray-500">35 parcels • 5.1 km</p>
+</div>
+</label>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+<input type="date" id="individualRouteStartDate" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Start Time</label>
+<input type="time" id="individualRouteStartTime" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Priority Level</label>
+<div class="flex space-x-4">
+<label class="custom-radio">
+<input type="radio" name="individualRoutePriority" value="normal" checked>
+<span class="radio-mark"></span>
+Normal
+</label>
+<label class="custom-radio">
+<input type="radio" name="individualRoutePriority" value="high">
+<span class="radio-mark"></span>
+High
+</label>
+<label class="custom-radio">
+<input type="radio" name="individualRoutePriority" value="urgent">
+<span class="radio-mark"></span>
+Urgent
+</label>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+<textarea id="individualRouteNotes" rows="2" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary" placeholder="Add any special instructions or notes..."></textarea>
+</div>
+</div>
+</div>
+<div class="p-6 border-t bg-gray-50 flex justify-end space-x-3">
+<button id="cancelIndividualRouteBtn" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-button hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+<button id="assignIndividualRouteBtn" class="bg-primary text-white px-4 py-2 text-sm font-medium rounded-button whitespace-nowrap">Assign Routes</button>
+</div>
+</div>
+</div>
 </div>
 </div>
 <!-- Driver Card 4 -->
@@ -1047,18 +1989,224 @@ Assign
 </div>
 View Details
 </a>
-<button class="text-xs text-primary font-medium flex items-center">
+<button class="text-xs text-primary font-medium flex items-center edit-driver-btn" data-driver-id="DRV-2845">
 <div class="w-3.5 h-3.5 flex items-center justify-center mr-1">
 <i class="ri-edit-line"></i>
 </div>
 Edit
 </button>
-<button class="text-xs text-primary font-medium flex items-center">
+<!-- Edit Driver Modal -->
+<div id="editDriverModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
+<div class="p-6 border-b flex justify-between items-center">
+<h3 class="text-xl font-semibold">Edit Driver Information</h3>
+<button id="closeEditDriverModal" class="text-gray-500 hover:text-gray-700">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+<input type="text" id="editFirstName" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+<input type="text" id="editLastName" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+<input type="email" id="editEmail" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+<input type="tel" id="editPhone" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
+<input type="date" id="editDob" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+</div>
+<div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Driver ID</label>
+<input type="text" id="editDriverId" class="w-full px-3 py-2 text-sm bg-gray-100 border-none rounded-lg text-gray-500" readonly>
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Preferred Area</label>
+<div class="relative">
+<select id="editArea" class="w-full pl-3 pr-8 py-2 text-sm border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+<option>Select Area</option>
+<option>North District</option>
+<option>South District</option>
+<option>East District</option>
+<option>West District</option>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</div>
+</div>
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Commission Rate</label>
+<div class="relative">
+<span class="absolute left-3 top-2 text-gray-500">$</span>
+<input type="number" id="editCommissionRate" step="0.05" class="w-full pl-7 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Vehicle Type</label>
+<div class="relative">
+<select id="editVehicleType" class="w-full pl-3 pr-8 py-2 text-sm border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+<option>Select Vehicle Type</option>
+<option>Car</option>
+<option>Van</option>
+<option>Motorcycle</option>
+<option>Bicycle</option>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</div>
+</div>
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+<div class="flex space-x-4">
+<label class="custom-radio">
+<input type="radio" name="editDriverStatus" value="active" checked>
+<span class="radio-mark"></span>
+Active
+</label>
+<label class="custom-radio">
+<input type="radio" name="editDriverStatus" value="break">
+<span class="radio-mark"></span>
+On Break
+</label>
+<label class="custom-radio">
+<input type="radio" name="editDriverStatus" value="off">
+<span class="radio-mark"></span>
+Off Duty
+</label>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Additional Notes</label>
+<textarea id="editNotes" rows="3" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary"></textarea>
+</div>
+</div>
+<div class="p-6 border-t bg-gray-50 flex justify-end space-x-3">
+<button id="cancelEditDriverBtn" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-button hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+<button id="saveDriverChangesBtn" class="bg-primary text-white px-4 py-2 text-sm font-medium rounded-button whitespace-nowrap">Save Changes</button>
+</div>
+</div>
+</div>
+<button class="text-xs text-primary font-medium flex items-center assign-route-btn" data-driver-id="${driverId}" data-driver-name="${driverName}">
 <div class="w-3.5 h-3.5 flex items-center justify-center mr-1">
 <i class="ri-route-line"></i>
 </div>
 Assign
 </button>
+<!-- Individual Route Assignment Modal -->
+<div id="individualRouteModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+<div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
+<div class="p-6 border-b flex justify-between items-center">
+<h3 class="text-xl font-semibold">Assign Routes - <span id="selectedDriverInfo"></span></h3>
+<button id="closeIndividualRouteModal" class="text-gray-500 hover:text-gray-700">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
+<div class="space-y-6">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Available Routes</label>
+<div class="border border-gray-300 rounded-lg p-3 max-h-48 overflow-y-auto">
+<div class="space-y-2">
+<label class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" name="individualRoutes" value="RT-2594">
+<span class="checkmark"></span>
+</div>
+<div>
+<p class="text-sm font-medium">RT-2594 - North District</p>
+<p class="text-xs text-gray-500">32 parcels • 4.2 km</p>
+</div>
+</label>
+<label class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" name="individualRoutes" value="RT-2595">
+<span class="checkmark"></span>
+</div>
+<div>
+<p class="text-sm font-medium">RT-2595 - East District</p>
+<p class="text-xs text-gray-500">28 parcels • 3.8 km</p>
+</div>
+</label>
+<label class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" name="individualRoutes" value="RT-2596">
+<span class="checkmark"></span>
+</div>
+<div>
+<p class="text-sm font-medium">RT-2596 - South District</p>
+<p class="text-xs text-gray-500">35 parcels • 5.1 km</p>
+</div>
+</label>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+<input type="date" id="individualRouteStartDate" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Start Time</label>
+<input type="time" id="individualRouteStartTime" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Priority Level</label>
+<div class="flex space-x-4">
+<label class="custom-radio">
+<input type="radio" name="individualRoutePriority" value="normal" checked>
+<span class="radio-mark"></span>
+Normal
+</label>
+<label class="custom-radio">
+<input type="radio" name="individualRoutePriority" value="high">
+<span class="radio-mark"></span>
+High
+</label>
+<label class="custom-radio">
+<input type="radio" name="individualRoutePriority" value="urgent">
+<span class="radio-mark"></span>
+Urgent
+</label>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+<textarea id="individualRouteNotes" rows="2" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary" placeholder="Add any special instructions or notes..."></textarea>
+</div>
+</div>
+</div>
+<div class="p-6 border-t bg-gray-50 flex justify-end space-x-3">
+<button id="cancelIndividualRouteBtn" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-button hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+<button id="assignIndividualRouteBtn" class="bg-primary text-white px-4 py-2 text-sm font-medium rounded-button whitespace-nowrap">Assign Routes</button>
+</div>
+</div>
+</div>
 </div>
 </div>
 <!-- Driver Card 5 -->
@@ -1119,18 +2267,224 @@ Assign
 </div>
 View Details
 </a>
-<button class="text-xs text-primary font-medium flex items-center">
+<button class="text-xs text-primary font-medium flex items-center edit-driver-btn" data-driver-id="DRV-2845">
 <div class="w-3.5 h-3.5 flex items-center justify-center mr-1">
 <i class="ri-edit-line"></i>
 </div>
 Edit
 </button>
-<button class="text-xs text-primary font-medium flex items-center">
+<!-- Edit Driver Modal -->
+<div id="editDriverModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
+<div class="p-6 border-b flex justify-between items-center">
+<h3 class="text-xl font-semibold">Edit Driver Information</h3>
+<button id="closeEditDriverModal" class="text-gray-500 hover:text-gray-700">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+<input type="text" id="editFirstName" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+<input type="text" id="editLastName" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+<input type="email" id="editEmail" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+<input type="tel" id="editPhone" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
+<input type="date" id="editDob" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+</div>
+<div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Driver ID</label>
+<input type="text" id="editDriverId" class="w-full px-3 py-2 text-sm bg-gray-100 border-none rounded-lg text-gray-500" readonly>
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Preferred Area</label>
+<div class="relative">
+<select id="editArea" class="w-full pl-3 pr-8 py-2 text-sm border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+<option>Select Area</option>
+<option>North District</option>
+<option>South District</option>
+<option>East District</option>
+<option>West District</option>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</div>
+</div>
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Commission Rate</label>
+<div class="relative">
+<span class="absolute left-3 top-2 text-gray-500">$</span>
+<input type="number" id="editCommissionRate" step="0.05" class="w-full pl-7 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Vehicle Type</label>
+<div class="relative">
+<select id="editVehicleType" class="w-full pl-3 pr-8 py-2 text-sm border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+<option>Select Vehicle Type</option>
+<option>Car</option>
+<option>Van</option>
+<option>Motorcycle</option>
+<option>Bicycle</option>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</div>
+</div>
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+<div class="flex space-x-4">
+<label class="custom-radio">
+<input type="radio" name="editDriverStatus" value="active" checked>
+<span class="radio-mark"></span>
+Active
+</label>
+<label class="custom-radio">
+<input type="radio" name="editDriverStatus" value="break">
+<span class="radio-mark"></span>
+On Break
+</label>
+<label class="custom-radio">
+<input type="radio" name="editDriverStatus" value="off">
+<span class="radio-mark"></span>
+Off Duty
+</label>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Additional Notes</label>
+<textarea id="editNotes" rows="3" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary"></textarea>
+</div>
+</div>
+<div class="p-6 border-t bg-gray-50 flex justify-end space-x-3">
+<button id="cancelEditDriverBtn" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-button hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+<button id="saveDriverChangesBtn" class="bg-primary text-white px-4 py-2 text-sm font-medium rounded-button whitespace-nowrap">Save Changes</button>
+</div>
+</div>
+</div>
+<button class="text-xs text-primary font-medium flex items-center assign-route-btn" data-driver-id="${driverId}" data-driver-name="${driverName}">
 <div class="w-3.5 h-3.5 flex items-center justify-center mr-1">
 <i class="ri-route-line"></i>
 </div>
 Assign
 </button>
+<!-- Individual Route Assignment Modal -->
+<div id="individualRouteModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+<div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
+<div class="p-6 border-b flex justify-between items-center">
+<h3 class="text-xl font-semibold">Assign Routes - <span id="selectedDriverInfo"></span></h3>
+<button id="closeIndividualRouteModal" class="text-gray-500 hover:text-gray-700">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
+<div class="space-y-6">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Available Routes</label>
+<div class="border border-gray-300 rounded-lg p-3 max-h-48 overflow-y-auto">
+<div class="space-y-2">
+<label class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" name="individualRoutes" value="RT-2594">
+<span class="checkmark"></span>
+</div>
+<div>
+<p class="text-sm font-medium">RT-2594 - North District</p>
+<p class="text-xs text-gray-500">32 parcels • 4.2 km</p>
+</div>
+</label>
+<label class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" name="individualRoutes" value="RT-2595">
+<span class="checkmark"></span>
+</div>
+<div>
+<p class="text-sm font-medium">RT-2595 - East District</p>
+<p class="text-xs text-gray-500">28 parcels • 3.8 km</p>
+</div>
+</label>
+<label class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" name="individualRoutes" value="RT-2596">
+<span class="checkmark"></span>
+</div>
+<div>
+<p class="text-sm font-medium">RT-2596 - South District</p>
+<p class="text-xs text-gray-500">35 parcels • 5.1 km</p>
+</div>
+</label>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+<input type="date" id="individualRouteStartDate" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Start Time</label>
+<input type="time" id="individualRouteStartTime" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Priority Level</label>
+<div class="flex space-x-4">
+<label class="custom-radio">
+<input type="radio" name="individualRoutePriority" value="normal" checked>
+<span class="radio-mark"></span>
+Normal
+</label>
+<label class="custom-radio">
+<input type="radio" name="individualRoutePriority" value="high">
+<span class="radio-mark"></span>
+High
+</label>
+<label class="custom-radio">
+<input type="radio" name="individualRoutePriority" value="urgent">
+<span class="radio-mark"></span>
+Urgent
+</label>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+<textarea id="individualRouteNotes" rows="2" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary" placeholder="Add any special instructions or notes..."></textarea>
+</div>
+</div>
+</div>
+<div class="p-6 border-t bg-gray-50 flex justify-end space-x-3">
+<button id="cancelIndividualRouteBtn" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-button hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+<button id="assignIndividualRouteBtn" class="bg-primary text-white px-4 py-2 text-sm font-medium rounded-button whitespace-nowrap">Assign Routes</button>
+</div>
+</div>
+</div>
 </div>
 </div>
 <!-- Driver Card 6 -->
@@ -1191,18 +2545,224 @@ Assign
 </div>
 View Details
 </a>
-<button class="text-xs text-primary font-medium flex items-center">
+<button class="text-xs text-primary font-medium flex items-center edit-driver-btn" data-driver-id="DRV-2845">
 <div class="w-3.5 h-3.5 flex items-center justify-center mr-1">
 <i class="ri-edit-line"></i>
 </div>
 Edit
 </button>
-<button class="text-xs text-primary font-medium flex items-center">
+<!-- Edit Driver Modal -->
+<div id="editDriverModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
+<div class="p-6 border-b flex justify-between items-center">
+<h3 class="text-xl font-semibold">Edit Driver Information</h3>
+<button id="closeEditDriverModal" class="text-gray-500 hover:text-gray-700">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+<input type="text" id="editFirstName" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+<input type="text" id="editLastName" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+<input type="email" id="editEmail" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+<input type="tel" id="editPhone" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
+<input type="date" id="editDob" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+</div>
+<div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Driver ID</label>
+<input type="text" id="editDriverId" class="w-full px-3 py-2 text-sm bg-gray-100 border-none rounded-lg text-gray-500" readonly>
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Preferred Area</label>
+<div class="relative">
+<select id="editArea" class="w-full pl-3 pr-8 py-2 text-sm border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+<option>Select Area</option>
+<option>North District</option>
+<option>South District</option>
+<option>East District</option>
+<option>West District</option>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</div>
+</div>
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Commission Rate</label>
+<div class="relative">
+<span class="absolute left-3 top-2 text-gray-500">$</span>
+<input type="number" id="editCommissionRate" step="0.05" class="w-full pl-7 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Vehicle Type</label>
+<div class="relative">
+<select id="editVehicleType" class="w-full pl-3 pr-8 py-2 text-sm border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+<option>Select Vehicle Type</option>
+<option>Car</option>
+<option>Van</option>
+<option>Motorcycle</option>
+<option>Bicycle</option>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</div>
+</div>
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+<div class="flex space-x-4">
+<label class="custom-radio">
+<input type="radio" name="editDriverStatus" value="active" checked>
+<span class="radio-mark"></span>
+Active
+</label>
+<label class="custom-radio">
+<input type="radio" name="editDriverStatus" value="break">
+<span class="radio-mark"></span>
+On Break
+</label>
+<label class="custom-radio">
+<input type="radio" name="editDriverStatus" value="off">
+<span class="radio-mark"></span>
+Off Duty
+</label>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Additional Notes</label>
+<textarea id="editNotes" rows="3" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary"></textarea>
+</div>
+</div>
+<div class="p-6 border-t bg-gray-50 flex justify-end space-x-3">
+<button id="cancelEditDriverBtn" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-button hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+<button id="saveDriverChangesBtn" class="bg-primary text-white px-4 py-2 text-sm font-medium rounded-button whitespace-nowrap">Save Changes</button>
+</div>
+</div>
+</div>
+<button class="text-xs text-primary font-medium flex items-center assign-route-btn" data-driver-id="${driverId}" data-driver-name="${driverName}">
 <div class="w-3.5 h-3.5 flex items-center justify-center mr-1">
 <i class="ri-route-line"></i>
 </div>
 Assign
 </button>
+<!-- Individual Route Assignment Modal -->
+<div id="individualRouteModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+<div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
+<div class="p-6 border-b flex justify-between items-center">
+<h3 class="text-xl font-semibold">Assign Routes - <span id="selectedDriverInfo"></span></h3>
+<button id="closeIndividualRouteModal" class="text-gray-500 hover:text-gray-700">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
+<div class="space-y-6">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Available Routes</label>
+<div class="border border-gray-300 rounded-lg p-3 max-h-48 overflow-y-auto">
+<div class="space-y-2">
+<label class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" name="individualRoutes" value="RT-2594">
+<span class="checkmark"></span>
+</div>
+<div>
+<p class="text-sm font-medium">RT-2594 - North District</p>
+<p class="text-xs text-gray-500">32 parcels • 4.2 km</p>
+</div>
+</label>
+<label class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" name="individualRoutes" value="RT-2595">
+<span class="checkmark"></span>
+</div>
+<div>
+<p class="text-sm font-medium">RT-2595 - East District</p>
+<p class="text-xs text-gray-500">28 parcels • 3.8 km</p>
+</div>
+</label>
+<label class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" name="individualRoutes" value="RT-2596">
+<span class="checkmark"></span>
+</div>
+<div>
+<p class="text-sm font-medium">RT-2596 - South District</p>
+<p class="text-xs text-gray-500">35 parcels • 5.1 km</p>
+</div>
+</label>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+<input type="date" id="individualRouteStartDate" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Start Time</label>
+<input type="time" id="individualRouteStartTime" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Priority Level</label>
+<div class="flex space-x-4">
+<label class="custom-radio">
+<input type="radio" name="individualRoutePriority" value="normal" checked>
+<span class="radio-mark"></span>
+Normal
+</label>
+<label class="custom-radio">
+<input type="radio" name="individualRoutePriority" value="high">
+<span class="radio-mark"></span>
+High
+</label>
+<label class="custom-radio">
+<input type="radio" name="individualRoutePriority" value="urgent">
+<span class="radio-mark"></span>
+Urgent
+</label>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+<textarea id="individualRouteNotes" rows="2" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary" placeholder="Add any special instructions or notes..."></textarea>
+</div>
+</div>
+</div>
+<div class="p-6 border-t bg-gray-50 flex justify-end space-x-3">
+<button id="cancelIndividualRouteBtn" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-button hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+<button id="assignIndividualRouteBtn" class="bg-primary text-white px-4 py-2 text-sm font-medium rounded-button whitespace-nowrap">Assign Routes</button>
+</div>
+</div>
+</div>
 </div>
 </div>
 <!-- Driver Card 7 -->
@@ -1263,18 +2823,224 @@ Assign
 </div>
 View Details
 </a>
-<button class="text-xs text-primary font-medium flex items-center">
+<button class="text-xs text-primary font-medium flex items-center edit-driver-btn" data-driver-id="DRV-2845">
 <div class="w-3.5 h-3.5 flex items-center justify-center mr-1">
 <i class="ri-edit-line"></i>
 </div>
 Edit
 </button>
-<button class="text-xs text-primary font-medium flex items-center">
+<!-- Edit Driver Modal -->
+<div id="editDriverModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
+<div class="p-6 border-b flex justify-between items-center">
+<h3 class="text-xl font-semibold">Edit Driver Information</h3>
+<button id="closeEditDriverModal" class="text-gray-500 hover:text-gray-700">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+<input type="text" id="editFirstName" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+<input type="text" id="editLastName" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+<input type="email" id="editEmail" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+<input type="tel" id="editPhone" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
+<input type="date" id="editDob" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+</div>
+<div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Driver ID</label>
+<input type="text" id="editDriverId" class="w-full px-3 py-2 text-sm bg-gray-100 border-none rounded-lg text-gray-500" readonly>
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Preferred Area</label>
+<div class="relative">
+<select id="editArea" class="w-full pl-3 pr-8 py-2 text-sm border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+<option>Select Area</option>
+<option>North District</option>
+<option>South District</option>
+<option>East District</option>
+<option>West District</option>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</div>
+</div>
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Commission Rate</label>
+<div class="relative">
+<span class="absolute left-3 top-2 text-gray-500">$</span>
+<input type="number" id="editCommissionRate" step="0.05" class="w-full pl-7 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Vehicle Type</label>
+<div class="relative">
+<select id="editVehicleType" class="w-full pl-3 pr-8 py-2 text-sm border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+<option>Select Vehicle Type</option>
+<option>Car</option>
+<option>Van</option>
+<option>Motorcycle</option>
+<option>Bicycle</option>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</div>
+</div>
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+<div class="flex space-x-4">
+<label class="custom-radio">
+<input type="radio" name="editDriverStatus" value="active" checked>
+<span class="radio-mark"></span>
+Active
+</label>
+<label class="custom-radio">
+<input type="radio" name="editDriverStatus" value="break">
+<span class="radio-mark"></span>
+On Break
+</label>
+<label class="custom-radio">
+<input type="radio" name="editDriverStatus" value="off">
+<span class="radio-mark"></span>
+Off Duty
+</label>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Additional Notes</label>
+<textarea id="editNotes" rows="3" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary"></textarea>
+</div>
+</div>
+<div class="p-6 border-t bg-gray-50 flex justify-end space-x-3">
+<button id="cancelEditDriverBtn" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-button hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+<button id="saveDriverChangesBtn" class="bg-primary text-white px-4 py-2 text-sm font-medium rounded-button whitespace-nowrap">Save Changes</button>
+</div>
+</div>
+</div>
+<button class="text-xs text-primary font-medium flex items-center assign-route-btn" data-driver-id="${driverId}" data-driver-name="${driverName}">
 <div class="w-3.5 h-3.5 flex items-center justify-center mr-1">
 <i class="ri-route-line"></i>
 </div>
 Assign
 </button>
+<!-- Individual Route Assignment Modal -->
+<div id="individualRouteModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+<div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
+<div class="p-6 border-b flex justify-between items-center">
+<h3 class="text-xl font-semibold">Assign Routes - <span id="selectedDriverInfo"></span></h3>
+<button id="closeIndividualRouteModal" class="text-gray-500 hover:text-gray-700">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
+<div class="space-y-6">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Available Routes</label>
+<div class="border border-gray-300 rounded-lg p-3 max-h-48 overflow-y-auto">
+<div class="space-y-2">
+<label class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" name="individualRoutes" value="RT-2594">
+<span class="checkmark"></span>
+</div>
+<div>
+<p class="text-sm font-medium">RT-2594 - North District</p>
+<p class="text-xs text-gray-500">32 parcels • 4.2 km</p>
+</div>
+</label>
+<label class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" name="individualRoutes" value="RT-2595">
+<span class="checkmark"></span>
+</div>
+<div>
+<p class="text-sm font-medium">RT-2595 - East District</p>
+<p class="text-xs text-gray-500">28 parcels • 3.8 km</p>
+</div>
+</label>
+<label class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" name="individualRoutes" value="RT-2596">
+<span class="checkmark"></span>
+</div>
+<div>
+<p class="text-sm font-medium">RT-2596 - South District</p>
+<p class="text-xs text-gray-500">35 parcels • 5.1 km</p>
+</div>
+</label>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+<input type="date" id="individualRouteStartDate" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Start Time</label>
+<input type="time" id="individualRouteStartTime" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Priority Level</label>
+<div class="flex space-x-4">
+<label class="custom-radio">
+<input type="radio" name="individualRoutePriority" value="normal" checked>
+<span class="radio-mark"></span>
+Normal
+</label>
+<label class="custom-radio">
+<input type="radio" name="individualRoutePriority" value="high">
+<span class="radio-mark"></span>
+High
+</label>
+<label class="custom-radio">
+<input type="radio" name="individualRoutePriority" value="urgent">
+<span class="radio-mark"></span>
+Urgent
+</label>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+<textarea id="individualRouteNotes" rows="2" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary" placeholder="Add any special instructions or notes..."></textarea>
+</div>
+</div>
+</div>
+<div class="p-6 border-t bg-gray-50 flex justify-end space-x-3">
+<button id="cancelIndividualRouteBtn" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-button hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+<button id="assignIndividualRouteBtn" class="bg-primary text-white px-4 py-2 text-sm font-medium rounded-button whitespace-nowrap">Assign Routes</button>
+</div>
+</div>
+</div>
 </div>
 </div>
 <!-- Driver Card 8 -->
@@ -1335,18 +3101,224 @@ Assign
 </div>
 View Details
 </a>
-<button class="text-xs text-primary font-medium flex items-center">
+<button class="text-xs text-primary font-medium flex items-center edit-driver-btn" data-driver-id="DRV-2845">
 <div class="w-3.5 h-3.5 flex items-center justify-center mr-1">
 <i class="ri-edit-line"></i>
 </div>
 Edit
 </button>
-<button class="text-xs text-primary font-medium flex items-center">
+<!-- Edit Driver Modal -->
+<div id="editDriverModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
+<div class="p-6 border-b flex justify-between items-center">
+<h3 class="text-xl font-semibold">Edit Driver Information</h3>
+<button id="closeEditDriverModal" class="text-gray-500 hover:text-gray-700">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+<input type="text" id="editFirstName" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+<input type="text" id="editLastName" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+<input type="email" id="editEmail" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+<input type="tel" id="editPhone" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
+<input type="date" id="editDob" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+</div>
+<div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Driver ID</label>
+<input type="text" id="editDriverId" class="w-full px-3 py-2 text-sm bg-gray-100 border-none rounded-lg text-gray-500" readonly>
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Preferred Area</label>
+<div class="relative">
+<select id="editArea" class="w-full pl-3 pr-8 py-2 text-sm border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+<option>Select Area</option>
+<option>North District</option>
+<option>South District</option>
+<option>East District</option>
+<option>West District</option>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</div>
+</div>
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Commission Rate</label>
+<div class="relative">
+<span class="absolute left-3 top-2 text-gray-500">$</span>
+<input type="number" id="editCommissionRate" step="0.05" class="w-full pl-7 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Vehicle Type</label>
+<div class="relative">
+<select id="editVehicleType" class="w-full pl-3 pr-8 py-2 text-sm border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+<option>Select Vehicle Type</option>
+<option>Car</option>
+<option>Van</option>
+<option>Motorcycle</option>
+<option>Bicycle</option>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</div>
+</div>
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+<div class="flex space-x-4">
+<label class="custom-radio">
+<input type="radio" name="editDriverStatus" value="active" checked>
+<span class="radio-mark"></span>
+Active
+</label>
+<label class="custom-radio">
+<input type="radio" name="editDriverStatus" value="break">
+<span class="radio-mark"></span>
+On Break
+</label>
+<label class="custom-radio">
+<input type="radio" name="editDriverStatus" value="off">
+<span class="radio-mark"></span>
+Off Duty
+</label>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Additional Notes</label>
+<textarea id="editNotes" rows="3" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary"></textarea>
+</div>
+</div>
+<div class="p-6 border-t bg-gray-50 flex justify-end space-x-3">
+<button id="cancelEditDriverBtn" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-button hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+<button id="saveDriverChangesBtn" class="bg-primary text-white px-4 py-2 text-sm font-medium rounded-button whitespace-nowrap">Save Changes</button>
+</div>
+</div>
+</div>
+<button class="text-xs text-primary font-medium flex items-center assign-route-btn" data-driver-id="${driverId}" data-driver-name="${driverName}">
 <div class="w-3.5 h-3.5 flex items-center justify-center mr-1">
 <i class="ri-route-line"></i>
 </div>
 Assign
 </button>
+<!-- Individual Route Assignment Modal -->
+<div id="individualRouteModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+<div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
+<div class="p-6 border-b flex justify-between items-center">
+<h3 class="text-xl font-semibold">Assign Routes - <span id="selectedDriverInfo"></span></h3>
+<button id="closeIndividualRouteModal" class="text-gray-500 hover:text-gray-700">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
+<div class="space-y-6">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Available Routes</label>
+<div class="border border-gray-300 rounded-lg p-3 max-h-48 overflow-y-auto">
+<div class="space-y-2">
+<label class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" name="individualRoutes" value="RT-2594">
+<span class="checkmark"></span>
+</div>
+<div>
+<p class="text-sm font-medium">RT-2594 - North District</p>
+<p class="text-xs text-gray-500">32 parcels • 4.2 km</p>
+</div>
+</label>
+<label class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" name="individualRoutes" value="RT-2595">
+<span class="checkmark"></span>
+</div>
+<div>
+<p class="text-sm font-medium">RT-2595 - East District</p>
+<p class="text-xs text-gray-500">28 parcels • 3.8 km</p>
+</div>
+</label>
+<label class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+<div class="custom-checkbox mr-2">
+<input type="checkbox" name="individualRoutes" value="RT-2596">
+<span class="checkmark"></span>
+</div>
+<div>
+<p class="text-sm font-medium">RT-2596 - South District</p>
+<p class="text-xs text-gray-500">35 parcels • 5.1 km</p>
+</div>
+</label>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+<input type="date" id="individualRouteStartDate" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Start Time</label>
+<input type="time" id="individualRouteStartTime" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary">
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Priority Level</label>
+<div class="flex space-x-4">
+<label class="custom-radio">
+<input type="radio" name="individualRoutePriority" value="normal" checked>
+<span class="radio-mark"></span>
+Normal
+</label>
+<label class="custom-radio">
+<input type="radio" name="individualRoutePriority" value="high">
+<span class="radio-mark"></span>
+High
+</label>
+<label class="custom-radio">
+<input type="radio" name="individualRoutePriority" value="urgent">
+<span class="radio-mark"></span>
+Urgent
+</label>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+<textarea id="individualRouteNotes" rows="2" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary" placeholder="Add any special instructions or notes..."></textarea>
+</div>
+</div>
+</div>
+<div class="p-6 border-t bg-gray-50 flex justify-end space-x-3">
+<button id="cancelIndividualRouteBtn" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-button hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+<button id="assignIndividualRouteBtn" class="bg-primary text-white px-4 py-2 text-sm font-medium rounded-button whitespace-nowrap">Assign Routes</button>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -1362,7 +3334,7 @@ Assign
 </div>
 </div>
 <!-- Performance Analytics Section -->
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6 mb-6">
 <!-- Performance Chart -->
 <div class="lg:col-span-2 bg-white rounded-lg shadow">
 <div class="p-5 border-b flex justify-between items-center">
@@ -1452,7 +3424,7 @@ Update Commission Rate
 </div>
 </div>
 <!-- Driver Schedule and Availability -->
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6 mb-6">
 <!-- Driver Schedule Calendar -->
 <div class="lg:col-span-2 bg-white rounded-lg shadow">
 <div class="p-5 border-b flex justify-between items-center">
@@ -1483,10 +3455,11 @@ Update Commission Rate
 </div>
 <div class="grid grid-cols-7 gap-2">
 <div class="h-20 border rounded-lg p-1 text-xs">
-<div class="text-right mb-1 text-gray-500">26</div>
-<div class="bg-blue-100 text-blue-800 rounded px-1 py-0.5 mb-1 truncate">JM (8-4)</div>
-<div class="bg-green-100 text-green-800 rounded px-1 py-0.5 mb-1 truncate">RB (9-5)</div>
-<div class="bg-yellow-100 text-yellow-800 rounded px-1 py-0.5 truncate">+3 more</div>
+<div class="text-right mb-1 text-gray-500">30</div>
+<div class="bg-blue-100 text-blue-800 rounded px-1 py-0.5 mb-1 truncate">JM (8-4) • 32 parcels</div>
+<div class="bg-green-100 text-green-800 rounded px-1 py-0.5 mb-1 truncate">RB (9-5) • 28 parcels</div>
+<div class="bg-purple-100 text-purple-800 rounded px-1 py-0.5 mb-1 truncate">KL (10-6) • 25 parcels</div>
+<div class="bg-yellow-100 text-yellow-800 rounded px-1 py-0.5 truncate">+2 more</div>
 </div>
 <div class="h-20 border rounded-lg p-1 text-xs">
 <div class="text-right mb-1 text-gray-500">27</div>
@@ -2044,6 +4017,76 @@ Off Duty
 </div>
 <script id="filterDropdownScript">
 document.addEventListener('DOMContentLoaded', function() {
+const exportBtn = document.getElementById('exportBtn');
+const exportDropdown = document.getElementById('exportDropdown');
+const startExportBtn = document.getElementById('startExportBtn');
+const toggleExportDropdown = () => {
+const isVisible = !exportDropdown.classList.contains('hidden');
+exportDropdown.classList.toggle('hidden', isVisible);
+};
+exportBtn.addEventListener('click', (e) => {
+e.stopPropagation();
+toggleExportDropdown();
+});
+document.addEventListener('click', (e) => {
+if (!exportDropdown.contains(e.target) && !exportBtn.contains(e.target)) {
+exportDropdown.classList.add('hidden');
+}
+});
+startExportBtn.addEventListener('click', () => {
+const format = document.querySelector('input[name="exportFormat"]:checked').value;
+const dataSelection = document.querySelector('input[name="exportData"]:checked').value;
+// Show success notification
+const successNotification = document.createElement('div');
+successNotification.className = 'fixed top-4 right-4 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded shadow-lg z-50';
+successNotification.innerHTML = `
+<div class="flex items-center">
+<div class="w-5 h-5 flex items-center justify-center mr-2">
+<i class="ri-checkbox-circle-line"></i>
+</div>
+<p>Exporting data as ${format.toUpperCase()}...</p>
+</div>
+`;
+document.body.appendChild(successNotification);
+// Remove notification after 3 seconds
+setTimeout(() => {
+successNotification.remove();
+}, 3000);
+// Close dropdown
+exportDropdown.classList.add('hidden');
+// Simulate file download
+if (format !== 'print') {
+const link = document.createElement('a');
+link.href = '#';
+link.download = `driver_data.${format}`;
+link.click();
+} else {
+window.print();
+}
+});
+const listViewBtn = document.getElementById('listViewBtn');
+const gridViewBtn = document.getElementById('gridViewBtn');
+const driverListView = document.getElementById('driverListView');
+const driverGridView = document.querySelector('.grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3.xl\\:grid-cols-4.gap-6');
+const toggleView = (view) => {
+if (view === 'list') {
+listViewBtn.classList.remove('bg-white', 'hover:bg-gray-50');
+listViewBtn.classList.add('bg-primary', 'text-white');
+gridViewBtn.classList.remove('bg-primary', 'text-white');
+gridViewBtn.classList.add('bg-white', 'hover:bg-gray-50');
+driverListView.classList.remove('hidden');
+driverGridView.classList.add('hidden');
+} else {
+gridViewBtn.classList.remove('bg-white', 'hover:bg-gray-50');
+gridViewBtn.classList.add('bg-primary', 'text-white');
+listViewBtn.classList.remove('bg-primary', 'text-white');
+listViewBtn.classList.add('bg-white', 'hover:bg-gray-50');
+driverGridView.classList.remove('hidden');
+driverListView.classList.add('hidden');
+}
+};
+listViewBtn.addEventListener('click', () => toggleView('list'));
+gridViewBtn.addEventListener('click', () => toggleView('grid'));
 const statusFilterBtn = document.getElementById('statusFilterBtn');
 const statusFilterDropdown = document.getElementById('statusFilterDropdown');
 const ratingFilterBtn = document.getElementById('ratingFilterBtn');
@@ -2163,6 +4206,139 @@ currentMinRating.textContent = this.value;
 </script>
 <script id="addDriverModalScript">
 document.addEventListener('DOMContentLoaded', function() {
+const individualRouteModal = document.getElementById('individualRouteModal');
+const closeIndividualRouteModal = document.getElementById('closeIndividualRouteModal');
+const cancelIndividualRouteBtn = document.getElementById('cancelIndividualRouteBtn');
+const assignIndividualRouteBtn = document.getElementById('assignIndividualRouteBtn');
+const selectedDriverInfo = document.getElementById('selectedDriverInfo');
+const toggleIndividualRouteModal = (show, driverInfo = null) => {
+individualRouteModal.style.display = show ? 'flex' : 'none';
+if (show && driverInfo) {
+selectedDriverInfo.textContent = `${driverInfo.name} (${driverInfo.id})`;
+}
+if (show) {
+document.body.style.overflow = 'hidden';
+} else {
+document.body.style.overflow = '';
+}
+};
+// Add click event listeners for assign buttons
+document.querySelectorAll('.assign-route-btn').forEach(button => {
+button.addEventListener('click', () => {
+const driverId = button.getAttribute('data-driver-id');
+const driverName = button.getAttribute('data-driver-name');
+toggleIndividualRouteModal(true, { id: driverId, name: driverName });
+});
+});
+closeIndividualRouteModal.addEventListener('click', () => toggleIndividualRouteModal(false));
+cancelIndividualRouteBtn.addEventListener('click', () => toggleIndividualRouteModal(false));
+assignIndividualRouteBtn.addEventListener('click', () => {
+// Show success notification
+const successNotification = document.createElement('div');
+successNotification.className = 'fixed top-4 right-4 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded shadow-lg z-50';
+successNotification.innerHTML = `
+<div class="flex items-center">
+<div class="w-5 h-5 flex items-center justify-center mr-2">
+<i class="ri-checkbox-circle-line"></i>
+</div>
+<p>Routes assigned successfully</p>
+</div>
+`;
+document.body.appendChild(successNotification);
+setTimeout(() => {
+successNotification.remove();
+}, 3000);
+toggleIndividualRouteModal(false);
+});
+// Close modal when clicking outside
+window.addEventListener('click', (e) => {
+if (e.target === individualRouteModal) {
+toggleIndividualRouteModal(false);
+}
+});
+const editDriverModal = document.getElementById('editDriverModal');
+const closeEditDriverModal = document.getElementById('closeEditDriverModal');
+const cancelEditDriverBtn = document.getElementById('cancelEditDriverBtn');
+const saveDriverChangesBtn = document.getElementById('saveDriverChangesBtn');
+// Sample driver data - in a real app, this would come from your backend
+const driverData = {
+'DRV-2845': {
+firstName: 'John',
+lastName: 'Miller',
+email: 'john.miller@example.com',
+phone: '+1 (555) 123-4567',
+dob: '1990-05-15',
+driverId: 'DRV-2845',
+area: 'North District',
+commissionRate: '1.45',
+vehicleType: 'Car',
+status: 'active',
+notes: 'Experienced driver with excellent track record.'
+}
+};
+const toggleEditDriverModal = (show) => {
+editDriverModal.style.display = show ? 'flex' : 'none';
+if (show) {
+document.body.style.overflow = 'hidden';
+} else {
+document.body.style.overflow = '';
+}
+};
+const populateEditForm = (driverId) => {
+const driver = driverData[driverId];
+if (!driver) return;
+document.getElementById('editFirstName').value = driver.firstName;
+document.getElementById('editLastName').value = driver.lastName;
+document.getElementById('editEmail').value = driver.email;
+document.getElementById('editPhone').value = driver.phone;
+document.getElementById('editDob').value = driver.dob;
+document.getElementById('editDriverId').value = driver.driverId;
+document.getElementById('editArea').value = driver.area;
+document.getElementById('editCommissionRate').value = driver.commissionRate;
+document.getElementById('editVehicleType').value = driver.vehicleType;
+document.getElementById('editNotes').value = driver.notes;
+const statusRadios = document.getElementsByName('editDriverStatus');
+statusRadios.forEach(radio => {
+if (radio.value === driver.status) {
+radio.checked = true;
+}
+});
+};
+// Add click event listeners for edit buttons
+document.querySelectorAll('.edit-driver-btn').forEach(button => {
+button.addEventListener('click', () => {
+const driverId = button.getAttribute('data-driver-id');
+populateEditForm(driverId);
+toggleEditDriverModal(true);
+});
+});
+closeEditDriverModal.addEventListener('click', () => toggleEditDriverModal(false));
+cancelEditDriverBtn.addEventListener('click', () => toggleEditDriverModal(false));
+saveDriverChangesBtn.addEventListener('click', () => {
+// Show success notification
+const successNotification = document.createElement('div');
+successNotification.className = 'fixed top-4 right-4 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded shadow-lg z-50';
+successNotification.innerHTML = `
+<div class="flex items-center">
+<div class="w-5 h-5 flex items-center justify-center mr-2">
+<i class="ri-checkbox-circle-line"></i>
+</div>
+<p>Driver information updated successfully</p>
+</div>
+`;
+document.body.appendChild(successNotification);
+// Remove notification after 3 seconds
+setTimeout(() => {
+successNotification.remove();
+}, 3000);
+toggleEditDriverModal(false);
+});
+// Close modal when clicking outside
+window.addEventListener('click', (e) => {
+if (e.target === editDriverModal) {
+toggleEditDriverModal(false);
+}
+});
 const addDriverBtn = document.getElementById('addDriverBtn');
 const assignRoutesBtn = document.getElementById('assignRoutesBtn');
 const assignRoutesModal = document.getElementById('assignRoutesModal');
@@ -2354,7 +4530,6 @@ containLabel: true
 },
 xAxis: {
 type: 'category',
-boundaryGap: false,
 data: data.daily.xAxis,
 axisLine: {
 lineStyle: {
@@ -2408,49 +4583,23 @@ show: false
 series: [
 {
 name: 'Deliveries',
-type: 'line',
-smooth: true,
+type: 'bar',
 data: data.daily.deliveries,
 itemStyle: {
-color: 'rgba(87, 181, 231, 1)'
+color: 'rgba(87, 181, 231, 1)',
+borderRadius: [4, 4, 0, 0]
 },
-lineStyle: {
-width: 3
-},
-symbolSize: 0,
-areaStyle: {
-color: {
-type: 'linear',
-x: 0,
-y: 0,
-x2: 0,
-y2: 1,
-colorStops: [
-{
-offset: 0,
-color: 'rgba(87, 181, 231, 0.2)'
-},
-{
-offset: 1,
-color: 'rgba(87, 181, 231, 0.05)'
-}
-]
-}
-}
+barWidth: '40%'
 },
 {
 name: 'On-Time Rate',
-type: 'line',
+type: 'scatter',
 yAxisIndex: 1,
-smooth: true,
 data: data.daily.onTimeRate,
 itemStyle: {
 color: 'rgba(141, 211, 199, 1)'
 },
-lineStyle: {
-width: 3
-},
-symbolSize: 0
+symbolSize: 8
 }
 ]
 };
@@ -2472,16 +4621,23 @@ color: '#1f2937',
 fontSize: 12
 }
 },
+legend: {
+data: ['Available', 'On Break', 'Off Duty'],
+bottom: 0,
+textStyle: {
+color: '#1f2937'
+}
+},
 grid: {
 left: '3%',
 right: '4%',
-bottom: '3%',
+bottom: '15%',
 top: '3%',
 containLabel: true
 },
 xAxis: {
 type: 'category',
-data: ['8am', '10am', '12pm', '2pm', '4pm', '6pm', '8pm'],
+data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
 axisLine: {
 lineStyle: {
 color: '#e5e7eb'
@@ -2511,15 +4667,32 @@ color: '#f3f4f6'
 },
 series: [
 {
-name: 'Available Drivers',
+name: 'Available',
 type: 'bar',
 stack: 'total',
-data: [8, 10, 12, 14, 16, 12, 8],
+data: [12, 13, 14, 12, 13, 10, 8],
 itemStyle: {
-color: 'rgba(87, 181, 231, 1)',
-borderRadius: [4, 4, 0, 0]
+color: 'rgba(87, 181, 231, 1)'
 },
 barWidth: '60%'
+},
+{
+name: 'On Break',
+type: 'bar',
+stack: 'total',
+data: [2, 3, 2, 4, 3, 2, 1],
+itemStyle: {
+color: 'rgba(251, 191, 114, 1)'
+}
+},
+{
+name: 'Off Duty',
+type: 'bar',
+stack: 'total',
+data: [4, 2, 2, 2, 2, 6, 9],
+itemStyle: {
+color: 'rgba(252, 141, 98, 1)'
+}
 }
 ]
 };
@@ -2528,6 +4701,158 @@ availabilityChart.setOption(availabilityOption);
 window.addEventListener('resize', function() {
 performanceChart.resize();
 availabilityChart.resize();
+});
+});
+</script>
+<script id="notificationScript">
+document.addEventListener('DOMContentLoaded', function() {
+const notificationBtn = document.getElementById('notificationBtn');
+const notificationPanel = document.getElementById('notificationPanel');
+const markAllReadBtn = document.getElementById('markAllReadBtn');
+const messageBtn = document.getElementById('messageBtn');
+const messagePanel = document.getElementById('messagePanel');
+const newMessageBtn = document.getElementById('newMessageBtn');
+const toggleMessagePanel = () => {
+const isVisible = !messagePanel.classList.contains('hidden');
+messagePanel.classList.toggle('hidden', isVisible);
+// Hide notification panel when message panel is shown
+if (!isVisible) {
+notificationPanel.classList.add('hidden');
+}
+};
+messageBtn.addEventListener('click', (e) => {
+e.stopPropagation();
+toggleMessagePanel();
+});
+newMessageBtn.addEventListener('click', (e) => {
+e.stopPropagation();
+// Add new message functionality here
+const successNotification = document.createElement('div');
+successNotification.className = 'fixed top-4 right-4 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded shadow-lg z-50';
+successNotification.innerHTML = `
+<div class="flex items-center">
+<div class="w-5 h-5 flex items-center justify-center mr-2">
+<i class="ri-checkbox-circle-line"></i>
+</div>
+<p>New message created</p>
+</div>
+`;
+document.body.appendChild(successNotification);
+setTimeout(() => {
+successNotification.remove();
+}, 3000);
+});
+document.addEventListener('click', (e) => {
+if (!messagePanel.contains(e.target) && !messageBtn.contains(e.target)) {
+messagePanel.classList.add('hidden');
+}
+});
+messagePanel.addEventListener('click', (e) => {
+const conversation = e.target.closest('.p-4');
+if (conversation) {
+const driverName = conversation.querySelector('.text-sm.font-medium').textContent;
+const unreadDot = conversation.querySelector('.bg-primary');
+if (unreadDot) {
+unreadDot.remove();
+}
+// Add conversation click handling here
+const successNotification = document.createElement('div');
+successNotification.className = 'fixed top-4 right-4 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded shadow-lg z-50';
+successNotification.innerHTML = `
+<div class="flex items-center">
+<div class="w-5 h-5 flex items-center justify-center mr-2">
+<i class="ri-checkbox-circle-line"></i>
+</div>
+<p>Opening chat with ${driverName}</p>
+</div>
+`;
+document.body.appendChild(successNotification);
+setTimeout(() => {
+successNotification.remove();
+}, 3000);
+}
+});
+const toggleNotificationPanel = () => {
+const isVisible = !notificationPanel.classList.contains('hidden');
+notificationPanel.classList.toggle('hidden', isVisible);
+};
+notificationBtn.addEventListener('click', (e) => {
+e.stopPropagation();
+toggleNotificationPanel();
+});
+markAllReadBtn.addEventListener('click', (e) => {
+e.stopPropagation();
+const unreadDots = notificationPanel.querySelectorAll('.bg-red-500, .bg-primary, .bg-yellow-500');
+unreadDots.forEach(dot => {
+dot.parentElement.parentElement.classList.add('text-gray-500');
+dot.parentElement.classList.add('ml-5');
+dot.remove();
+});
+});
+document.addEventListener('click', (e) => {
+if (!notificationPanel.contains(e.target) && !notificationBtn.contains(e.target)) {
+notificationPanel.classList.add('hidden');
+}
+});
+notificationPanel.addEventListener('click', (e) => {
+if (e.target.closest('button') && e.target.closest('button').querySelector('.ri-check-line')) {
+const notification = e.target.closest('.flex');
+const dot = notification.querySelector('.w-2.h-2');
+if (dot) {
+notification.classList.add('text-gray-500');
+dot.parentElement.classList.add('ml-5');
+dot.remove();
+}
+}
+});
+});
+</script>
+<script id="radioButtonScript">
+document.addEventListener('DOMContentLoaded', function() {
+// Handle radio mark clicks
+document.addEventListener('click', function(e) {
+if (e.target.classList.contains('radio-mark')) {
+const radioInput = e.target.parentElement.querySelector('input[type="radio"]');
+if (radioInput) {
+radioInput.checked = true;
+radioInput.dispatchEvent(new Event('change', { bubbles: true }));
+}
+}
+});
+});
+</script>
+<script id="mobileMenuScript">
+document.addEventListener('DOMContentLoaded', function() {
+const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+const sidebar = document.getElementById('sidebar');
+const content = document.querySelector('.flex-1');
+const toggleMobileMenu = () => {
+    const isOpen = !sidebar.classList.contains('-translate-x-full');
+    sidebar.classList.toggle('-translate-x-full', isOpen);
+    document.body.style.overflow = isOpen ? '' : 'hidden';
+};
+mobileMenuBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleMobileMenu();
+});
+// Close sidebar when clicking outside
+document.addEventListener('click', (e) => {
+    const isSidebarClick = sidebar.contains(e.target);
+    const isMenuBtnClick = mobileMenuBtn.contains(e.target);
+    
+    if (!isSidebarClick && !isMenuBtnClick && window.innerWidth < 1024) {
+        sidebar.classList.add('-translate-x-full');
+        document.body.style.overflow = '';
+    }
+});
+// Handle window resize
+window.addEventListener('resize', () => {
+    if (window.innerWidth >= 1024) {
+        sidebar.classList.remove('-translate-x-full');
+        document.body.style.overflow = '';
+    } else {
+        sidebar.classList.add('-translate-x-full');
+    }
 });
 });
 </script>
