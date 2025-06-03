@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Route Details</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>tailwind.config={theme:{extend:{colors:{primary:'#4f46e5',secondary:'#6366f1'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+-webkit-appearance: none;
+margin: 0;
+}
+input[type="number"] {
+-moz-appearance: textfield;
+}
+.custom-checkbox {
+position: relative;
+display: inline-block;
+width: 18px;
+height: 18px;
+margin-right: 8px;
+}
+.custom-checkbox input {
+opacity: 0;
+width: 0;
+height: 0;
+}
+.checkmark {
+position: absolute;
+top: 0;
+left: 0;
+width: 18px;
+height: 18px;
+background-color: #fff;
+border: 2px solid #d1d5db;
+border-radius: 4px;
+}
+.custom-checkbox input:checked ~ .checkmark {
+background-color: #4f46e5;
+border-color: #4f46e5;
+}
+.checkmark:after {
+content: "";
+position: absolute;
+display: none;
+}
+.custom-checkbox input:checked ~ .checkmark:after {
+display: block;
+}
+.custom-checkbox .checkmark:after {
+left: 5px;
+top: 2px;
+width: 6px;
+height: 10px;
+border: solid white;
+border-width: 0 2px 2px 0;
+transform: rotate(45deg);
+}
+.custom-switch {
+position: relative;
+display: inline-block;
+width: 44px;
+height: 24px;
+}
+.custom-switch input {
+opacity: 0;
+width: 0;
+height: 0;
+}
+.switch-slider {
+position: absolute;
+cursor: pointer;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: #e5e7eb;
+transition: .4s;
+border-radius: 24px;
+}
+.switch-slider:before {
+position: absolute;
+content: "";
+height: 18px;
+width: 18px;
+left: 3px;
+bottom: 3px;
+background-color: white;
+transition: .4s;
+border-radius: 50%;
+}
+.custom-switch input:checked + .switch-slider {
+background-color: #4f46e5;
+}
+.custom-switch input:checked + .switch-slider:before {
+transform: translateX(20px);
+}
+.custom-range {
+-webkit-appearance: none;
+width: 100%;
+height: 6px;
+border-radius: 5px;
+background: #e5e7eb;
+outline: none;
+}
+.custom-range::-webkit-slider-thumb {
+-webkit-appearance: none;
+appearance: none;
+width: 18px;
+height: 18px;
+border-radius: 50%;
+background: #4f46e5;
+cursor: pointer;
+}
+.custom-range::-moz-range-thumb {
+width: 18px;
+height: 18px;
+border-radius: 50%;
+background: #4f46e5;
+cursor: pointer;
+border: none;
+}
+.custom-radio {
+position: relative;
+display: inline-block;
+width: 18px;
+height: 18px;
+margin-right: 8px;
+}
+.custom-radio input {
+opacity: 0;
+width: 0;
+height: 0;
+}
+.radio-mark {
+position: absolute;
+top: 0;
+left: 0;
+width: 18px;
+height: 18px;
+background-color: #fff;
+border: 2px solid #d1d5db;
+border-radius: 50%;
+}
+.custom-radio input:checked ~ .radio-mark {
+border-color: #4f46e5;
+}
+.radio-mark:after {
+content: "";
+position: absolute;
+display: none;
+}
+.custom-radio input:checked ~ .radio-mark:after {
+display: block;
+}
+.custom-radio .radio-mark:after {
+top: 3px;
+left: 3px;
+width: 8px;
+height: 8px;
+border-radius: 50%;
+background: #4f46e5;
+}
+</style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+<div class="min-h-screen flex flex-col">
+<!-- Top Navigation Bar -->
+<header class="bg-white shadow-sm border-b border-gray-200">
+<div class="px-4 py-3 flex items-center justify-between">
+<div class="flex items-center space-x-4">
+<a href="https://readdy.ai/home/a4cb12ef-b4e2-415e-889e-29c37723d4f1/7c1ccd11-a89d-4d98-844a-5d26df14bf3e" data-readdy="true" class="flex items-center text-gray-700 hover:text-primary transition-colors">
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-arrow-left-line ri-lg"></i>
+</div>
+<span class="ml-1 font-medium">Back to Routes</span>
+</a>
+<div class="hidden md:flex items-center">
+<span class="font-semibold text-lg">Route #RT-58924</span>
+<span class="ml-2 px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">In Progress</span>
+</div>
+</div>
+<div class="flex items-center space-x-3">
+<button class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-button hover:bg-gray-50 whitespace-nowrap">
+<div class="w-5 h-5 flex items-center justify-center mr-1">
+<i class="ri-share-line"></i>
+</div>
+<span>Share</span>
+</button>
+<button class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-button hover:bg-gray-50 whitespace-nowrap">
+<div class="w-5 h-5 flex items-center justify-center mr-1">
+<i class="ri-download-line"></i>
+</div>
+<span>Export</span>
+</button>
+<div class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 cursor-pointer hover:bg-gray-200">
+<i class="ri-more-2-fill ri-lg"></i>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-1 px-4 py-6 max-w-7xl mx-auto w-full">
+<div class="md:hidden mb-4">
+<div class="flex items-center">
+<span class="font-semibold text-lg">Route #RT-58924</span>
+<span class="ml-2 px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">In Progress</span>
+</div>
+</div>
+<!-- Top Section: Route Overview and Map -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+<!-- Route Overview Card -->
+<div class="bg-white rounded shadow-sm border border-gray-100 p-5">
+<h2 class="text-lg font-semibold mb-4">Route Overview</h2>
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<span class="text-gray-600">District</span>
+<span class="font-medium">North Manhattan</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-gray-600">Total Parcels</span>
+<div class="flex items-center">
+<span class="font-medium">42</span>
+<span class="ml-2 px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">28 Delivered</span>
+</div>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-gray-600">Completion</span>
+<div class="flex items-center">
+<div class="w-32 bg-gray-200 rounded-full h-2.5 mr-2">
+<div class="bg-primary h-2.5 rounded-full" style="width: 67%"></div>
+</div>
+<span class="font-medium">67%</span>
+</div>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-gray-600">Est. Completion</span>
+<span class="font-medium">Today, 4:30 PM</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-gray-600">Total Distance</span>
+<span class="font-medium">18.5 miles</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-gray-600">Duration</span>
+<span class="font-medium">3h 45m</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-gray-600">Start Time</span>
+<span class="font-medium">9:15 AM</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-gray-600">Vehicle</span>
+<span class="font-medium">Ford Transit (NY-47852)</span>
+</div>
+</div>
+<div class="mt-6 flex space-x-3">
+<button onclick="openEditModal()" class="flex-1 flex items-center justify-center px-4 py-2 bg-primary text-white rounded-button hover:bg-primary/90 whitespace-nowrap">
+<div class="w-5 h-5 flex items-center justify-center mr-1">
+<i class="ri-edit-line"></i>
+</div>
+<span>Edit Route</span>
+</button>
+<button class="flex-1 flex items-center justify-center px-4 py-2 border border-gray-300 text-gray-700 rounded-button hover:bg-gray-50 whitespace-nowrap">
+<div class="w-5 h-5 flex items-center justify-center mr-1">
+<i class="ri-refresh-line"></i>
+</div>
+<span>Optimize</span>
+</button>
+<!-- Edit Route Modal -->
+<div id="editRouteModal" class="fixed inset-0 bg-gray-500 bg-opacity-50 hidden items-center justify-center z-50">
+<div class="bg-white rounded-lg shadow-xl w-full max-w-2xl mx-4">
+<div class="flex items-center justify-between p-4 border-b border-gray-200">
+<h3 class="text-xl font-semibold">Edit Route Details</h3>
+<button onclick="closeEditModal()" class="p-2 hover:bg-gray-100 rounded-full">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="p-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-4">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Route Name/ID</label>
+<input type="text" value="RT-58924" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">District</label>
+<input type="text" value="North Manhattan" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Vehicle</label>
+<select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary pr-8">
+<option>Ford Transit (NY-47852)</option>
+<option>Mercedes Sprinter (NY-58963)</option>
+<option>Ram ProMaster (NY-36541)</option>
+</select>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Start Time</label>
+<input type="time" value="09:15" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
+</div>
+</div>
+<div class="space-y-4">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Assign Driver</label>
+<select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary pr-8">
+<option>Michael Rodriguez (DRV-2458)</option>
+<option>Sarah Williams (DRV-2459)</option>
+<option>John Davis (DRV-2460)</option>
+</select>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Priority Level</label>
+<select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary pr-8">
+<option>Normal</option>
+<option>High</option>
+<option>Urgent</option>
+</select>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+<textarea class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary" rows="4" placeholder="Add any special instructions or notes..."></textarea>
+</div>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-end gap-3 p-4 border-t border-gray-200">
+<button onclick="closeEditModal()" class="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-button hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+<button onclick="saveRouteChanges()" class="px-4 py-2 text-white bg-primary rounded-button hover:bg-primary/90 whitespace-nowrap">Save Changes</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Interactive Map -->
+<div class="lg:col-span-2 bg-white rounded shadow-sm border border-gray-100 overflow-hidden">
+<div class="flex items-center justify-between p-4 border-b border-gray-100">
+<h2 class="text-lg font-semibold">Route Map</h2>
+<div class="flex space-x-2">
+<button class="p-2 text-gray-600 hover:bg-gray-100 rounded-full">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-fullscreen-line"></i>
+</div>
+</button>
+<button class="p-2 text-gray-600 hover:bg-gray-100 rounded-full">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-refresh-line"></i>
+</div>
+</button>
+<button class="p-2 text-gray-600 hover:bg-gray-100 rounded-full">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-settings-3-line"></i>
+</div>
+</button>
+</div>
+</div>
+<div class="p-4">
+<div class="flex mb-3 space-x-2">
+<button class="px-3 py-1.5 text-sm bg-primary text-white rounded-button hover:bg-primary/90 whitespace-nowrap">All Stops</button>
+<button class="px-3 py-1.5 text-sm text-gray-700 bg-gray-100 rounded-button hover:bg-gray-200 whitespace-nowrap">Completed</button>
+<button class="px-3 py-1.5 text-sm text-gray-700 bg-gray-100 rounded-button hover:bg-gray-200 whitespace-nowrap">Remaining</button>
+<button class="px-3 py-1.5 text-sm text-gray-700 bg-gray-100 rounded-button hover:bg-gray-200 whitespace-nowrap">Traffic</button>
+</div>
+<div class="relative h-[400px] bg-cover bg-center" style="background-image: url('https://public.readdy.ai/gen_page/map_placeholder_1280x720.png');">
+<div class="absolute bottom-4 right-4 flex flex-col space-y-2">
+<button class="w-8 h-8 bg-white rounded-full shadow-md flex items-center justify-center">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-add-line"></i>
+</div>
+</button>
+<button class="w-8 h-8 bg-white rounded-full shadow-md flex items-center justify-center">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-subtract-line"></i>
+</div>
+</button>
+</div>
+<div class="absolute bottom-4 left-4 bg-white px-3 py-2 rounded-lg shadow-md flex items-center space-x-2">
+<div class="flex items-center">
+<div class="w-3 h-3 rounded-full bg-green-500 mr-1"></div>
+<span class="text-xs">Completed</span>
+</div>
+<div class="flex items-center">
+<div class="w-3 h-3 rounded-full bg-blue-500 mr-1"></div>
+<span class="text-xs">Current</span>
+</div>
+<div class="flex items-center">
+<div class="w-3 h-3 rounded-full bg-gray-500 mr-1"></div>
+<span class="text-xs">Pending</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Middle Section: Driver Info and Analytics -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+<!-- Driver Information -->
+<div class="bg-white rounded shadow-sm border border-gray-100 p-5">
+<div class="flex justify-between items-center mb-4">
+<h2 class="text-lg font-semibold">Driver Information</h2>
+<button class="text-primary hover:text-primary/80">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-user-add-line"></i>
+</div>
+</button>
+</div>
+<div class="space-y-5">
+<div class="flex items-center">
+<div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center mr-3">
+<div class="w-6 h-6 flex items-center justify-center text-gray-500">
+<i class="ri-user-line"></i>
+</div>
+</div>
+<div class="flex-1">
+<div class="flex items-center">
+<h3 class="font-medium">Michael Rodriguez</h3>
+<span class="ml-2 px-2 py-0.5 text-xs font-medium rounded-full bg-green-100 text-green-800">Active</span>
+</div>
+<div class="flex items-center text-sm text-gray-500 mt-0.5">
+<div class="w-4 h-4 flex items-center justify-center mr-1">
+<i class="ri-star-fill text-yellow-400"></i>
+</div>
+<span>4.8</span>
+<span class="mx-2">•</span>
+<span>ID: DRV-2458</span>
+</div>
+</div>
+<div class="flex space-x-2">
+<button class="p-2 text-gray-600 hover:bg-gray-100 rounded-full">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-phone-line"></i>
+</div>
+</button>
+<button class="p-2 text-gray-600 hover:bg-gray-100 rounded-full">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-message-2-line"></i>
+</div>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-3 text-sm">
+<div>
+<div class="text-gray-500">Current Location</div>
+<div class="font-medium">W 34th St & 8th Ave</div>
+</div>
+<div>
+<div class="text-gray-500">Next Stop</div>
+<div class="font-medium">W 42nd St & Broadway</div>
+</div>
+<div>
+<div class="text-gray-500">Parcels Assigned</div>
+<div class="font-medium">42 packages</div>
+</div>
+<div>
+<div class="text-gray-500">Parcels Delivered</div>
+<div class="font-medium">28 packages</div>
+</div>
+</div>
+<div class="pt-3 border-t border-gray-100">
+<h4 class="font-medium mb-2">Today's Performance</h4>
+<div class="grid grid-cols-3 gap-2 text-center">
+<div class="bg-gray-50 p-2 rounded">
+<div class="text-xl font-semibold text-primary">98%</div>
+<div class="text-xs text-gray-500">On-Time</div>
+</div>
+<div class="bg-gray-50 p-2 rounded">
+<div class="text-xl font-semibold text-primary">4.2</div>
+<div class="text-xs text-gray-500">min/stop</div>
+</div>
+<div class="bg-gray-50 p-2 rounded">
+<div class="text-xl font-semibold text-primary">8.7</div>
+<div class="text-xs text-gray-500">stops/hr</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Analytics Dashboard -->
+<div class="lg:col-span-2 bg-white rounded shadow-sm border border-gray-100 p-5">
+<h2 class="text-lg font-semibold mb-4">Route Analytics</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+<div class="bg-gray-50 p-4 rounded">
+<div class="flex items-center justify-between mb-2">
+<h3 class="text-sm font-medium text-gray-600">Delivery Progress</h3>
+<span class="text-sm text-gray-500">67% Complete</span>
+</div>
+<div id="deliveryProgressChart" class="h-[150px]"></div>
+</div>
+<div class="bg-gray-50 p-4 rounded">
+<div class="flex items-center justify-between mb-2">
+<h3 class="text-sm font-medium text-gray-600">Delivery Time Distribution</h3>
+<span class="text-sm text-gray-500">Avg: 4.2 min</span>
+</div>
+<div id="timeDistributionChart" class="h-[150px]"></div>
+</div>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="p-3 border border-gray-100 rounded">
+<div class="text-sm text-gray-500 mb-1">On-Time Rate</div>
+<div class="text-2xl font-semibold">98%</div>
+<div class="flex items-center text-xs text-green-600 mt-1">
+<div class="w-3 h-3 flex items-center justify-center mr-1">
+<i class="ri-arrow-up-line"></i>
+</div>
+<span>2.5% vs last week</span>
+</div>
+</div>
+<div class="p-3 border border-gray-100 rounded">
+<div class="text-sm text-gray-500 mb-1">Avg Delivery Time</div>
+<div class="text-2xl font-semibold">4.2 min</div>
+<div class="flex items-center text-xs text-green-600 mt-1">
+<div class="w-3 h-3 flex items-center justify-center mr-1">
+<i class="ri-arrow-down-line"></i>
+</div>
+<span>0.3 min vs last week</span>
+</div>
+</div>
+<div class="p-3 border border-gray-100 rounded">
+<div class="text-sm text-gray-500 mb-1">Route Efficiency</div>
+<div class="text-2xl font-semibold">86%</div>
+<div class="flex items-center text-xs text-green-600 mt-1">
+<div class="w-3 h-3 flex items-center justify-center mr-1">
+<i class="ri-arrow-up-line"></i>
+</div>
+<span>1.8% vs last week</span>
+</div>
+</div>
+<div class="p-3 border border-gray-100 rounded">
+<div class="text-sm text-gray-500 mb-1">Fuel Consumption</div>
+<div class="text-2xl font-semibold">3.2 gal</div>
+<div class="flex items-center text-xs text-red-600 mt-1">
+<div class="w-3 h-3 flex items-center justify-center mr-1">
+<i class="ri-arrow-up-line"></i>
+</div>
+<span>0.2 gal vs last week</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Section: Delivery Timeline and Parcel Details -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Delivery Timeline -->
+<div class="bg-white rounded shadow-sm border border-gray-100 p-5">
+<div class="flex justify-between items-center mb-4">
+<h2 class="text-lg font-semibold">Delivery Timeline</h2>
+<div class="flex items-center">
+<span class="text-sm text-gray-500 mr-2">Show completed</span>
+<label class="custom-switch">
+<input type="checkbox" checked>
+<span class="switch-slider"></span>
+</label>
+</div>
+</div>
+<div class="space-y-6 relative">
+<div class="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-200"></div>
+<!-- Completed Stop -->
+<div class="relative pl-10">
+<div class="absolute left-2.5 top-1 w-3 h-3 rounded-full bg-green-500 z-10"></div>
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-medium">123 W 34th St</h3>
+<p class="text-sm text-gray-500">3 parcels delivered</p>
+</div>
+<div class="text-right">
+<div class="text-sm font-medium">9:32 AM</div>
+<div class="text-xs text-gray-500">On time</div>
+</div>
+</div>
+</div>
+<!-- Completed Stop -->
+<div class="relative pl-10">
+<div class="absolute left-2.5 top-1 w-3 h-3 rounded-full bg-green-500 z-10"></div>
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-medium">456 W 36th St</h3>
+<p class="text-sm text-gray-500">2 parcels delivered</p>
+</div>
+<div class="text-right">
+<div class="text-sm font-medium">10:15 AM</div>
+<div class="text-xs text-gray-500">On time</div>
+</div>
+</div>
+</div>
+<!-- Current Stop -->
+<div class="relative pl-10">
+<div class="absolute left-2.5 top-1 w-3 h-3 rounded-full bg-blue-500 z-10"></div>
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-medium">789 W 38th St</h3>
+<p class="text-sm text-gray-500">4 parcels in progress</p>
+</div>
+<div class="text-right">
+<div class="text-sm font-medium">11:05 AM</div>
+<div class="text-xs text-blue-600">Current stop</div>
+</div>
+</div>
+</div>
+<!-- Upcoming Stop -->
+<div class="relative pl-10">
+<div class="absolute left-2.5 top-1 w-3 h-3 rounded-full bg-gray-400 z-10"></div>
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-medium">321 W 42nd St</h3>
+<p class="text-sm text-gray-500">5 parcels pending</p>
+</div>
+<div class="text-right">
+<div class="text-sm font-medium">11:45 AM</div>
+<div class="text-xs text-gray-500">Estimated</div>
+</div>
+</div>
+</div>
+<!-- Upcoming Stop -->
+<div class="relative pl-10">
+<div class="absolute left-2.5 top-1 w-3 h-3 rounded-full bg-gray-400 z-10"></div>
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-medium">654 Broadway</h3>
+<p class="text-sm text-gray-500">2 parcels pending</p>
+</div>
+<div class="text-right">
+<div class="text-sm font-medium">12:30 PM</div>
+<div class="text-xs text-gray-500">Estimated</div>
+</div>
+</div>
+</div>
+<!-- Upcoming Stop -->
+<div class="relative pl-10">
+<div class="absolute left-2.5 top-1 w-3 h-3 rounded-full bg-gray-400 z-10"></div>
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-medium">987 5th Ave</h3>
+<p class="text-sm text-gray-500">3 parcels pending</p>
+</div>
+<div class="text-right">
+<div class="text-sm font-medium">1:15 PM</div>
+<div class="text-xs text-gray-500">Estimated</div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-4 text-center">
+<button class="text-primary hover:text-primary/80 text-sm font-medium">
+Show all stops (15)
+</button>
+</div>
+</div>
+<!-- Parcel Details -->
+<div class="lg:col-span-2 bg-white rounded shadow-sm border border-gray-100">
+<div class="p-5 border-b border-gray-100">
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+<h2 class="text-lg font-semibold">Parcel Details</h2>
+<div class="flex items-center space-x-2">
+<div class="relative">
+<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+<div class="w-5 h-5 flex items-center justify-center text-gray-400">
+<i class="ri-search-line"></i>
+</div>
+</div>
+<input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full pl-10 p-2.5" placeholder="Search parcels...">
+</div>
+<button class="p-2.5 text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-filter-3-line"></i>
+</div>
+</button>
+</div>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="min-w-full divide-y divide-gray-200">
+<thead class="bg-gray-50">
+<tr>
+<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+<div class="flex items-center">
+<label class="custom-checkbox">
+<input type="checkbox">
+<span class="checkmark"></span>
+</label>
+Parcel ID
+</div>
+</th>
+<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+Recipient
+</th>
+<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+Address
+</th>
+<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+Status
+</th>
+<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+ETA
+</th>
+<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+Actions
+</th>
+</tr>
+</thead>
+<tbody class="bg-white divide-y divide-gray-200">
+<tr>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<label class="custom-checkbox">
+<input type="checkbox">
+<span class="checkmark"></span>
+</label>
+<span class="ml-1 text-sm font-medium">PKG-78542</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm">Emily Johnson</div>
+<div class="text-xs text-gray-500">+1 (212) 555-3698</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm">321 W 42nd St, Apt 5B</div>
+<div class="text-xs text-gray-500">New York, NY 10036</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-800">Pending</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm">
+11:45 AM
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm">
+<div class="flex space-x-2">
+<button class="p-1 text-gray-600 hover:text-primary">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-eye-line"></i>
+</div>
+</button>
+<button class="p-1 text-gray-600 hover:text-primary">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-edit-line"></i>
+</div>
+</button>
+<button class="p-1 text-gray-600 hover:text-primary">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-more-2-line"></i>
+</div>
+</button>
+</div>
+</td>
+</tr>
+<tr>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<label class="custom-checkbox">
+<input type="checkbox">
+<span class="checkmark"></span>
+</label>
+<span class="ml-1 text-sm font-medium">PKG-78543</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm">David Wilson</div>
+<div class="text-xs text-gray-500">+1 (212) 555-4782</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm">654 Broadway, Suite 302</div>
+<div class="text-xs text-gray-500">New York, NY 10012</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-800">Pending</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm">
+12:30 PM
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm">
+<div class="flex space-x-2">
+<button class="p-1 text-gray-600 hover:text-primary">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-eye-line"></i>
+</div>
+</button>
+<button class="p-1 text-gray-600 hover:text-primary">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-edit-line"></i>
+</div>
+</button>
+<button class="p-1 text-gray-600 hover:text-primary">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-more-2-line"></i>
+</div>
+</button>
+</div>
+</td>
+</tr>
+<tr>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<label class="custom-checkbox">
+<input type="checkbox">
+<span class="checkmark"></span>
+</label>
+<span class="ml-1 text-sm font-medium">PKG-78544</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm">Sophia Martinez</div>
+<div class="text-xs text-gray-500">+1 (212) 555-9231</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm">789 W 38th St, Floor 2</div>
+<div class="text-xs text-gray-500">New York, NY 10018</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">In Progress</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm">
+11:05 AM
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm">
+<div class="flex space-x-2">
+<button class="p-1 text-gray-600 hover:text-primary">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-eye-line"></i>
+</div>
+</button>
+<button class="p-1 text-gray-600 hover:text-primary">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-edit-line"></i>
+</div>
+</button>
+<button class="p-1 text-gray-600 hover:text-primary">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-more-2-line"></i>
+</div>
+</button>
+</div>
+</td>
+</tr>
+<tr>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<label class="custom-checkbox">
+<input type="checkbox" checked>
+<span class="checkmark"></span>
+</label>
+<span class="ml-1 text-sm font-medium">PKG-78539</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm">James Thompson</div>
+<div class="text-xs text-gray-500">+1 (212) 555-6547</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm">456 W 36th St, Apt 12C</div>
+<div class="text-xs text-gray-500">New York, NY 10018</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">Delivered</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm">
+10:15 AM
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm">
+<div class="flex space-x-2">
+<button class="p-1 text-gray-600 hover:text-primary">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-eye-line"></i>
+</div>
+</button>
+<button class="p-1 text-gray-600 hover:text-primary">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-edit-line"></i>
+</div>
+</button>
+<button class="p-1 text-gray-600 hover:text-primary">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-more-2-line"></i>
+</div>
+</button>
+</div>
+</td>
+</tr>
+<tr>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<label class="custom-checkbox">
+<input type="checkbox" checked>
+<span class="checkmark"></span>
+</label>
+<span class="ml-1 text-sm font-medium">PKG-78536</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm">Olivia Anderson</div>
+<div class="text-xs text-gray-500">+1 (212) 555-8924</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm">123 W 34th St, Suite 500</div>
+<div class="text-xs text-gray-500">New York, NY 10001</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">Delivered</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm">
+9:32 AM
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm">
+<div class="flex space-x-2">
+<button class="p-1 text-gray-600 hover:text-primary">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-eye-line"></i>
+</div>
+</button>
+<button class="p-1 text-gray-600 hover:text-primary">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-edit-line"></i>
+</div>
+</button>
+<button class="p-1 text-gray-600 hover:text-primary">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-more-2-line"></i>
+</div>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-5 py-3 flex items-center justify-between border-t border-gray-200">
+<div class="flex items-center">
+<select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block p-2.5 pr-8">
+<option>10 per page</option>
+<option>25 per page</option>
+<option>50 per page</option>
+</select>
+<span class="text-sm text-gray-500 ml-4">Showing 1-5 of 42 parcels</span>
+</div>
+<div class="flex items-center space-x-2">
+<button class="px-3 py-1 border border-gray-300 rounded-lg text-sm text-gray-500 hover:bg-gray-50 whitespace-nowrap">Previous</button>
+<button class="px-3 py-1 border border-primary bg-primary text-white rounded-lg text-sm hover:bg-primary/90 whitespace-nowrap">1</button>
+<button class="px-3 py-1 border border-gray-300 rounded-lg text-sm text-gray-500 hover:bg-gray-50 whitespace-nowrap">2</button>
+<button class="px-3 py-1 border border-gray-300 rounded-lg text-sm text-gray-500 hover:bg-gray-50 whitespace-nowrap">3</button>
+<button class="px-3 py-1 border border-gray-300 rounded-lg text-sm text-gray-500 hover:bg-gray-50 whitespace-nowrap">Next</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Action Button -->
+<div class="fixed bottom-6 right-6">
+<div class="relative" id="floatingActionButton">
+<button class="w-14 h-14 rounded-full bg-primary text-white shadow-lg flex items-center justify-center hover:bg-primary/90" id="fabButton">
+<div class="w-6 h-6 flex items-center justify-center">
+<i class="ri-add-line ri-xl"></i>
+</div>
+</button>
+<div class="absolute bottom-full right-0 mb-2 hidden" id="fabMenu">
+<div class="bg-white rounded-lg shadow-lg overflow-hidden">
+<a href="https://readdy.ai/home/a4cb12ef-b4e2-415e-889e-29c37723d4f1/e186e31e-58c4-4f8a-a42e-783abdca3b46" data-readdy="true" class="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 whitespace-nowrap">
+<div class="w-5 h-5 flex items-center justify-center mr-2">
+<i class="ri-edit-line"></i>
+</div>
+<span>Edit Route</span>
+</a>
+<button onclick="openReassignModal()" class="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 whitespace-nowrap">
+<div class="w-5 h-5 flex items-center justify-center mr-2">
+<i class="ri-user-add-line"></i>
+</div>
+<span>Reassign Driver</span>
+</button>
+<!-- Reassign Driver Modal -->
+<div id="reassignDriverModal" class="fixed inset-0 bg-gray-500 bg-opacity-50 hidden items-center justify-center z-50">
+<div class="bg-white rounded-lg shadow-xl w-full max-w-2xl mx-4">
+<div class="flex items-center justify-between p-4 border-b border-gray-200">
+<h3 class="text-xl font-semibold">Reassign Route Driver</h3>
+<button onclick="closeReassignModal()" class="p-2 hover:bg-gray-100 rounded-full">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="p-6">
+<div class="mb-6 bg-gray-50 p-4 rounded-lg">
+<h4 class="font-medium mb-2">Current Assignment</h4>
+<div class="grid grid-cols-2 gap-4 text-sm">
+<div>
+<div class="text-gray-500">Route ID</div>
+<div class="font-medium">RT-58924</div>
+</div>
+<div>
+<div class="text-gray-500">Current Driver</div>
+<div class="font-medium">Michael Rodriguez (DRV-2458)</div>
+</div>
+<div>
+<div class="text-gray-500">Completion Status</div>
+<div class="font-medium">67% (28/42 parcels)</div>
+</div>
+<div>
+<div class="text-gray-500">Estimated Completion</div>
+<div class="font-medium">Today, 4:30 PM</div>
+</div>
+</div>
+</div>
+<div class="space-y-4">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Select New Driver</label>
+<select id="newDriverSelect" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary pr-8">
+<option value="">Select a driver...</option>
+<option value="DRV-2459">Sarah Williams (DRV-2459) - ★4.9 - Available</option>
+<option value="DRV-2460">John Davis (DRV-2460) - ★4.7 - Available</option>
+<option value="DRV-2461">Emma Thompson (DRV-2461) - ★4.8 - Available</option>
+<option value="DRV-2462">Robert Wilson (DRV-2462) - ★4.6 - Available</option>
+</select>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Reason for Reassignment</label>
+<select id="reassignmentReason" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary pr-8">
+<option value="">Select reason...</option>
+<option value="emergency">Driver Emergency</option>
+<option value="schedule">Schedule Conflict</option>
+<option value="performance">Performance Issues</option>
+<option value="request">Driver Request</option>
+<option value="optimization">Route Optimization</option>
+<option value="other">Other</option>
+</select>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Additional Notes</label>
+<textarea id="reassignmentNotes" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary" rows="3" placeholder="Enter any additional notes or instructions..."></textarea>
+</div>
+<div class="space-y-3">
+<label class="block text-sm font-medium text-gray-700">Notification Settings</label>
+<div class="flex items-center">
+<label class="custom-checkbox">
+<input type="checkbox" id="notifyCurrentDriver" checked>
+<span class="checkmark"></span>
+</label>
+<span class="ml-2 text-sm">Notify current driver (Michael Rodriguez)</span>
+</div>
+<div class="flex items-center">
+<label class="custom-checkbox">
+<input type="checkbox" id="notifyNewDriver" checked>
+<span class="checkmark"></span>
+</label>
+<span class="ml-2 text-sm">Notify new driver</span>
+</div>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-end gap-3 p-4 border-t border-gray-200">
+<button onclick="closeReassignModal()" class="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-button hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+<button onclick="confirmReassignment()" class="px-4 py-2 text-white bg-primary rounded-button hover:bg-primary/90 whitespace-nowrap">Confirm Reassignment</button>
+</div>
+</div>
+</div>
+<button class="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 whitespace-nowrap">
+<div class="w-5 h-5 flex items-center justify-center mr-2">
+<i class="ri-map-pin-add-line"></i>
+</div>
+<span>Add Stop</span>
+</button>
+<button class="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 whitespace-nowrap">
+<div class="w-5 h-5 flex items-center justify-center mr-2">
+<i class="ri-file-chart-line"></i>
+</div>
+<span>Generate Report</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Charts Initialization -->
+<script id="chartsInitialization">
+document.addEventListener('DOMContentLoaded', function() {
+// Delivery Progress Chart
+const deliveryProgressChart = echarts.init(document.getElementById('deliveryProgressChart'));
+const deliveryProgressOption = {
+animation: false,
+tooltip: {
+trigger: 'axis',
+backgroundColor: 'rgba(255, 255, 255, 0.8)',
+borderColor: '#ddd',
+borderWidth: 1,
+textStyle: {
+color: '#1f2937'
+}
+},
+grid: {
+top: 10,
+right: 10,
+bottom: 20,
+left: 40
+},
+xAxis: {
+type: 'category',
+data: ['9AM', '10AM', '11AM', '12PM', '1PM', '2PM', '3PM', '4PM'],
+axisLine: {
+lineStyle: {
+color: '#ddd'
+}
+},
+axisLabel: {
+color: '#1f2937',
+fontSize: 10
+}
+},
+yAxis: {
+type: 'value',
+axisLine: {
+show: false
+},
+axisLabel: {
+color: '#1f2937',
+fontSize: 10
+},
+splitLine: {
+lineStyle: {
+color: '#eee'
+}
+}
+},
+series: [
+{
+name: 'Completed',
+type: 'line',
+smooth: true,
+symbol: 'none',
+lineStyle: {
+width: 3,
+color: 'rgba(87, 181, 231, 1)'
+},
+areaStyle: {
+color: {
+type: 'linear',
+x: 0,
+y: 0,
+x2: 0,
+y2: 1,
+colorStops: [
+{
+offset: 0,
+color: 'rgba(87, 181, 231, 0.2)'
+},
+{
+offset: 1,
+color: 'rgba(87, 181, 231, 0.01)'
+}
+]
+}
+},
+data: [3, 8, 17, 22, 28, 28, 28, 28]
+},
+{
+name: 'Planned',
+type: 'line',
+smooth: true,
+symbol: 'none',
+lineStyle: {
+width: 3,
+color: 'rgba(141, 211, 199, 1)',
+type: 'dashed'
+},
+data: [0, 5, 15, 25, 32, 37, 40, 42]
+}
+]
+};
+deliveryProgressChart.setOption(deliveryProgressOption);
+// Time Distribution Chart
+const timeDistributionChart = echarts.init(document.getElementById('timeDistributionChart'));
+const timeDistributionOption = {
+animation: false,
+tooltip: {
+trigger: 'item',
+backgroundColor: 'rgba(255, 255, 255, 0.8)',
+borderColor: '#ddd',
+borderWidth: 1,
+textStyle: {
+color: '#1f2937'
+}
+},
+grid: {
+top: 10,
+right: 10,
+bottom: 20,
+left: 40
+},
+xAxis: {
+type: 'category',
+data: ['<2min', '2-4min', '4-6min', '6-8min', '>8min'],
+axisLine: {
+lineStyle: {
+color: '#ddd'
+}
+},
+axisLabel: {
+color: '#1f2937',
+fontSize: 10
+}
+},
+yAxis: {
+type: 'value',
+axisLine: {
+show: false
+},
+axisLabel: {
+color: '#1f2937',
+fontSize: 10
+},
+splitLine: {
+lineStyle: {
+color: '#eee'
+}
+}
+},
+series: [
+{
+name: 'Deliveries',
+type: 'bar',
+barWidth: '60%',
+itemStyle: {
+color: 'rgba(251, 191, 114, 1)',
+borderRadius: [4, 4, 0, 0]
+},
+data: [5, 12, 8, 2, 1]
+}
+]
+};
+timeDistributionChart.setOption(timeDistributionOption);
+// Resize charts when window size changes
+window.addEventListener('resize', function() {
+deliveryProgressChart.resize();
+timeDistributionChart.resize();
+});
+});
+</script>
+<script id="editRouteHandlers">
+document.addEventListener('DOMContentLoaded', function() {
+const fabButton = document.getElementById('fabButton');
+const fabMenu = document.getElementById('fabMenu');
+fabButton.addEventListener('click', function(e) {
+    e.stopPropagation();
+    fabMenu.classList.toggle('hidden');
+});
+document.addEventListener('click', function(e) {
+    if (!document.getElementById('floatingActionButton').contains(e.target)) {
+        fabMenu.classList.add('hidden');
+    }
+});
+window.openReassignModal = function() {
+const modal = document.getElementById('reassignDriverModal');
+modal.classList.remove('hidden');
+modal.classList.add('flex');
+}
+window.closeReassignModal = function() {
+const modal = document.getElementById('reassignDriverModal');
+modal.classList.add('hidden');
+modal.classList.remove('flex');
+}
+window.confirmReassignment = function() {
+const newDriver = document.getElementById('newDriverSelect').value;
+const reason = document.getElementById('reassignmentReason').value;
+const notes = document.getElementById('reassignmentNotes').value;
+const notifyCurrent = document.getElementById('notifyCurrentDriver').checked;
+const notifyNew = document.getElementById('notifyNewDriver').checked;
+if (!newDriver || !reason) {
+const errorMessage = document.createElement('div');
+errorMessage.className = 'fixed bottom-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg flex items-center shadow-lg';
+errorMessage.innerHTML = `
+<div class="w-5 h-5 flex items-center justify-center mr-2">
+<i class="ri-error-warning-line"></i>
+</div>
+<span>Please select a new driver and reason for reassignment</span>
+`;
+document.body.appendChild(errorMessage);
+setTimeout(() => {
+errorMessage.remove();
+}, 3000);
+return;
+}
+closeReassignModal();
+const successMessage = document.createElement('div');
+successMessage.className = 'fixed bottom-4 right-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg flex items-center shadow-lg';
+successMessage.innerHTML = `
+<div class="w-5 h-5 flex items-center justify-center mr-2">
+<i class="ri-checkbox-circle-line"></i>
+</div>
+<span>Route successfully reassigned to new driver</span>
+`;
+document.body.appendChild(successMessage);
+setTimeout(() => {
+successMessage.remove();
+}, 3000);
+}
+document.getElementById('reassignDriverModal').addEventListener('click', function(e) {
+if (e.target === this) {
+closeReassignModal();
+}
+});
+window.openEditModal = function() {
+const modal = document.getElementById('editRouteModal');
+modal.classList.remove('hidden');
+modal.classList.add('flex');
+}
+window.closeEditModal = function() {
+const modal = document.getElementById('editRouteModal');
+modal.classList.add('hidden');
+modal.classList.remove('flex');
+}
+window.saveRouteChanges = function() {
+// Here you would typically save the changes to your backend
+// For now, we'll just show a success message
+const modal = document.getElementById('editRouteModal');
+modal.classList.add('hidden');
+modal.classList.remove('flex');
+// Show success message
+const successMessage = document.createElement('div');
+successMessage.className = 'fixed bottom-4 right-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg flex items-center shadow-lg';
+successMessage.innerHTML = `
+<div class="w-5 h-5 flex items-center justify-center mr-2">
+<i class="ri-checkbox-circle-line"></i>
+</div>
+<span>Route details updated successfully</span>
+`;
+document.body.appendChild(successMessage);
+// Remove success message after 3 seconds
+setTimeout(() => {
+successMessage.remove();
+}, 3000);
+}
+// Close modal when clicking outside
+document.getElementById('editRouteModal').addEventListener('click', function(e) {
+if (e.target === this) {
+closeEditModal();
+}
+});
+});
+</script>
+</body>
+</html>
