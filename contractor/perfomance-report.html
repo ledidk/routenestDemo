@@ -11,7 +11,29 @@
 <script src="https://cdn.tailwindcss.com/3.4.16"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
 <script>
-tailwind.config={theme:{extend:{colors:{primary:'#4f46e5',secondary:'#10b981'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}
+tailwind.config={
+  darkMode: 'class',
+  theme:{
+    extend:{
+      colors:{
+        primary:'#4f46e5',
+        secondary:'#10b981'
+      },
+      borderRadius:{
+        'none':'0px',
+        'sm':'4px',
+        DEFAULT:'8px',
+        'md':'12px',
+        'lg':'16px',
+        'xl':'20px',
+        '2xl':'24px',
+        '3xl':'32px',
+        'full':'9999px',
+        'button':'8px'
+      }
+    }
+  }
+}
 </script>
 <style>
 :where([class^="ri-"])::before { content: "\f3c2"; }
@@ -207,17 +229,11 @@ display: block;
 </div>
 <span>Dashboard</span>
 </a>
-<a href="route-management.html" data-readdy="true" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
+<a href="route-details.html" data-readdy="true" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
 <div class="w-5 h-5 flex items-center justify-center mr-3">
 <i class="ri-route-line"></i>
 </div>
 <span>Route Management</span>
-</a>
-<a href="driver-management.html" data-readdy="true" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg bg-primary bg-opacity-10 text-primary">
-<div class="w-5 h-5 flex items-center justify-center mr-3">
-<i class="ri-team-line"></i>
-</div>
-<span>Driver Management</span>
 </a>
 <a href="team-management-dashboard.html" data-readdy="true" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
 <div class="w-5 h-5 flex items-center justify-center mr-3">
@@ -240,19 +256,19 @@ display: block;
 </div>
 <div class="mb-6">
 <p class="text-xs font-medium text-gray-400 uppercase mb-4 pl-2">Settings</p>
-<a href="#" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
+<a href="settings/general-settings.html" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
 <div class="w-5 h-5 flex items-center justify-center mr-3">
 <i class="ri-settings-3-line"></i>
 </div>
 <span>General Settings</span>
 </a>
-<a href="#" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
+<a href="settings/account-setting.html" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
 <div class="w-5 h-5 flex items-center justify-center mr-3">
 <i class="ri-user-settings-line"></i>
 </div>
 <span>Account Settings</span>
 </a>
-<a href="#" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
+<a href="settings/notifications.html" class="flex items-center px-3 py-2.5 mb-1 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100">
 <div class="w-5 h-5 flex items-center justify-center mr-3">
 <i class="ri-notification-2-line"></i>
 </div>
@@ -286,7 +302,7 @@ display: block;
 <header class="bg-white shadow-sm z-10">
 <div class="flex items-center justify-between px-6 py-3">
 <div class="flex items-center">
-<a href="https://readdy.ai/home/a4cb12ef-b4e2-415e-889e-29c37723d4f1/e215091a-de30-4f9f-b74c-68f1bd624d39" data-readdy="true" class="flex items-center text-gray-500 hover:text-gray-700 mr-4">
+<a href="route-management.html" data-readdy="true" class="flex items-center text-gray-500 hover:text-gray-700 mr-4">
 <div class="w-5 h-5 flex items-center justify-center">
 <i class="ri-arrow-left-line"></i>
 </div>
@@ -1701,7 +1717,85 @@ ratingDistributionChart.resize();
 <script id="themeScript">
 document.addEventListener('DOMContentLoaded', function() {
 const themeToggle = document.getElementById('themeToggle');
+const switchSlider = document.querySelector('.switch-slider');
 const html = document.documentElement;
+
+// Dark mode classes mapping
+const darkClasses = {
+  'bg-white': 'dark:bg-gray-800',
+  'bg-gray-50': 'dark:bg-gray-900',
+  'text-gray-500': 'dark:text-gray-400',
+  'text-gray-700': 'dark:text-gray-300',
+  'text-gray-800': 'dark:text-gray-200',
+  'border-gray-300': 'dark:border-gray-600',
+  'hover:bg-gray-50': 'dark:hover:bg-gray-700',
+  'hover:bg-gray-100': 'dark:hover:bg-gray-700',
+  'shadow': 'dark:shadow-gray-700',
+  'shadow-sm': 'dark:shadow-gray-700'
+};
+
+const applyDarkClasses = () => {
+  const elements = document.querySelectorAll('[class]');
+  elements.forEach(element => {
+    const classList = element.classList;
+    Object.entries(darkClasses).forEach(([lightClass, darkClass]) => {
+      if (classList.contains(lightClass)) {
+        darkClass.split(' ').forEach(cls => {
+          if (!classList.contains(cls)) {
+            element.classList.add(cls);
+          }
+        });
+      }
+    });
+  });
+};
+
+const enableDarkMode = () => {
+  html.classList.add('dark');
+  localStorage.setItem('theme', 'dark');
+  updateChartTheme(true);
+  document.body.style.backgroundColor = '#111827';
+  document.body.classList.add('dark');
+  applyDarkClasses();
+};
+
+const disableDarkMode = () => {
+  html.classList.remove('dark');
+  localStorage.setItem('theme', 'light');
+  updateChartTheme(false);
+  document.body.style.backgroundColor = '#f9fafb';
+  document.body.classList.remove('dark');
+  applyDarkClasses();
+};
+
+switchSlider.addEventListener('click', function(e) {
+  e.preventDefault();
+  themeToggle.checked = !themeToggle.checked;
+  if (themeToggle.checked) {
+    enableDarkMode();
+  } else {
+    disableDarkMode();
+  }
+});
+
+// Initial theme check and application
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+  themeToggle.checked = true;
+  enableDarkMode();
+} else {
+  disableDarkMode();
+}
+
+// Apply dark classes initially and observe DOM changes
+applyDarkClasses();
+const observer = new MutationObserver(applyDarkClasses);
+observer.observe(document.body, { 
+  childList: true,
+  subtree: true,
+  attributes: true,
+  attributeFilter: ['class']
+});
 const updateChartTheme = (isDark) => {
 const charts = [
 'deliveryTrendChart',
@@ -1805,271 +1899,237 @@ applyDarkClasses();
 </script>
 <style>
 .date-range-dropdown {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 50;
-  margin-top: 0.5rem;
-  min-width: 280px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  border: 1px solid #e5e7eb;
-  display: none;
+position: absolute;
+top: 100%;
+left: 0;
+z-index: 50;
+margin-top: 0.5rem;
+min-width: 280px;
+background-color: white;
+border-radius: 8px;
+box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+border: 1px solid #e5e7eb;
+display: none;
 }
-
 .date-range-dropdown.active {
-  display: block;
+display: block;
 }
-
 .calendar-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 2px;
+display: grid;
+grid-template-columns: repeat(7, 1fr);
+gap: 2px;
 }
-
 .calendar-day {
-  aspect-ratio: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  border-radius: 4px;
+aspect-ratio: 1;
+display: flex;
+align-items: center;
+justify-content: center;
+cursor: pointer;
+border-radius: 4px;
 }
-
 .calendar-day:hover:not(.disabled) {
-  background-color: #f3f4f6;
+background-color: #f3f4f6;
 }
-
 .calendar-day.selected {
-  background-color: #4f46e5;
-  color: white;
+background-color: #4f46e5;
+color: white;
 }
-
 .calendar-day.disabled {
-  color: #9ca3af;
-  cursor: not-allowed;
+color: #9ca3af;
+cursor: not-allowed;
 }
-
 .calendar-day.in-range {
-  background-color: #e0e7ff;
+background-color: #e0e7ff;
 }
 </style>
-
 <script id="notificationScript">
 document.addEventListener('DOMContentLoaded', function() {
-  const notificationBtn = document.getElementById('notificationBtn');
-  const messageBtn = document.getElementById('messageBtn');
-  const dateRangeBtn = document.getElementById('dateRangeBtn');
-  
-  // Create dropdown element
-  const dropdown = document.createElement('div');
-  dropdown.className = 'date-range-dropdown';
-  dropdown.innerHTML = `
-    <div class="p-4">
-      <div class="space-y-2">
-        <button class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 rounded-lg" data-range="7">Last 7 Days</button>
-        <button class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 rounded-lg" data-range="30">Last 30 Days</button>
-        <button class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 rounded-lg" data-range="90">Last 90 Days</button>
-        <button class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 rounded-lg" data-range="this-month">This Month</button>
-        <button class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 rounded-lg" data-range="last-month">Last Month</button>
-        <hr class="my-2 border-gray-200">
-        <button class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 rounded-lg custom-range-btn">
-          <span>Custom Range</span>
-        </button>
-      </div>
-      <div class="custom-range-picker hidden mt-3">
-        <div class="flex justify-between items-center mb-4">
-          <button class="prev-month p-1 hover:bg-gray-100 rounded">
-            <i class="ri-arrow-left-s-line"></i>
-          </button>
-          <span class="month-year text-sm font-medium"></span>
-          <button class="next-month p-1 hover:bg-gray-100 rounded">
-            <i class="ri-arrow-right-s-line"></i>
-          </button>
-        </div>
-        <div class="calendar-header grid grid-cols-7 gap-2 mb-2">
-          <span class="text-xs text-center text-gray-500">Su</span>
-          <span class="text-xs text-center text-gray-500">Mo</span>
-          <span class="text-xs text-center text-gray-500">Tu</span>
-          <span class="text-xs text-center text-gray-500">We</span>
-          <span class="text-xs text-center text-gray-500">Th</span>
-          <span class="text-xs text-center text-gray-500">Fr</span>
-          <span class="text-xs text-center text-gray-500">Sa</span>
-        </div>
-        <div class="calendar-grid"></div>
-        <div class="mt-4 flex justify-end space-x-2">
-          <button class="cancel-btn px-3 py-1 text-sm border border-gray-300 rounded-lg hover:bg-gray-50">Cancel</button>
-          <button class="apply-btn px-3 py-1 text-sm bg-primary text-white rounded-lg hover:bg-primary/90">Apply</button>
-        </div>
-      </div>
-    </div>
-  `;
-  
-  dateRangeBtn.parentNode.style.position = 'relative';
-  dateRangeBtn.parentNode.appendChild(dropdown);
-
-  let currentDate = new Date();
-  let selectedStartDate = null;
-  let selectedEndDate = null;
-  let isSelecting = false;
-
-  function updateCalendar(date) {
-    const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
-    const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-    const monthYear = date.toLocaleString('default', { month: 'long', year: 'numeric' });
-    
-    dropdown.querySelector('.month-year').textContent = monthYear;
-    const calendarGrid = dropdown.querySelector('.calendar-grid');
-    calendarGrid.innerHTML = '';
-
-    // Add empty cells for days before the first day of the month
-    for (let i = 0; i < firstDay.getDay(); i++) {
-      const emptyCell = document.createElement('div');
-      emptyCell.className = 'calendar-day';
-      calendarGrid.appendChild(emptyCell);
-    }
-
-    // Add days of the month
-    for (let day = 1; day <= lastDay.getDate(); day++) {
-      const cell = document.createElement('div');
-      cell.className = 'calendar-day text-sm';
-      cell.textContent = day;
-      
-      const cellDate = new Date(date.getFullYear(), date.getMonth(), day);
-      
-      if (selectedStartDate && cellDate.getTime() === selectedStartDate.getTime()) {
-        cell.classList.add('selected');
-      }
-      
-      if (selectedEndDate && cellDate.getTime() === selectedEndDate.getTime()) {
-        cell.classList.add('selected');
-      }
-      
-      if (selectedStartDate && selectedEndDate && 
-          cellDate > selectedStartDate && cellDate < selectedEndDate) {
-        cell.classList.add('in-range');
-      }
-
-      cell.addEventListener('click', () => {
-        if (!isSelecting) {
-          selectedStartDate = cellDate;
-          selectedEndDate = null;
-          isSelecting = true;
-        } else {
-          if (cellDate < selectedStartDate) {
-            selectedEndDate = selectedStartDate;
-            selectedStartDate = cellDate;
-          } else {
-            selectedEndDate = cellDate;
-          }
-          isSelecting = false;
-        }
-        updateCalendar(currentDate);
-      });
-
-      calendarGrid.appendChild(cell);
-    }
-  }
-
-  // Notification panel toggle
-  notificationBtn.addEventListener('click', function(e) {
-    e.stopPropagation();
-    // Toggle notification panel
-    console.log('Notification button clicked');
-  });
-
-  // Message panel toggle
-  messageBtn.addEventListener('click', function(e) {
-    e.stopPropagation();
-    // Toggle message panel
-    console.log('Message button clicked');
-  });
-
-  // Date range button click handler
-  dateRangeBtn.addEventListener('click', function(e) {
-    e.stopPropagation();
-    dropdown.classList.toggle('active');
-  });
-
-  // Handle preset range selections
-  dropdown.querySelectorAll('[data-range]').forEach(button => {
-    button.addEventListener('click', () => {
-      const range = button.dataset.range;
-      const end = new Date();
-      const start = new Date();
-
-      switch(range) {
-        case '7':
-          start.setDate(end.getDate() - 7);
-          break;
-        case '30':
-          start.setDate(end.getDate() - 30);
-          break;
-        case '90':
-          start.setDate(end.getDate() - 90);
-          break;
-        case 'this-month':
-          start.setDate(1);
-          break;
-        case 'last-month':
-          start.setMonth(start.getMonth() - 1);
-          start.setDate(1);
-          end.setDate(0);
-          break;
-      }
-
-      dateRangeBtn.querySelector('span').textContent = 
-        `${start.toLocaleDateString()} - ${end.toLocaleDateString()}`;
-      dropdown.classList.remove('active');
-    });
-  });
-
-  // Custom range picker
-  const customRangeBtn = dropdown.querySelector('.custom-range-btn');
-  const customRangePicker = dropdown.querySelector('.custom-range-picker');
-  const prevMonthBtn = dropdown.querySelector('.prev-month');
-  const nextMonthBtn = dropdown.querySelector('.next-month');
-  const applyBtn = dropdown.querySelector('.apply-btn');
-  const cancelBtn = dropdown.querySelector('.cancel-btn');
-
-  customRangeBtn.addEventListener('click', () => {
-    customRangePicker.classList.toggle('hidden');
-    updateCalendar(currentDate);
-  });
-
-  prevMonthBtn.addEventListener('click', () => {
-    currentDate.setMonth(currentDate.getMonth() - 1);
-    updateCalendar(currentDate);
-  });
-
-  nextMonthBtn.addEventListener('click', () => {
-    currentDate.setMonth(currentDate.getMonth() + 1);
-    updateCalendar(currentDate);
-  });
-
-  applyBtn.addEventListener('click', () => {
-    if (selectedStartDate && selectedEndDate) {
-      dateRangeBtn.querySelector('span').textContent = 
-        `${selectedStartDate.toLocaleDateString()} - ${selectedEndDate.toLocaleDateString()}`;
-      dropdown.classList.remove('active');
-      customRangePicker.classList.add('hidden');
-    }
-  });
-
-  cancelBtn.addEventListener('click', () => {
-    selectedStartDate = null;
-    selectedEndDate = null;
-    isSelecting = false;
-    customRangePicker.classList.add('hidden');
-  });
-
-  // Close dropdown when clicking outside
-  document.addEventListener('click', (e) => {
-    if (!dropdown.contains(e.target) && !dateRangeBtn.contains(e.target)) {
-      dropdown.classList.remove('active');
-    }
-  });
+const notificationBtn = document.getElementById('notificationBtn');
+const messageBtn = document.getElementById('messageBtn');
+const dateRangeBtn = document.getElementById('dateRangeBtn');
+// Create dropdown element
+const dropdown = document.createElement('div');
+dropdown.className = 'date-range-dropdown';
+dropdown.innerHTML = `
+<div class="p-4">
+<div class="space-y-2">
+<button class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 rounded-lg" data-range="7">Last 7 Days</button>
+<button class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 rounded-lg" data-range="30">Last 30 Days</button>
+<button class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 rounded-lg" data-range="90">Last 90 Days</button>
+<button class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 rounded-lg" data-range="this-month">This Month</button>
+<button class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 rounded-lg" data-range="last-month">Last Month</button>
+<hr class="my-2 border-gray-200">
+<button class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 rounded-lg custom-range-btn">
+<span>Custom Range</span>
+</button>
+</div>
+<div class="custom-range-picker hidden mt-3">
+<div class="flex justify-between items-center mb-4">
+<button class="prev-month p-1 hover:bg-gray-100 rounded">
+<i class="ri-arrow-left-s-line"></i>
+</button>
+<span class="month-year text-sm font-medium"></span>
+<button class="next-month p-1 hover:bg-gray-100 rounded">
+<i class="ri-arrow-right-s-line"></i>
+</button>
+</div>
+<div class="calendar-header grid grid-cols-7 gap-2 mb-2">
+<span class="text-xs text-center text-gray-500">Su</span>
+<span class="text-xs text-center text-gray-500">Mo</span>
+<span class="text-xs text-center text-gray-500">Tu</span>
+<span class="text-xs text-center text-gray-500">We</span>
+<span class="text-xs text-center text-gray-500">Th</span>
+<span class="text-xs text-center text-gray-500">Fr</span>
+<span class="text-xs text-center text-gray-500">Sa</span>
+</div>
+<div class="calendar-grid"></div>
+<div class="mt-4 flex justify-end space-x-2">
+<button class="cancel-btn px-3 py-1 text-sm border border-gray-300 rounded-lg hover:bg-gray-50">Cancel</button>
+<button class="apply-btn px-3 py-1 text-sm bg-primary text-white rounded-lg hover:bg-primary/90">Apply</button>
+</div>
+</div>
+</div>
+`;
+dateRangeBtn.parentNode.style.position = 'relative';
+dateRangeBtn.parentNode.appendChild(dropdown);
+let currentDate = new Date();
+let selectedStartDate = null;
+let selectedEndDate = null;
+let isSelecting = false;
+function updateCalendar(date) {
+const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+const monthYear = date.toLocaleString('default', { month: 'long', year: 'numeric' });
+dropdown.querySelector('.month-year').textContent = monthYear;
+const calendarGrid = dropdown.querySelector('.calendar-grid');
+calendarGrid.innerHTML = '';
+// Add empty cells for days before the first day of the month
+for (let i = 0; i < firstDay.getDay(); i++) {
+const emptyCell = document.createElement('div');
+emptyCell.className = 'calendar-day';
+calendarGrid.appendChild(emptyCell);
+}
+// Add days of the month
+for (let day = 1; day <= lastDay.getDate(); day++) {
+const cell = document.createElement('div');
+cell.className = 'calendar-day text-sm';
+cell.textContent = day;
+const cellDate = new Date(date.getFullYear(), date.getMonth(), day);
+if (selectedStartDate && cellDate.getTime() === selectedStartDate.getTime()) {
+cell.classList.add('selected');
+}
+if (selectedEndDate && cellDate.getTime() === selectedEndDate.getTime()) {
+cell.classList.add('selected');
+}
+if (selectedStartDate && selectedEndDate &&
+cellDate > selectedStartDate && cellDate < selectedEndDate) {
+cell.classList.add('in-range');
+}
+cell.addEventListener('click', () => {
+if (!isSelecting) {
+selectedStartDate = cellDate;
+selectedEndDate = null;
+isSelecting = true;
+} else {
+if (cellDate < selectedStartDate) {
+selectedEndDate = selectedStartDate;
+selectedStartDate = cellDate;
+} else {
+selectedEndDate = cellDate;
+}
+isSelecting = false;
+}
+updateCalendar(currentDate);
+});
+calendarGrid.appendChild(cell);
+}
+}
+// Notification panel toggle
+notificationBtn.addEventListener('click', function(e) {
+e.stopPropagation();
+// Toggle notification panel
+console.log('Notification button clicked');
+});
+// Message panel toggle
+messageBtn.addEventListener('click', function(e) {
+e.stopPropagation();
+// Toggle message panel
+console.log('Message button clicked');
+});
+// Date range button click handler
+dateRangeBtn.addEventListener('click', function(e) {
+e.stopPropagation();
+dropdown.classList.toggle('active');
+});
+// Handle preset range selections
+dropdown.querySelectorAll('[data-range]').forEach(button => {
+button.addEventListener('click', () => {
+const range = button.dataset.range;
+const end = new Date();
+const start = new Date();
+switch(range) {
+case '7':
+start.setDate(end.getDate() - 7);
+break;
+case '30':
+start.setDate(end.getDate() - 30);
+break;
+case '90':
+start.setDate(end.getDate() - 90);
+break;
+case 'this-month':
+start.setDate(1);
+break;
+case 'last-month':
+start.setMonth(start.getMonth() - 1);
+start.setDate(1);
+end.setDate(0);
+break;
+}
+dateRangeBtn.querySelector('span').textContent =
+`${start.toLocaleDateString()} - ${end.toLocaleDateString()}`;
+dropdown.classList.remove('active');
+});
+});
+// Custom range picker
+const customRangeBtn = dropdown.querySelector('.custom-range-btn');
+const customRangePicker = dropdown.querySelector('.custom-range-picker');
+const prevMonthBtn = dropdown.querySelector('.prev-month');
+const nextMonthBtn = dropdown.querySelector('.next-month');
+const applyBtn = dropdown.querySelector('.apply-btn');
+const cancelBtn = dropdown.querySelector('.cancel-btn');
+customRangeBtn.addEventListener('click', () => {
+customRangePicker.classList.toggle('hidden');
+updateCalendar(currentDate);
+});
+prevMonthBtn.addEventListener('click', () => {
+currentDate.setMonth(currentDate.getMonth() - 1);
+updateCalendar(currentDate);
+});
+nextMonthBtn.addEventListener('click', () => {
+currentDate.setMonth(currentDate.getMonth() + 1);
+updateCalendar(currentDate);
+});
+applyBtn.addEventListener('click', () => {
+if (selectedStartDate && selectedEndDate) {
+dateRangeBtn.querySelector('span').textContent =
+`${selectedStartDate.toLocaleDateString()} - ${selectedEndDate.toLocaleDateString()}`;
+dropdown.classList.remove('active');
+customRangePicker.classList.add('hidden');
+}
+});
+cancelBtn.addEventListener('click', () => {
+selectedStartDate = null;
+selectedEndDate = null;
+isSelecting = false;
+customRangePicker.classList.add('hidden');
+});
+// Close dropdown when clicking outside
+document.addEventListener('click', (e) => {
+if (!dropdown.contains(e.target) && !dateRangeBtn.contains(e.target)) {
+dropdown.classList.remove('active');
+}
+});
 });
 </script>
 <script id="paginationScript">
